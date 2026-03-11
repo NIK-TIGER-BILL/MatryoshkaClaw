@@ -278,8 +278,7 @@ public actor GatewayChannelActor {
                 if self.shouldPauseReconnectAfterAuthFailure(error) {
                     self.reconnectPausedForAuthFailure = true
                     self.logger.error(
-                        "gateway watchdog reconnect paused for non-recoverable auth failure " +
-                            "\(error.localizedDescription, privacy: .public)"
+                        "gateway watchdog reconnect paused for non-recoverable auth failure \(error.localizedDescription, privacy: .public)"
                     )
                     continue
                 }
@@ -710,8 +709,7 @@ public actor GatewayChannelActor {
             if self.shouldPauseReconnectAfterAuthFailure(error) {
                 self.reconnectPausedForAuthFailure = true
                 self.logger.error(
-                    "gateway reconnect paused for non-recoverable auth failure " +
-                        "\(error.localizedDescription, privacy: .public)"
+                    "gateway reconnect paused for non-recoverable auth failure \(error.localizedDescription, privacy: .public)"
                 )
                 return
             }
@@ -910,8 +908,8 @@ public actor GatewayChannelActor {
             return (id: id, data: data)
         } catch {
             self.logger.error(
-                "gateway \(kind) encode failed \(method, privacy: .public) " +
-                    "error=\(error.localizedDescription, privacy: .public)")
+                "gateway \(kind) encode failed \(method, privacy: .public) error=\(error.localizedDescription, privacy: .public)"
+            )
             throw error
         }
     }
