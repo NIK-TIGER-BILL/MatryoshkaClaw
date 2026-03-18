@@ -5,6 +5,7 @@ import type { ChannelId } from "./plugins/types.js";
 // Channel docking: add new core channels here (order + meta + aliases), then
 // register the plugin in its extension entrypoint and keep protocol IDs in sync.
 export const CHAT_CHANNEL_ORDER = [
+  "max",
   "telegram",
   "whatsapp",
   "discord",
@@ -22,9 +23,23 @@ export const CHANNEL_IDS = [...CHAT_CHANNEL_ORDER] as const;
 
 export type ChatChannelMeta = ChannelMeta;
 
-const WEBSITE_URL = "https://openclaw.ai";
+const WEBSITE_URL = "https://github.com/NIK-TIGER-BILL/MatryoshkaClaw";
 
 const CHAT_CHANNEL_META: Record<ChatChannelId, ChannelMeta> = {
+  max: {
+    id: "max",
+    label: "Max (VK)",
+    selectionLabel: "Max — суверенный мессенджер 🪆",
+    detailLabel: "Max Bot",
+    docsPath: "/channels/max",
+    docsLabel: "max",
+    blurb: "российский мессенджер от VK — создай бота через @MasterBot и начни работу.",
+    systemImage: "flag",
+    selectionDocsPrefix: "",
+    selectionExtras: [WEBSITE_URL],
+    order: 0,
+    quickstartAllowFrom: true,
+  },
   telegram: {
     id: "telegram",
     label: "Telegram",

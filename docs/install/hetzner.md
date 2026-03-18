@@ -1,20 +1,20 @@
 ---
-summary: "Run OpenClaw Gateway 24/7 on a cheap Hetzner VPS (Docker) with durable state and baked-in binaries"
+summary: "Run MatryoshkaClaw Gateway 24/7 on a cheap Hetzner VPS (Docker) with durable state and baked-in binaries"
 read_when:
-  - You want OpenClaw running 24/7 on a cloud VPS (not your laptop)
+  - You want MatryoshkaClaw running 24/7 on a cloud VPS (not your laptop)
   - You want a production-grade, always-on Gateway on your own VPS
   - You want full control over persistence, binaries, and restart behavior
-  - You are running OpenClaw in Docker on Hetzner or a similar provider
+  - You are running MatryoshkaClaw in Docker on Hetzner or a similar provider
 title: "Hetzner"
 ---
 
-# OpenClaw on Hetzner (Docker, Production VPS Guide)
+# MatryoshkaClaw on Hetzner (Docker, Production VPS Guide)
 
 ## Goal
 
-Run a persistent OpenClaw Gateway on a Hetzner VPS using Docker, with durable state, baked-in binaries, and safe restart behavior.
+Run a persistent MatryoshkaClaw Gateway on a Hetzner VPS using Docker, with durable state, baked-in binaries, and safe restart behavior.
 
-If you want “OpenClaw 24/7 for ~$5”, this is the simplest reliable setup.
+If you want “MatryoshkaClaw 24/7 for ~$5”, this is the simplest reliable setup.
 Hetzner pricing changes; pick the smallest Debian/Ubuntu VPS and scale up if you hit OOMs.
 
 Security model reminder:
@@ -29,7 +29,7 @@ See [Security](/gateway/security) and [VPS hosting](/vps).
 
 - Rent a small Linux server (Hetzner VPS)
 - Install Docker (isolated app runtime)
-- Start the OpenClaw Gateway in Docker
+- Start the MatryoshkaClaw Gateway in Docker
 - Persist `~/.openclaw` + `~/.openclaw/workspace` on the host (survives restarts/rebuilds)
 - Access the Control UI from your laptop via an SSH tunnel
 
@@ -48,7 +48,7 @@ For the generic Docker flow, see [Docker](/install/docker).
 
 1. Provision Hetzner VPS
 2. Install Docker
-3. Clone OpenClaw repository
+3. Clone MatryoshkaClaw repository
 4. Create persistent host directories
 5. Configure `.env` and `docker-compose.yml`
 6. Bake required binaries into the image
@@ -104,10 +104,10 @@ docker compose version
 
 ---
 
-## 3) Clone the OpenClaw repository
+## 3) Clone the MatryoshkaClaw repository
 
 ```bash
-git clone https://github.com/openclaw/openclaw.git
+git clone https://github.com/NIK-TIGER-BILL/MatryoshkaClaw.git
 cd openclaw
 ```
 
@@ -318,7 +318,7 @@ Paste your gateway token.
 
 ## What persists where (source of truth)
 
-OpenClaw runs in Docker, but Docker is not the source of truth.
+MatryoshkaClaw runs in Docker, but Docker is not the source of truth.
 All long-lived state must survive restarts, rebuilds, and reboots.
 
 | Component           | Location                          | Persistence mechanism  | Notes                            |

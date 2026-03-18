@@ -1,15 +1,15 @@
 ---
 title: Fly.io
-description: Deploy OpenClaw on Fly.io
-summary: "Step-by-step Fly.io deployment for OpenClaw with persistent storage and HTTPS"
+description: Deploy MatryoshkaClaw on Fly.io
+summary: "Step-by-step Fly.io deployment for MatryoshkaClaw with persistent storage and HTTPS"
 read_when:
-  - Deploying OpenClaw on Fly.io
+  - Deploying MatryoshkaClaw on Fly.io
   - Setting up Fly volumes, secrets, and first-run config
 ---
 
 # Fly.io Deployment
 
-**Goal:** OpenClaw Gateway running on a [Fly.io](https://fly.io) machine with persistent storage, automatic HTTPS, and Discord/channel access.
+**Goal:** MatryoshkaClaw Gateway running on a [Fly.io](https://fly.io) machine with persistent storage, automatic HTTPS, and Discord/channel access.
 
 ## What you need
 
@@ -29,7 +29,7 @@ read_when:
 
 ```bash
 # Clone the repo
-git clone https://github.com/openclaw/openclaw.git
+git clone https://github.com/NIK-TIGER-BILL/MatryoshkaClaw.git
 cd openclaw
 
 # Create a new Fly app (pick your own name)

@@ -1,5 +1,5 @@
 ---
-summary: "Automated, hardened OpenClaw installation with Ansible, Tailscale VPN, and firewall isolation"
+summary: "Automated, hardened MatryoshkaClaw installation with Ansible, Tailscale VPN, and firewall isolation"
 read_when:
   - You want automated server deployment with security hardening
   - You need firewall-isolated setup with VPN access
@@ -9,7 +9,7 @@ title: "Ansible"
 
 # Ansible Installation
 
-The recommended way to deploy OpenClaw to production servers is via **[openclaw-ansible](https://github.com/openclaw/openclaw-ansible)** — an automated installer with security-first architecture.
+The recommended way to deploy MatryoshkaClaw to production servers is via **[openclaw-ansible](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible)** — an automated installer with security-first architecture.
 
 ## Quick Start
 
@@ -19,7 +19,7 @@ One-command install:
 curl -fsSL https://raw.githubusercontent.com/openclaw/openclaw-ansible/main/install.sh | bash
 ```
 
-> **📦 Full guide: [github.com/openclaw/openclaw-ansible](https://github.com/openclaw/openclaw-ansible)**
+> **📦 Full guide: [github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible)**
 >
 > The openclaw-ansible repo is the source of truth for Ansible deployment. This page is a quick overview.
 
@@ -47,7 +47,7 @@ The Ansible playbook installs and configures:
 2. **UFW firewall** (SSH + Tailscale ports only)
 3. **Docker CE + Compose V2** (for agent sandboxes)
 4. **Node.js 22.x + pnpm** (runtime dependencies)
-5. **OpenClaw** (host-based, not containerized)
+5. **MatryoshkaClaw** (host-based, not containerized)
 6. **Systemd service** (auto-start with security hardening)
 
 Note: The gateway runs **directly on the host** (not in Docker), but agent sandboxes use Docker for isolation. See [Sandboxing](/gateway/sandboxing) for details.
@@ -62,7 +62,7 @@ sudo -i -u openclaw
 
 The post-install script will guide you through:
 
-1. **Onboarding wizard**: Configure OpenClaw settings
+1. **Onboarding wizard**: Configure MatryoshkaClaw settings
 2. **Provider login**: Connect WhatsApp/Telegram/Discord/Signal
 3. **Gateway testing**: Verify the installation
 4. **Tailscale setup**: Connect to your VPN mesh
@@ -118,7 +118,7 @@ If you prefer manual control over the automation:
 sudo apt update && sudo apt install -y ansible git
 
 # 2. Clone repository
-git clone https://github.com/openclaw/openclaw-ansible.git
+git clone https://github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible.git
 cd openclaw-ansible
 
 # 3. Install Ansible collections
@@ -131,9 +131,9 @@ ansible-galaxy collection install -r requirements.yml
 # ansible-playbook playbook.yml --ask-become-pass
 ```
 
-## Updating OpenClaw
+## Updating MatryoshkaClaw
 
-The Ansible installer sets up OpenClaw for manual updates. See [Updating](/install/updating) for the standard update flow.
+The Ansible installer sets up MatryoshkaClaw for manual updates. See [Updating](/install/updating) for the standard update flow.
 
 To re-run the Ansible playbook (e.g., for configuration changes):
 
@@ -196,13 +196,13 @@ openclaw channels login
 
 For detailed security architecture and troubleshooting:
 
-- [Security Architecture](https://github.com/openclaw/openclaw-ansible/blob/main/docs/security.md)
-- [Technical Details](https://github.com/openclaw/openclaw-ansible/blob/main/docs/architecture.md)
-- [Troubleshooting Guide](https://github.com/openclaw/openclaw-ansible/blob/main/docs/troubleshooting.md)
+- [Security Architecture](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible/blob/main/docs/security.md)
+- [Technical Details](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible/blob/main/docs/architecture.md)
+- [Troubleshooting Guide](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible/blob/main/docs/troubleshooting.md)
 
 ## Related
 
-- [openclaw-ansible](https://github.com/openclaw/openclaw-ansible) — full deployment guide
+- [openclaw-ansible](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible) — full deployment guide
 - [Docker](/install/docker) — containerized gateway setup
 - [Sandboxing](/gateway/sandboxing) — agent sandbox configuration
 - [Multi-Agent Sandbox & Tools](/tools/multi-agent-sandbox-tools) — per-agent isolation
