@@ -468,6 +468,35 @@ export function buildQianfanProvider(): ProviderConfig {
   };
 }
 
+export const GIGACHAT_DEFAULT_BASE_URL = "https://gigachat.devices.sberbank.ru/api/v1";
+export const GIGACHAT_DEFAULT_MODEL_ID = "GigaChat-2-Max";
+const GIGACHAT_DEFAULT_CONTEXT_WINDOW = 32768;
+const GIGACHAT_DEFAULT_MAX_TOKENS = 8192;
+const GIGACHAT_DEFAULT_COST = {
+  input: 0,
+  output: 0,
+  cacheRead: 0,
+  cacheWrite: 0,
+};
+
+export function buildGigaChatProvider(baseUrl: string): ProviderConfig {
+  return {
+    baseUrl,
+    api: "openai-completions",
+    models: [
+      {
+        id: GIGACHAT_DEFAULT_MODEL_ID,
+        name: "GigaChat 2 Max",
+        reasoning: false,
+        input: ["text"],
+        cost: GIGACHAT_DEFAULT_COST,
+        contextWindow: GIGACHAT_DEFAULT_CONTEXT_WINDOW,
+        maxTokens: GIGACHAT_DEFAULT_MAX_TOKENS,
+      },
+    ],
+  };
+}
+
 export function buildModelStudioProvider(): ProviderConfig {
   return {
     baseUrl: MODELSTUDIO_BASE_URL,
