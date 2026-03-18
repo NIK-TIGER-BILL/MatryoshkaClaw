@@ -10,7 +10,8 @@
 #
 # Флаги:
 #   --no-onboard   Пропустить онбординг
-#   --dir <path>   Директория для клонирования (по умолчанию: ~/MatryoshkaClaw)
+#   --no-prompt    Без интерактивных вопросов
+#   --dir <path>   Директория установки (по умолчанию: ~/MatryoshkaClaw)
 #   --help         Показать справку
 
 set -euo pipefail
@@ -31,16 +32,19 @@ REQUIRED_NODE_MAJOR=22
 
 # ─── Флаги ──────────────────────────────────────────────────
 NO_ONBOARD=false
+NO_PROMPT=false
 INSTALL_DIR="$DEFAULT_DIR"
 
-for arg in "$@"; do
-  case $arg in
-    --no-onboard) NO_ONBOARD=true ;;
-    --dir) shift; INSTALL_DIR="$1" ;;
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --no-onboard) NO_ONBOARD=true; shift ;;
+    --no-prompt)  NO_PROMPT=true; shift ;;
+    --dir)        INSTALL_DIR="$2"; shift 2 ;;
     --help|-h)
-      echo "Использование: install.sh [--no-onboard] [--dir <path>]"
+      echo "Использование: install.sh [--no-onboard] [--no-prompt] [--dir <path>]"
       exit 0
       ;;
+    *) shift ;;
   esac
 done
 
@@ -48,20 +52,19 @@ done
 info()    { echo -e "${CYAN}[матрёшка]${NC} $*"; }
 success() { echo -e "${GREEN}[✓]${NC} $*"; }
 warn()    { echo -e "${YELLOW}[!]${NC} $*"; }
-error()   { echo -e "${RED}[✗]${NC} $*"; exit 1; }
+error()   { echo -e "${RED}[✗]${NC} $*" >&2; exit 1; }
 
 banner() {
   echo ""
   echo -e "${BOLD}${BLUE}"
-  echo "  ██████╗ ███████╗██╗  ██╗"
-  echo "  ██╔══██╗██╔════╝╚██╗██╔╝"
-  echo "  ██████╔╝█████╗   ╚███╔╝ "
-  echo "  ██╔══██╗██╔══╝   ██╔██╗ "
-  echo "  ██║  ██║███████╗██╔╝ ██╗"
-  echo "  ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝"
+  echo "   ___  ___      __                    __   __   __       "
+  echo "  |   \/   |    /  \__               /  \_/  \_/  \      "
+  echo "  | |\  /| |   / /\  \___           / /   \   \_  /      "
+  echo "  | | \/ | |  / /  \     \         / /    /   / /        "
+  echo "  |_|    |_| /_/    \____/        /_/    \___/_/         "
   echo -e "${NC}"
-  echo -e "${BOLD}  🪆 MatryoshkaClaw${NC} — Российская платформа автономных AI-агентов"
-  echo -e "  Импортозамещение ChatGPT одобрено Министерством Цифрового Развития${YELLOW}*${NC}"
+  echo -e "  ${BOLD}🪆 MatryoshkaClaw${NC} — Российская платформа AI-агентов"
+  echo -e "  Импортозамещение ChatGPT одобрено Минцифры${YELLOW}*${NC}"
   echo ""
   echo -e "  ${YELLOW}* Минцифры о нас пока не знает, но мы уверены что одобрит${NC}"
   echo ""
@@ -78,6 +81,25 @@ check_os() {
   info "ОС: $OS"
 }
 
+# ─── Git ────────────────────────────────────────────────────
+check_git() {
+  if command -v git &>/dev/null; then
+    success "git $(git --version | awk '{print $3}') найден"
+    return
+  fi
+  info "Устанавливаем git..."
+  if [ "$OS" = "macos" ]; then
+    xcode-select --install 2>/dev/null || true
+  elif [ "$OS" = "linux" ]; then
+    if command -v apt-get &>/dev/null; then sudo apt-get install -y git
+    elif command -v dnf &>/dev/null; then sudo dnf install -y git
+    elif command -v yum &>/dev/null; then sudo yum install -y git
+    fi
+  fi
+  command -v git &>/dev/null || error "Не удалось установить git. Установи вручную: https://git-scm.com"
+  success "git установлен"
+}
+
 # ─── Node.js ────────────────────────────────────────────────
 check_node() {
   if command -v node &>/dev/null; then
@@ -85,9 +107,8 @@ check_node() {
     if [ "$NODE_MAJOR" -ge "$REQUIRED_NODE_MAJOR" ]; then
       success "Node.js $(node --version) найден"
       return
-    else
-      warn "Node.js $(node --version) — слишком старый. Нужен $REQUIRED_NODE_MAJOR+"
     fi
+    warn "Node.js $(node --version) слишком старый, нужен $REQUIRED_NODE_MAJOR+"
   else
     warn "Node.js не найден"
   fi
@@ -96,6 +117,7 @@ check_node() {
   if [ "$OS" = "macos" ]; then
     if command -v brew &>/dev/null; then
       brew install node@$REQUIRED_NODE_MAJOR
+      brew link --overwrite node@$REQUIRED_NODE_MAJOR
     else
       error "Homebrew не найден. Установи Node.js $REQUIRED_NODE_MAJOR+ вручную: https://nodejs.org"
     fi
@@ -110,14 +132,12 @@ check_node() {
       curl -fsSL https://rpm.nodesource.com/setup_${REQUIRED_NODE_MAJOR}.x | sudo bash -
       sudo yum install -y nodejs
     else
-      error "Не удалось определить пакетный менеджер. Установи Node.js $REQUIRED_NODE_MAJOR+ вручную: https://nodejs.org"
+      error "Не удалось определить пакетный менеджер. Установи Node.js $REQUIRED_NODE_MAJOR+: https://nodejs.org"
     fi
   fi
 
   NODE_MAJOR=$(node -e "process.stdout.write(process.versions.node.split('.')[0])" 2>/dev/null || echo "0")
-  if [ "$NODE_MAJOR" -lt "$REQUIRED_NODE_MAJOR" ]; then
-    error "Не удалось установить Node.js $REQUIRED_NODE_MAJOR+"
-  fi
+  [ "$NODE_MAJOR" -ge "$REQUIRED_NODE_MAJOR" ] || error "Не удалось установить Node.js $REQUIRED_NODE_MAJOR+"
   success "Node.js $(node --version) установлен"
 }
 
@@ -132,30 +152,10 @@ check_pnpm() {
   success "pnpm установлен"
 }
 
-# ─── Git ────────────────────────────────────────────────────
-check_git() {
-  if command -v git &>/dev/null; then
-    success "git $(git --version | awk '{print $3}') найден"
-    return
-  fi
-  info "Устанавливаем git..."
-  if [ "$OS" = "macos" ]; then
-    xcode-select --install 2>/dev/null || brew install git
-  elif [ "$OS" = "linux" ]; then
-    if command -v apt-get &>/dev/null; then
-      sudo apt-get install -y git
-    elif command -v dnf &>/dev/null; then
-      sudo dnf install -y git
-    fi
-  fi
-  command -v git &>/dev/null || error "Не удалось установить git. Установи вручную."
-  success "git установлен"
-}
-
 # ─── Клонирование / обновление ──────────────────────────────
 clone_or_update() {
   if [ -d "$INSTALL_DIR/.git" ]; then
-    info "Найден существующий репозиторий в $INSTALL_DIR — обновляем..."
+    info "Обновляем репозиторий в $INSTALL_DIR..."
     git -C "$INSTALL_DIR" pull --ff-only
     success "Репозиторий обновлён"
   else
@@ -167,10 +167,10 @@ clone_or_update() {
 
 # ─── Сборка ─────────────────────────────────────────────────
 build() {
-  info "Устанавливаем зависимости..."
-  # CI=true разрешает pnpm удалять node_modules без TTY
-  CI=true pnpm install --frozen-lockfile --prefer-offline 2>/dev/null \
-    || CI=true pnpm install
+  cd "$INSTALL_DIR"
+
+  info "Устанавливаем зависимости (pnpm install)..."
+  CI=true SHARP_IGNORE_GLOBAL_LIBVIPS=1 pnpm install
 
   info "Собираем UI..."
   pnpm ui:build
@@ -181,36 +181,30 @@ build() {
   success "Сборка завершена"
 }
 
-# ─── Линковка ───────────────────────────────────────────────
-link_binary() {
-  info "Настраиваем pnpm global bin dir..."
+# ─── Глобальная установка через npm ─────────────────────────
+install_globally() {
+  info "Устанавливаем matryoshka глобально (npm install -g)..."
 
-  # Запускаем pnpm setup если PNPM_HOME не задан
-  if [ -z "${PNPM_HOME:-}" ]; then
-    pnpm setup --force 2>/dev/null || true
-    # Подхватываем PNPM_HOME из shell rc файлов
-    PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
-    export PNPM_HOME
-  fi
+  # Фикс для macOS с системным libvips
+  SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install -g "$INSTALL_DIR"
 
-  # Добавляем PNPM_HOME в PATH текущей сессии
-  if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
-    export PATH="$PNPM_HOME:$PATH"
-  fi
-
-  info "Делаем команду 'matryoshka' глобальной..."
-  pnpm link --global
-  success "Команда 'matryoshka' доступна глобально"
-
-  # Проверяем что команда найдена
-  if ! command -v matryoshka &>/dev/null; then
-    warn "Команда 'matryoshka' не найдена в PATH текущей сессии."
-    warn "Добавь в ~/.bashrc или ~/.zshrc:"
-    echo ""
-    echo "    export PNPM_HOME=\"$PNPM_HOME\""
-    echo "    export PATH=\"\$PNPM_HOME:\$PATH\""
-    echo ""
-    warn "Затем выполни: source ~/.bashrc (или ~/.zshrc)"
+  # Проверяем что команда появилась
+  if command -v matryoshka &>/dev/null; then
+    success "Команда 'matryoshka' установлена: $(command -v matryoshka)"
+  else
+    # PATH может не обновиться в текущей сессии — ищем сами
+    NPM_BIN="$(npm prefix -g)/bin"
+    if [ -f "$NPM_BIN/matryoshka" ]; then
+      success "Установлено в $NPM_BIN/matryoshka"
+      warn "Добавь в ~/.bashrc или ~/.zshrc:"
+      echo ""
+      echo "    export PATH=\"$NPM_BIN:\$PATH\""
+      echo ""
+      export PATH="$NPM_BIN:$PATH"
+    else
+      warn "Команда 'matryoshka' не найдена. Проверь PATH."
+      warn "npm global bin: $NPM_BIN"
+    fi
   fi
 }
 
@@ -218,6 +212,12 @@ link_binary() {
 run_onboard() {
   if [ "$NO_ONBOARD" = true ]; then
     info "Онбординг пропущен (--no-onboard)"
+    return
+  fi
+
+  # Нужен TTY для онбординга
+  if [ ! -t 0 ] && [ "$NO_PROMPT" = false ]; then
+    warn "Нет TTY — онбординг пропущен. Запусти вручную: matryoshka onboard --install-daemon"
     return
   fi
 
@@ -229,20 +229,20 @@ run_onboard() {
 # ─── Итог ───────────────────────────────────────────────────
 print_success() {
   echo ""
-  echo -e "${GREEN}${BOLD}╔══════════════════════════════════════════════════╗${NC}"
-  echo -e "${GREEN}${BOLD}║   🪆 MatryoshkaClaw успешно установлен!         ║${NC}"
-  echo -e "${GREEN}${BOLD}╚══════════════════════════════════════════════════╝${NC}"
+  echo -e "${GREEN}${BOLD}╔══════════════════════════════════════════════════════╗${NC}"
+  echo -e "${GREEN}${BOLD}║   🪆 MatryoshkaClaw успешно установлен!              ║${NC}"
+  echo -e "${GREEN}${BOLD}╚══════════════════════════════════════════════════════╝${NC}"
   echo ""
   echo -e "  ${BOLD}Полезные команды:${NC}"
-  echo -e "  ${CYAN}matryoshka gateway start${NC}   — запустить агента"
-  echo -e "  ${CYAN}matryoshka status${NC}          — статус системы"
-  echo -e "  ${CYAN}matryoshka doctor${NC}          — диагностика"
-  echo -e "  ${CYAN}matryoshka dashboard${NC}       — открыть веб-интерфейс"
+  echo -e "  ${CYAN}matryoshka onboard --install-daemon${NC}   — первый запуск"
+  echo -e "  ${CYAN}matryoshka gateway start${NC}              — запустить агента"
+  echo -e "  ${CYAN}matryoshka status${NC}                     — статус системы"
+  echo -e "  ${CYAN}matryoshka doctor${NC}                     — диагностика"
   echo ""
-  echo -e "  ${BOLD}Документация:${NC} https://github.com/NIK-TIGER-BILL/MatryoshkaClaw"
-  echo -e "  ${BOLD}Max интеграция:${NC} создай бота на https://max.ru/MasterBot"
+  echo -e "  ${BOLD}Max интеграция:${NC} https://max.ru/MasterBot"
+  echo -e "  ${BOLD}GitHub:${NC} https://github.com/NIK-TIGER-BILL/MatryoshkaClaw"
   echo ""
-  echo -e "  ${YELLOW}* Сделано с 🪆 и изрядной долей иронии в России${NC}"
+  echo -e "  ${YELLOW}Сделано с 🪆 и изрядной долей иронии в России${NC}"
   echo ""
 }
 
@@ -254,9 +254,8 @@ main() {
   check_node
   check_pnpm
   clone_or_update
-  cd "$INSTALL_DIR"
   build
-  link_binary
+  install_globally
   run_onboard
   print_success
 }

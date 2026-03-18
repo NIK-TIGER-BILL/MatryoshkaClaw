@@ -1,19 +1,20 @@
 {
-  "name": "openclaw",
+  "name": "matryoshkaclaw",
   "version": "2026.3.9",
-  "description": "Multi-channel AI gateway with extensible messaging integrations",
+  "description": "🪆 Российская платформа автономных AI-агентов. Импортозамещение ChatGPT одобрено Министерством Цифрового Развития*",
   "keywords": [],
-  "homepage": "https://github.com/openclaw/openclaw#readme",
+  "homepage": "https://github.com/NIK-TIGER-BILL/MatryoshkaClaw",
   "bugs": {
-    "url": "https://github.com/openclaw/openclaw/issues"
+    "url": "https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/issues"
   },
   "license": "MIT",
   "author": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openclaw/openclaw.git"
+    "url": "git+https://github.com/NIK-TIGER-BILL/MatryoshkaClaw.git"
   },
   "bin": {
+    "matryoshka": "matryoshka.mjs",
     "openclaw": "openclaw.mjs"
   },
   "directories": {
@@ -24,13 +25,15 @@
     "CHANGELOG.md",
     "LICENSE",
     "openclaw.mjs",
+    "matryoshka.mjs",
     "README-header.png",
     "README.md",
     "assets/",
     "dist/",
     "docs/",
     "extensions/",
-    "skills/"
+    "skills/",
+    "install.sh"
   ],
   "type": "module",
   "main": "dist/index.js",
