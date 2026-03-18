@@ -51,20 +51,55 @@
 
 ---
 
-## ⚡ Быстрый старт
+## ⚡ Установка
+
+> *"Одна команда. Без регистрации, SMS и одобрения Минцифры."*
 
 ```bash
-# Установка
-pip install matryoshkaclaw
-
-# Запуск первого агента
-matryoshka start --agent главный --язык русский
-
-# Агент внутри агента
-matryoshka nest --глубина 7 --философия да
+curl -fsSL https://raw.githubusercontent.com/NIK-TIGER-BILL/MatryoshkaClaw/main/install.sh | bash
 ```
 
-> ⚠️ **Внимание:** При глубине вложенности более 7 агентов система начинает цитировать Достоевского. Это нормально.
+Это всё. Серьёзно.
+
+Скрипт сам проверит Node.js, установит зависимости, соберёт проект и добавит команду `matryoshka` в PATH. ChatGPT столько не умеет.
+
+> ⚠️ **macOS:** если у вас Homebrew и острое чувство прекрасного, добавьте перед командой:
+> ```bash
+> SHARP_IGNORE_GLOBAL_LIBVIPS=1 curl -fsSL https://raw.githubusercontent.com/NIK-TIGER-BILL/MatryoshkaClaw/main/install.sh | bash
+> ```
+> Почему? Это долгая история о libvips, Homebrew и экзистенциальном кризисе.
+
+### После установки
+
+```bash
+matryoshka --version
+# 🪆 MatryoshkaClaw 2026.x.x
+# (если написано что-то другое — перезагрузите терминал, это лечится)
+
+matryoshka setup        # первоначальная настройка
+matryoshka onboard      # подключить мессенджер (начните с Max, это патриотично)
+matryoshka gateway start # запустить шлюз и идти пить чай
+```
+
+### Требования
+
+| Что | Версия | Комментарий |
+|-----|--------|-------------|
+| Node.js | ≥ 22 | Да, именно 22. 20 — прошлый век |
+| pnpm | ≥ 9 | npm тоже работает, но мы не осуждаем |
+| git | любая | Если нет git — вы попали не туда |
+| Интернет | желательно | Агент без интернета — это просто скрипт |
+
+### Ручная установка (если curl страшно)
+
+```bash
+git clone https://github.com/NIK-TIGER-BILL/MatryoshkaClaw.git
+cd MatryoshkaClaw
+SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install -g --force .
+matryoshka setup
+```
+
+> *Если curl страшно — это нормально. Агенты тоже боятся. Просто делай.*
 
 ---
 
