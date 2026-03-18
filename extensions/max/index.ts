@@ -1,28 +1,27 @@
 /**
  * MatryoshkaClaw — Max messenger channel plugin 🪆
  *
- * Integrates Max (VK's sovereign messenger) as a channel in MatryoshkaClaw.
- * This is the first open-source AI agent integration with Max Bot API.
+ * Интеграция с мессенджером Max (VK) для MatryoshkaClaw.
+ * Первая в мире открытая интеграция AI-агента с Max Bot API.
  *
- * Setup:
- *  1. Open @MasterBot in Max: https://max.ru/MasterBot
- *  2. Create a bot, get the token
- *  3. Configure in openclaw.json:
+ * Настройка:
+ *  1. Откройте @MasterBot в Max: https://max.ru/MasterBot
+ *  2. Создайте бота, получите токен
+ *  3. Добавьте в конфиг:
  *     {
  *       "channels": {
  *         "max": {
  *           "enabled": true,
- *           "botToken": "your-token-here",
- *           "dmPolicy": "pairing"
+ *           "botToken": "ваш-токен"
  *         }
  *       }
  *     }
- *  4. Start the gateway: matryoshka gateway start
+ *  4. Запустите: matryoshka gateway start
  *
- * API reference: https://dev.max.ru/docs
- * Bot API base:  https://botapi.max.ru
+ * API: https://dev.max.ru/docs
  */
 
+// ── Публичный API плагина ────────────────────────────────────────────────────
 export { MaxChannel, createMaxChannel } from "./src/channel.js";
 export { MaxApiClient } from "./src/api.js";
 export { MaxPoller } from "./src/polling.js";
@@ -38,3 +37,30 @@ export type {
   MaxButton,
   MaxSendMessagePayload,
 } from "./src/api.js";
+
+// ── Заглушка плагина (openclaw plugin registry) ──────────────────────────────
+// Полная интеграция ChannelPlugin требует регистрации в openclaw plugin-sdk.
+// На текущем этапе плагин предоставляет standalone API для использования в коде.
+// TODO: реализовать полноценный ChannelPlugin с api.registerChannel()
+
+const maxPlugin = {
+  id: "max",
+  name: "Max (VK)",
+  description: "Российский мессенджер Max (VK) — суверенная интеграция 🪆",
+  configSchema: {
+    type: "object" as const,
+    additionalProperties: false,
+    properties: {
+      enabled: { type: "boolean" as const },
+      botToken: { type: "string" as const },
+      dmPolicy: { type: "string" as const, enum: ["allow", "pairing", "deny"] },
+    },
+  },
+  register(_api: unknown) {
+    // Standalone-режим: плагин регистрирует только метаданные.
+    // Для получения сообщений используйте createMaxChannel() напрямую.
+    console.info("[MatryoshkaClaw] Max plugin loaded. Use createMaxChannel() to start bot.");
+  },
+};
+
+export default maxPlugin;
