@@ -25,6 +25,7 @@ import {
   buildBytePlusProvider,
   buildDoubaoCodingProvider,
   buildDoubaoProvider,
+  buildGigaChatProvider,
   buildKimiCodingProvider,
   buildKilocodeProvider,
   buildMinimaxPortalProvider,
@@ -39,6 +40,7 @@ import {
   buildSyntheticProvider,
   buildTogetherProvider,
   buildXiaomiProvider,
+  GIGACHAT_DEFAULT_BASE_URL,
   QIANFAN_BASE_URL,
   QIANFAN_DEFAULT_MODEL_ID,
   XIAOMI_DEFAULT_MODEL_ID,
@@ -527,6 +529,12 @@ const SIMPLE_IMPLICIT_PROVIDER_LOADERS: ImplicitProviderLoader[] = [
     ...(await buildKilocodeProviderWithDiscovery()),
     apiKey,
   })),
+  async (ctx) => {
+    const { apiKey } = ctx.resolveProviderApiKey("gigachat");
+    if (!apiKey) return undefined;
+    const baseUrl = ctx.env.GIGACHAT_BASE_URL?.trim() || GIGACHAT_DEFAULT_BASE_URL;
+    return { gigachat: { ...buildGigaChatProvider(baseUrl), apiKey } };
+  },
 ];
 
 const PROFILE_IMPLICIT_PROVIDER_LOADERS: ImplicitProviderLoader[] = [
