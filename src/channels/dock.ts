@@ -236,6 +236,24 @@ function resolveNamedChannelDefaultTo(params: {
 // - add a new entry to `DOCKS`
 // - keep it cheap; push heavy logic into `src/channels/plugins/<id>.ts` or channel modules
 const DOCKS: Record<ChatChannelId, ChannelDock> = {
+  max: {
+    id: "max",
+    capabilities: {
+      chatTypes: ["direct", "group", "channel"],
+      reactions: false,
+      media: false,
+    },
+    outbound: DEFAULT_OUTBOUND_TEXT_CHUNK_LIMIT_4000,
+    config: {
+      resolveAllowFrom: () => [],
+      formatAllowFrom: ({ allowFrom }) => allowFrom,
+      resolveDefaultTo: () => undefined,
+    },
+    groups: {
+      resolveRequireMention: () => false,
+      resolveToolPolicy: () => "all",
+    },
+  },
   telegram: {
     id: "telegram",
     capabilities: {
