@@ -1,48 +1,78 @@
 /**
  * MatryoshkaClaw — Max messenger onboarding adapter 🪆
  *
- * Проводит пользователя через настройку бота в мессенджере Max (VK).
+ * Настройка бота в мессенджере Max (VK).
  * Создай бота: https://max.ru/MasterBot
  */
 
 import type { OpenClawConfig } from "../../../config/config.js";
-import { formatCliCommand } from "../../../cli/command-format.js";
-import type { WizardPrompter } from "../../../wizard/prompts.js";
+import type { DmPolicy } from "../../../config/types.js";
 import type {
   ChannelOnboardingAdapter,
+  ChannelOnboardingConfigureContext,
+  ChannelOnboardingDmPolicy,
+  ChannelOnboardingResult,
   ChannelOnboardingStatus,
   ChannelOnboardingStatusContext,
 } from "../onboarding-types.js";
-import {
-  patchChannelConfigForAccount,
-  setChannelDmPolicyWithAllowFrom,
-  setOnboardingChannelEnabled,
-} from "./helpers.js";
 
 const channel = "max" as const;
-const DEFAULT_ACCOUNT_ID = "default";
 const MAX_API_BASE = "https://botapi.max.ru";
 
-// ── Утилиты ──────────────────────────────────────────────────────────────────
+// ── Config helpers ────────────────────────────────────────────────────────────
 
-function resolveMaxToken(cfg: OpenClawConfig): string | undefined {
+function getMaxToken(cfg: OpenClawConfig): string | undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (cfg as any)?.channels?.max?.botToken?.trim() || undefined;
 }
 
 function setMaxToken(cfg: OpenClawConfig, token: string): OpenClawConfig {
-  return patchChannelConfigForAccount({
-    cfg,
-    channel,
-    accountId: DEFAULT_ACCOUNT_ID,
-    patch: { botToken: token },
-  });
+  return {
+    ...cfg,
+    channels: {
+      ...cfg.channels,
+      max: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(cfg as any)?.channels?.max,
+        botToken: token,
+        enabled: true,
+      },
+    },
+  } as OpenClawConfig;
 }
 
-async function probeMaxToken(token: string): Promise<{ ok: boolean; name?: string; error?: string }> {
+function getMaxDmPolicy(cfg: OpenClawConfig): DmPolicy {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return ((cfg as any)?.channels?.max?.dmPolicy as DmPolicy) ?? "pairing";
+}
+
+function setMaxDmPolicy(cfg: OpenClawConfig, policy: DmPolicy): OpenClawConfig {
+  return {
+    ...cfg,
+    channels: {
+      ...cfg.channels,
+      max: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(cfg as any)?.channels?.max,
+        dmPolicy: policy,
+      },
+    },
+  } as OpenClawConfig;
+}
+
+// ── Token probe ───────────────────────────────────────────────────────────────
+
+async function probeMaxToken(
+  token: string,
+): Promise<{ ok: true; name: string } | { ok: false; error: string }> {
   try {
-    const res = await fetch(`${MAX_API_BASE}/me?access_token=${token}`);
-    const data = (await res.json()) as { user_id?: number; name?: string; code?: string; message?: string };
+    const res = await fetch(`${MAX_API_BASE}/me?access_token=${encodeURIComponent(token)}`);
+    const data = (await res.json()) as {
+      user_id?: number;
+      name?: string;
+      code?: string;
+      message?: string;
+    };
     if (res.ok && data.user_id) {
       return { ok: true, name: data.name ?? `Bot #${data.user_id}` };
     }
@@ -52,114 +82,105 @@ async function probeMaxToken(token: string): Promise<{ ok: boolean; name?: strin
   }
 }
 
-// ── Инструкции ───────────────────────────────────────────────────────────────
+// ── Onboarding configure ──────────────────────────────────────────────────────
 
-async function noteMaxTokenHelp(prompter: WizardPrompter): Promise<void> {
+async function configure(ctx: ChannelOnboardingConfigureContext): Promise<ChannelOnboardingResult> {
+  const { prompter } = ctx;
+  let cfg = ctx.cfg;
+
+  const existingToken = getMaxToken(cfg);
+
+  // Инструкции
   await prompter.note(
     [
       "Как получить токен бота Max:",
       "",
       "1) Откройте мессенджер Max на телефоне или в браузере",
-      "2) Найдите бота @MasterBot или откройте: https://max.ru/MasterBot",
+      "2) Найдите @MasterBot или откройте: https://max.ru/MasterBot",
       "3) Нажмите «Создать бота» и следуйте инструкциям",
-      "4) Скопируйте токен — он выглядит как длинная строка букв и цифр",
+      "4) Скопируйте токен — длинная строка букв и цифр",
       "",
-      "Docs: https://dev.max.ru/docs",
+      "Документация: https://dev.max.ru/docs",
     ].join("\n"),
-    "Токен бота Max",
+    "Токен бота Max 🪆",
   );
-}
 
-// ── Onboarding adapter ───────────────────────────────────────────────────────
-
-async function runMaxOnboarding(params: {
-  cfg: OpenClawConfig;
-  prompter: WizardPrompter;
-  accountId?: string;
-}): Promise<{ cfg: OpenClawConfig; accountId?: string }> {
-  const { prompter } = params;
-  let cfg = params.cfg;
-
-  const existingToken = resolveMaxToken(cfg);
-
-  await noteMaxTokenHelp(prompter);
-
-  // Ввод токена
+  // Запрос токена
   const tokenInput = await prompter.text({
     message: existingToken
       ? "Токен бота Max (оставьте пустым, чтобы сохранить текущий)"
       : "Вставьте токен бота Max",
-    placeholder: "ваш-токен-здесь",
+    placeholder: "ваш-токен-от-MasterBot",
   });
 
   const token = (tokenInput ?? "").trim() || existingToken;
 
   if (!token) {
-    await prompter.note("Токен не указан. Пропускаем настройку Max.", "Max");
+    await prompter.note("Токен не указан. Настройка Max пропущена.", "Max");
     return { cfg };
   }
 
-  // Проверяем токен
-  await prompter.note("Проверяем токен...", "Max");
+  // Проверка токена
   const probe = await probeMaxToken(token);
 
   if (probe.ok) {
     await prompter.note(
-      `✅ Подключено! Бот: ${probe.name}\n\nMax готов к работе.`,
-      "Max — успешно",
+      `✅ Подключено успешно!\nБот: ${probe.name}\n\nMax готов к работе. Запустите: matryoshka gateway start`,
+      "Max — готово",
     );
   } else {
     await prompter.note(
-      `⚠️ Не удалось проверить токен: ${probe.error}\n\nТокен сохранён — проверьте его и перезапустите шлюз.`,
+      `⚠️ Не удалось проверить токен: ${probe.error}\n\nТокен сохранён. Проверьте его и перезапустите шлюз.`,
       "Max — предупреждение",
     );
   }
 
   cfg = setMaxToken(cfg, token);
-  cfg = setOnboardingChannelEnabled(cfg, channel, DEFAULT_ACCOUNT_ID, true);
-
-  // Политика DM
-  cfg = await setChannelDmPolicyWithAllowFrom({
-    cfg,
-    prompter,
-    channel,
-    accountId: DEFAULT_ACCOUNT_ID,
-    existingAllowFrom: [],
-    skipDmPolicyPrompt: false,
-  });
-
-  return { cfg, accountId: DEFAULT_ACCOUNT_ID };
+  return { cfg, accountId: "default" };
 }
 
-async function getMaxOnboardingStatus(
-  ctx: ChannelOnboardingStatusContext,
-): Promise<ChannelOnboardingStatus> {
-  const token = resolveMaxToken(ctx.cfg);
-  const configured = Boolean(token);
+// ── Status ────────────────────────────────────────────────────────────────────
 
-  const statusLines: string[] = configured
-    ? ["✅ Токен настроен", "Запустите шлюз: matryoshka gateway start"]
-    : [
-        "Токен не настроен",
-        `Создайте бота: https://max.ru/MasterBot`,
-        `Затем: ${formatCliCommand("matryoshka onboard")}`,
-      ];
+async function getStatus(ctx: ChannelOnboardingStatusContext): Promise<ChannelOnboardingStatus> {
+  const token = getMaxToken(ctx.cfg);
+  const configured = Boolean(token);
 
   return {
     channel,
     configured,
-    statusLines,
+    statusLines: configured
+      ? ["✅ Токен настроен", "Запустите: matryoshka gateway start"]
+      : ["Токен не настроен", "Создайте бота: https://max.ru/MasterBot"],
     selectionHint: configured ? "настроен" : undefined,
     quickstartScore: configured ? 90 : 0,
   };
 }
 
+// ── DM policy ─────────────────────────────────────────────────────────────────
+
+const dmPolicy: ChannelOnboardingDmPolicy = {
+  label: "Max DM политика",
+  channel,
+  policyKey: "channels.max.dmPolicy",
+  allowFromKey: "channels.max.allowFrom",
+  getCurrent: getMaxDmPolicy,
+  setPolicy: setMaxDmPolicy,
+};
+
+// ── Adapter export ────────────────────────────────────────────────────────────
+
 export const maxOnboardingAdapter: ChannelOnboardingAdapter = {
   channel,
-  dmPolicy: {
-    default: "pairing",
-    options: ["allow", "pairing", "deny"],
-  },
-  run: runMaxOnboarding,
-  status: getMaxOnboardingStatus,
+  getStatus,
+  configure,
+  dmPolicy,
+  disable: (cfg: OpenClawConfig): OpenClawConfig =>
+    ({
+      ...cfg,
+      channels: {
+        ...cfg.channels,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        max: { ...(cfg as any)?.channels?.max, enabled: false },
+      },
+    }) as OpenClawConfig,
 };
