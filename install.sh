@@ -168,8 +168,9 @@ clone_or_update() {
 # ─── Сборка ─────────────────────────────────────────────────
 build() {
   info "Устанавливаем зависимости..."
-  pnpm install --frozen-lockfile --prefer-offline 2>/dev/null \
-    || pnpm install
+  # CI=true разрешает pnpm удалять node_modules без TTY
+  CI=true pnpm install --frozen-lockfile --prefer-offline 2>/dev/null \
+    || CI=true pnpm install
 
   info "Собираем UI..."
   pnpm ui:build
