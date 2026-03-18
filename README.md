@@ -1,5 +1,7 @@
 <div align="center">
 
+[🇷🇺 Русский](README.md) | [🇬🇧 English](README.en.md)
+
 # 🪆 MatryoshkaClaw
 
 ### *Российская платформа автономных AI-агентов*
