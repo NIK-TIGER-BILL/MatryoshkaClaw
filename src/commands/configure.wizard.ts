@@ -123,13 +123,13 @@ async function promptConfigureSection(
 ): Promise<ConfigureSectionChoice> {
   return guardCancel(
     await select<ConfigureSectionChoice>({
-      message: "Select sections to configure",
+      message: "Выберите разделы для настройки",
       options: [
         ...CONFIGURE_SECTION_OPTIONS,
         {
           value: "__continue",
-          label: "Continue",
-          hint: hasSelection ? "Done" : "Skip for now",
+          label: "Продолжить",
+          hint: hasSelection ? "Готово" : "Пропустить",
         },
       ],
       initialValue: CONFIGURE_SECTION_OPTIONS[0]?.value,
@@ -145,13 +145,13 @@ async function promptChannelMode(runtime: RuntimeEnv): Promise<ChannelsWizardMod
       options: [
         {
           value: "configure",
-          label: "Configure/link",
-          hint: "Add/update channels; disable unselected accounts",
+          label: "Настроить/подключить",
+          hint: "Добавить/обновить каналы; отключить неактивные",
         },
         {
           value: "remove",
-          label: "Remove channel config",
-          hint: "Delete channel tokens/settings from openclaw.json",
+          label: "Удалить настройки канала",
+          hint: "Удалить токены/настройки из matryoshka.json",
         },
       ],
       initialValue: "configure",
@@ -197,7 +197,7 @@ async function promptWebToolsConfig(
   note(
     [
       "Web search lets your agent look things up online using the `web_search` tool.",
-      "Choose a provider and paste your API key.",
+      "Выберите провайдера и вставьте API ключ.",
       "Docs: https://docs.openclaw.ai/tools/web",
     ].join("\n"),
     "Web search",
@@ -205,7 +205,7 @@ async function promptWebToolsConfig(
 
   const enableSearch = guardCancel(
     await confirm({
-      message: "Enable web_search?",
+      message: "Включить веб-поиск?",
       initialValue:
         existingSearch?.enabled ?? SEARCH_PROVIDER_OPTIONS.some((e) => hasKeyForProvider(e.value)),
     }),
@@ -229,7 +229,7 @@ async function promptWebToolsConfig(
 
     const providerChoice = guardCancel(
       await select({
-        message: "Choose web search provider",
+        message: "Выберите провайдера веб-поиска",
         options: providerOptions,
         initialValue: existingProvider,
       }),
@@ -253,7 +253,7 @@ async function promptWebToolsConfig(
           : envAvailable
             ? `${entry.label} API key (paste it here; leave blank to use ${envVarNames})`
             : `${entry.label} API key`,
-        placeholder: keyConfigured ? "Leave blank to keep current" : entry.placeholder,
+        placeholder: keyConfigured ? "Оставьте пустым чтобы сохранить текущий" : entry.placeholder,
       }),
       runtime,
     );
@@ -279,7 +279,7 @@ async function promptWebToolsConfig(
 
   const enableFetch = guardCancel(
     await confirm({
-      message: "Enable web_fetch (keyless HTTP fetch)?",
+      message: "Включить web_fetch (HTTP-запросы без ключа)?",
       initialValue: existingFetch?.enabled ?? true,
     }),
     runtime,
@@ -374,18 +374,18 @@ export async function runConfigureWizard(
 
     const mode = guardCancel(
       await select({
-        message: "Where will the Gateway run?",
+        message: "Где будет запущен шлюз?",
         options: [
           {
             value: "local",
-            label: "Local (this machine)",
+            label: "Локально (этот компьютер)",
             hint: localProbe.ok
               ? `Gateway reachable (${localUrl})`
               : `No gateway detected (${localUrl})`,
           },
           {
             value: "remote",
-            label: "Remote (info-only)",
+            label: "Удалённо (только просмотр)",
             hint: !remoteUrl
               ? "No remote URL configured yet"
               : remoteProbe?.ok
@@ -439,7 +439,7 @@ export async function runConfigureWizard(
     const configureWorkspace = async () => {
       const workspaceInput = guardCancel(
         await text({
-          message: "Workspace directory",
+          message: "Директория воркспейса",
           initialValue: workspaceDir,
         }),
         runtime,
@@ -502,7 +502,7 @@ export async function runConfigureWizard(
     const promptDaemonPort = async () => {
       const portInput = guardCancel(
         await text({
-          message: "Gateway port for service install",
+          message: "Порт шлюза для установки сервиса",
           initialValue: String(gatewayPort),
           validate: (value) => (Number.isFinite(Number(value)) ? undefined : "Invalid port"),
         }),

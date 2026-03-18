@@ -56,19 +56,19 @@ async function promptConfiguredAction(params: {
   const { prompter, label, supportsDisable, supportsDelete } = params;
   const updateOption: WizardSelectOption<ConfiguredChannelAction> = {
     value: "update",
-    label: "Modify settings",
+    label: "Изменить настройки",
   };
   const disableOption: WizardSelectOption<ConfiguredChannelAction> = {
     value: "disable",
-    label: "Disable (keeps config)",
+    label: "Отключить (конфиг сохраняется)",
   };
   const deleteOption: WizardSelectOption<ConfiguredChannelAction> = {
     value: "delete",
-    label: "Delete config",
+    label: "Удалить конфиг",
   };
   const skipOption: WizardSelectOption<ConfiguredChannelAction> = {
     value: "skip",
-    label: "Skip (leave as-is)",
+    label: "Пропустить (оставить как есть)",
   };
   const options: Array<WizardSelectOption<ConfiguredChannelAction>> = [
     updateOption,
@@ -237,7 +237,7 @@ async function maybeConfigureDmPolicies(params: {
   }
 
   const wants = await prompter.confirm({
-    message: "Configure DM access policies now? (default: pairing)",
+    message: "Настроить политику доступа в личные сообщения? (по умолчанию: pairing)",
     initialValue: false,
   });
   if (!wants) {
@@ -262,10 +262,10 @@ async function maybeConfigureDmPolicies(params: {
     return (await prompter.select({
       message: `${policy.label} DM policy`,
       options: [
-        { value: "pairing", label: "Pairing (recommended)" },
-        { value: "allowlist", label: "Allowlist (specific users only)" },
-        { value: "open", label: "Open (public inbound DMs)" },
-        { value: "disabled", label: "Disabled (ignore DMs)" },
+        { value: "pairing", label: "Pairing (рекомендуется)" },
+        { value: "allowlist", label: "Allowlist (только выбранные пользователи)" },
+        { value: "open", label: "Открытый (публичные входящие сообщения)" },
+        { value: "disabled", label: "Отключено (игнорировать сообщения)" },
       ],
     })) as DmPolicy;
   };
@@ -314,7 +314,7 @@ export async function setupChannels(
   const shouldConfigure = options?.skipConfirm
     ? true
     : await prompter.confirm({
-        message: "Configure chat channels now?",
+        message: "Настроить каналы чата сейчас?",
         initialValue: true,
       });
   if (!shouldConfigure) {
@@ -680,12 +680,12 @@ export async function setupChannels(
   if (options?.quickstartDefaults) {
     const { entries } = getChannelEntries();
     const choice = (await prompter.select({
-      message: "Select channel (QuickStart)",
+      message: "Выберите канал (быстрый старт)",
       options: [
         ...buildSelectionOptions(entries),
         {
           value: "__skip__",
-          label: "Skip for now",
+          label: "Пропустить",
           hint: `You can add channels later via \`${formatCliCommand("openclaw channels add")}\``,
         },
       ],
@@ -700,13 +700,13 @@ export async function setupChannels(
     while (true) {
       const { entries } = getChannelEntries();
       const choice = (await prompter.select({
-        message: "Select a channel",
+        message: "Выберите канал",
         options: [
           ...buildSelectionOptions(entries),
           {
             value: doneValue,
-            label: "Finished",
-            hint: selection.length > 0 ? "Done" : "Skip for now",
+            label: "Готово",
+            hint: selection.length > 0 ? "Done" : "Пропустить",
           },
         ],
         initialValue,
@@ -729,7 +729,7 @@ export async function setupChannels(
     .map((channel) => selectionNotes.get(channel))
     .filter((line): line is string => Boolean(line));
   if (selectedLines.length > 0) {
-    await prompter.note(selectedLines.join("\n"), "Selected channels");
+    await prompter.note(selectedLines.join("\n"), "Выбранные каналы");
   }
 
   if (!options?.skipDmPolicyPrompt) {
