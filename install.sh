@@ -182,9 +182,35 @@ build() {
 
 # ─── Линковка ───────────────────────────────────────────────
 link_binary() {
+  info "Настраиваем pnpm global bin dir..."
+
+  # Запускаем pnpm setup если PNPM_HOME не задан
+  if [ -z "${PNPM_HOME:-}" ]; then
+    pnpm setup --force 2>/dev/null || true
+    # Подхватываем PNPM_HOME из shell rc файлов
+    PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
+    export PNPM_HOME
+  fi
+
+  # Добавляем PNPM_HOME в PATH текущей сессии
+  if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
+    export PATH="$PNPM_HOME:$PATH"
+  fi
+
   info "Делаем команду 'matryoshka' глобальной..."
   pnpm link --global
   success "Команда 'matryoshka' доступна глобально"
+
+  # Проверяем что команда найдена
+  if ! command -v matryoshka &>/dev/null; then
+    warn "Команда 'matryoshka' не найдена в PATH текущей сессии."
+    warn "Добавь в ~/.bashrc или ~/.zshrc:"
+    echo ""
+    echo "    export PNPM_HOME=\"$PNPM_HOME\""
+    echo "    export PATH=\"\$PNPM_HOME:\$PATH\""
+    echo ""
+    warn "Затем выполни: source ~/.bashrc (или ~/.zshrc)"
+  fi
 }
 
 # ─── Онбординг ──────────────────────────────────────────────
