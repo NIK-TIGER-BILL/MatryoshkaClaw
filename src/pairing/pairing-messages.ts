@@ -8,7 +8,7 @@ export function buildPairingReply(params: {
 }): string {
   const { channel, idLine, code } = params;
   return [
-    ""MatryoshkaClaw: access not configured.",
+    "MatryoshkaClaw: access not configured.",
     "",
     idLine,
     "",
