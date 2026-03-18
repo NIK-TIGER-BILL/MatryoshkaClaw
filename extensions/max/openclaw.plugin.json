@@ -1,0 +1,29 @@
+{
+  "id": "max",
+  "channels": ["max"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "botToken": {
+        "type": "string",
+        "description": "Max bot token from @MasterBot (max.ru/MasterBot)"
+      },
+      "dmPolicy": {
+        "type": "string",
+        "enum": ["allow", "pairing", "deny"],
+        "default": "pairing",
+        "description": "DM policy: allow all, require pairing, or deny"
+      },
+      "webhookPort": {
+        "type": "number",
+        "description": "Optional port for webhook mode instead of long polling"
+      },
+      "webhookPath": {
+        "type": "string",
+        "default": "/max-webhook",
+        "description": "URL path for incoming webhook"
+      }
+    }
+  }
+}

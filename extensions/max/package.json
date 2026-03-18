@@ -1,0 +1,12 @@
+{
+  "name": "@matryoshkaclaw/max",
+  "version": "2026.3.18",
+  "private": true,
+  "description": "MatryoshkaClaw Max messenger channel plugin — суверенная интеграция 🪆",
+  "type": "module",
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}
