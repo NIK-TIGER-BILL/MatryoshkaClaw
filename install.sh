@@ -185,8 +185,17 @@ build() {
 install_globally() {
   info "Устанавливаем matryoshka глобально (npm install -g)..."
 
-  # Фикс для macOS с системным libvips
-  SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install -g "$INSTALL_DIR"
+  # Если openclaw уже установлен (напр. через Homebrew) — удаляем старый бинарник
+  NPM_GLOBAL_BIN="$(npm prefix -g)/bin"
+  for old_bin in openclaw; do
+    if [ -f "$NPM_GLOBAL_BIN/$old_bin" ]; then
+      info "Удаляем существующий $NPM_GLOBAL_BIN/$old_bin..."
+      rm -f "$NPM_GLOBAL_BIN/$old_bin"
+    fi
+  done
+
+  # Фикс для macOS с системным libvips; --force перезаписывает конфликтующие файлы
+  SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install -g --force "$INSTALL_DIR"
 
   # Проверяем что команда появилась
   if command -v matryoshka &>/dev/null; then
