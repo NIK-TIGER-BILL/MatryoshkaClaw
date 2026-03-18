@@ -246,12 +246,12 @@ const DOCKS: Record<ChatChannelId, ChannelDock> = {
     outbound: DEFAULT_OUTBOUND_TEXT_CHUNK_LIMIT_4000,
     config: {
       resolveAllowFrom: () => [],
-      formatAllowFrom: ({ allowFrom }) => allowFrom,
+      formatAllowFrom: ({ allowFrom }) => allowFrom.map(String),
       resolveDefaultTo: () => undefined,
     },
     groups: {
       resolveRequireMention: () => false,
-      resolveToolPolicy: () => "all",
+      resolveToolPolicy: () => undefined,
     },
   },
   telegram: {
