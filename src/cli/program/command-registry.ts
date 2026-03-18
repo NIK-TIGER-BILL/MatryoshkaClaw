@@ -42,7 +42,7 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "setup",
-        description: "Initialize local config and agent workspace",
+        description: "Инициализировать локальный конфиг и рабочее пространство агента",
         hasSubcommands: false,
       },
     ],
@@ -55,7 +55,7 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "onboard",
-        description: "Interactive onboarding wizard for gateway, workspace, and skills",
+        description: "Интерактивный мастер настройки для шлюза, рабочего пространства и навыков",
         hasSubcommands: false,
       },
     ],
@@ -69,7 +69,7 @@ const coreEntries: CoreCliEntry[] = [
       {
         name: "configure",
         description:
-          "Interactive setup wizard for credentials, channels, gateway, and agent defaults",
+          "Интерактивный мастер настройки учётных данных, каналов, шлюза и параметров агента",
         hasSubcommands: false,
       },
     ],
@@ -83,7 +83,7 @@ const coreEntries: CoreCliEntry[] = [
       {
         name: "config",
         description:
-          "Non-interactive config helpers (get/set/unset/file/validate). Default: starts setup wizard.",
+          "Неинтерактивные утилиты конфига (get/set/unset/file/validate). По умолчанию: запускает мастер настройки.",
         hasSubcommands: true,
       },
     ],
@@ -96,7 +96,7 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "backup",
-        description: "Create and verify local backup archives for OpenClaw state",
+        description: "Создать и проверить локальные резервные архивы состояния MatryoshkaClaw",
         hasSubcommands: true,
       },
     ],
@@ -109,22 +109,22 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "doctor",
-        description: "Health checks + quick fixes for the gateway and channels",
+        description: "Проверка состояния и быстрые исправления для шлюза и каналов",
         hasSubcommands: false,
       },
       {
         name: "dashboard",
-        description: "Open the Control UI with your current token",
+        description: "Открыть панель управления с текущим токеном",
         hasSubcommands: false,
       },
       {
         name: "reset",
-        description: "Reset local config/state (keeps the CLI installed)",
+        description: "Сбросить локальный конфиг/состояние (CLI остаётся установленным)",
         hasSubcommands: false,
       },
       {
         name: "uninstall",
-        description: "Uninstall the gateway service + local data (CLI remains)",
+        description: "Удалить сервис шлюза и локальные данные (CLI остаётся)",
         hasSubcommands: false,
       },
     ],
@@ -137,7 +137,7 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "message",
-        description: "Send, read, and manage messages",
+        description: "Отправлять, читать и управлять сообщениями",
         hasSubcommands: true,
       },
     ],
@@ -150,7 +150,7 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "memory",
-        description: "Search and reindex memory files",
+        description: "Поиск и переиндексация файлов памяти",
         hasSubcommands: true,
       },
     ],
@@ -163,12 +163,12 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "agent",
-        description: "Run one agent turn via the Gateway",
+        description: "Запустить один шаг агента через шлюз",
         hasSubcommands: false,
       },
       {
         name: "agents",
-        description: "Manage isolated agents (workspaces, auth, routing)",
+        description: "Управлять изолированными агентами (рабочие пространства, аутентификация, маршрутизация)",
         hasSubcommands: true,
       },
     ],
@@ -183,17 +183,17 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "status",
-        description: "Show channel health and recent session recipients",
+        description: "Показать состояние каналов и последних получателей сессий",
         hasSubcommands: false,
       },
       {
         name: "health",
-        description: "Fetch health from the running gateway",
+        description: "Получить статус здоровья от запущенного шлюза",
         hasSubcommands: false,
       },
       {
         name: "sessions",
-        description: "List stored conversation sessions",
+        description: "Список сохранённых сессий разговоров",
         hasSubcommands: true,
       },
     ],
@@ -206,7 +206,7 @@ const coreEntries: CoreCliEntry[] = [
     commands: [
       {
         name: "browser",
-        description: "Manage OpenClaw's dedicated browser (Chrome/Chromium)",
+        description: "Управлять выделенным браузером MatryoshkaClaw (Chrome/Chromium)",
         hasSubcommands: true,
       },
     ],

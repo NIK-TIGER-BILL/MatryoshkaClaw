@@ -112,7 +112,7 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
   ) {
     const commit = resolveCommitHash({ moduleUrl: import.meta.url });
     console.log(
-      commit ? `OpenClaw ${ctx.programVersion} (${commit})` : `OpenClaw ${ctx.programVersion}`,
+      commit ? `🪆 MatryoshkaClaw ${ctx.programVersion} (${commit})` : `🪆 MatryoshkaClaw ${ctx.programVersion}`,
     );
     process.exit(0);
   }

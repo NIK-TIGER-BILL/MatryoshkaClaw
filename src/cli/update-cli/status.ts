@@ -107,7 +107,7 @@ export async function updateStatusCommand(opts: UpdateStatusOptions): Promise<vo
     },
   ];
 
-  defaultRuntime.log(theme.heading("OpenClaw update status"));
+  defaultRuntime.log(theme.heading("Статус обновления MatryoshkaClaw"));
   defaultRuntime.log("");
   defaultRuntime.log(
     renderTable({

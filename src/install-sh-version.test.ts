@@ -73,7 +73,7 @@ describe("install.sh version resolution", () => {
   it.runIf(process.platform !== "win32")(
     "extracts the semantic version from decorated CLI output",
     () => {
-      const fixture = withFakeCli("OpenClaw 2026.3.9 (abcdef0)");
+      const fixture = withFakeCli("🪆 MatryoshkaClaw 2026.3.9 (abcdef0)");
       tempRoots.push(fixture.root);
 
       expect(resolveVersionFromInstaller(fixture.cliPath)).toBe("2026.3.9");
@@ -83,17 +83,17 @@ describe("install.sh version resolution", () => {
   it.runIf(process.platform !== "win32")(
     "falls back to raw output when no semantic version is present",
     () => {
-      const fixture = withFakeCli("OpenClaw dev's build");
+      const fixture = withFakeCli("🪆 MatryoshkaClaw dev's build");
       tempRoots.push(fixture.root);
 
-      expect(resolveVersionFromInstaller(fixture.cliPath)).toBe("OpenClaw dev's build");
+      expect(resolveVersionFromInstaller(fixture.cliPath)).toBe("🪆 MatryoshkaClaw dev's build");
     },
   );
 
   it.runIf(process.platform !== "win32")(
     "does not source version helpers from cwd when installer runs via stdin",
     () => {
-      const fixture = withFakeCli("OpenClaw 2026.3.9 (abcdef0)");
+      const fixture = withFakeCli("🪆 MatryoshkaClaw 2026.3.9 (abcdef0)");
       tempRoots.push(fixture.root);
 
       const hostileCwd = fs.mkdtempSync(path.join(os.tmpdir(), "openclaw-install-stdin-"));

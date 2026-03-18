@@ -309,7 +309,7 @@ export async function runConfigureWizard(
 ) {
   try {
     printWizardHeader(runtime);
-    intro(opts.command === "update" ? "OpenClaw update wizard" : "OpenClaw configure");
+    intro(opts.command === "update" ? "Мастер обновления MatryoshkaClaw" : "Настройка MatryoshkaClaw");
     const prompter = createClackPrompter();
 
     const snapshot = await readConfigFileSnapshot();

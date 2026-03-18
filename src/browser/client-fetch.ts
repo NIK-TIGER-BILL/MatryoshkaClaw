@@ -135,7 +135,7 @@ export function resolveBrowserRateLimitMessage(url: string): string {
 function resolveBrowserFetchOperatorHint(url: string): string {
   const isLocal = !isAbsoluteHttp(url);
   return isLocal
-    ? `Restart the OpenClaw gateway (OpenClaw.app menubar, or \`${formatCliCommand("openclaw gateway")}\`).`
+    ? `Restart the MatryoshkaClaw gateway (MatryoshkaClaw.app menubar, or \`${formatCliCommand("openclaw gateway")}\`).`
     : "If this is a sandboxed session, ensure the sandbox browser is running.";
 }
 
@@ -181,13 +181,13 @@ function enhanceBrowserFetchError(url: string, err: unknown, timeoutMs: number):
   if (looksLikeTimeout) {
     return new Error(
       appendBrowserToolModelHint(
-        `Can't reach the OpenClaw browser control service (timed out after ${timeoutMs}ms). ${operatorHint}`,
+        `Can't reach the MatryoshkaClaw browser control service (timed out after ${timeoutMs}ms). ${operatorHint}`,
       ),
     );
   }
   return new Error(
     appendBrowserToolModelHint(
-      `Can't reach the OpenClaw browser control service. ${operatorHint} (${msg})`,
+      `Can't reach the MatryoshkaClaw browser control service. ${operatorHint} (${msg})`,
     ),
   );
 }

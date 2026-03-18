@@ -157,7 +157,7 @@ describe("pw-session getPageForTargetId", () => {
     fetchSpy
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ Browser: "OpenClaw/extension-relay" }),
+        json: async () => ({ Browser: "MatryoshkaClaw/extension-relay" }),
       } as Response)
       .mockResolvedValueOnce({
         ok: true,
