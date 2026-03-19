@@ -189,7 +189,13 @@ build() {
   pnpm ui:build
 
   info "Собираем проект..."
-  pnpm build
+  # В Docker/CI используем build:docker (без a2ui bundle) — экономит память.
+  # NODE_OPTIONS увеличивает heap чтобы tsdown не падал с SIGKILL в контейнерах.
+  if [ -f "/.dockerenv" ] || [ -n "${CI:-}" ] || [ -n "${DOCKER_BUILD:-}" ]; then
+    NODE_OPTIONS="--max-old-space-size=3072" pnpm build:docker
+  else
+    NODE_OPTIONS="--max-old-space-size=3072" pnpm build
+  fi
 
   success "Сборка завершена"
 }
