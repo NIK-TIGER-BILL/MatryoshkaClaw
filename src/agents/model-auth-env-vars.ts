@@ -38,6 +38,7 @@ export const PROVIDER_ENV_API_KEY_CANDIDATES: Record<string, string[]> = {
   vllm: ["VLLM_API_KEY"],
   kilocode: ["KILOCODE_API_KEY"],
   gigachat: ["GIGACHAT_CREDENTIALS"],
+  yandexgpt: ["YANDEX_CREDENTIALS"],
 };
 
 export function listKnownProviderEnvApiKeyNames(): string[] {

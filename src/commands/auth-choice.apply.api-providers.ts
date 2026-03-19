@@ -24,6 +24,8 @@ import {
   applyKilocodeProviderConfig,
   applyGigaChatConfig,
   applyGigaChatProviderConfig,
+  applyYandexGptConfig,
+  applyYandexGptProviderConfig,
   applyQianfanConfig,
   applyQianfanProviderConfig,
   applyKimiCodeConfig,
@@ -56,6 +58,7 @@ import {
   KILOCODE_DEFAULT_MODEL_REF,
   LITELLM_DEFAULT_MODEL_REF,
   GIGACHAT_DEFAULT_MODEL_REF,
+  YANDEXGPT_DEFAULT_MODEL_REF,
   QIANFAN_DEFAULT_MODEL_REF,
   KIMI_CODING_MODEL_REF,
   MOONSHOT_DEFAULT_MODEL_REF,
@@ -67,6 +70,7 @@ import {
   XIAOMI_DEFAULT_MODEL_REF,
   setCloudflareAiGatewayConfig,
   setGigaChatCredentials,
+  setYandexGptCredentials,
   setQianfanApiKey,
   setGeminiApiKey,
   setKilocodeApiKey,
@@ -116,6 +120,7 @@ const API_KEY_TOKEN_PROVIDER_AUTH_CHOICE: Record<string, AuthChoice> = {
   kilocode: "kilocode-api-key",
   qianfan: "qianfan-api-key",
   gigachat: "gigachat-api-key",
+  yandexgpt: "yandexgpt-api-key",
 };
 
 const ZAI_AUTH_CHOICE_ENDPOINT: Partial<
@@ -337,6 +342,26 @@ const SIMPLE_API_KEY_PROVIDER_FLOWS: Partial<Record<AuthChoice, SimpleApiKeyProv
       "⚠️ Для работы требуется обмен токена: LiteLLM proxy или прямой OAuth2 через https://ngw.devices.sberbank.ru:9443/api/v2/oauth",
     ].join("\n"),
     noteTitle: "GigaChat (Сбербанк)",
+  },
+  "yandexgpt-api-key": {
+    provider: "yandexgpt",
+    profileId: "yandexgpt:default",
+    expectedProviders: ["yandexgpt"],
+    envLabel: "YANDEX_CREDENTIALS",
+    promptMessage:
+      "Введите YANDEX_CREDENTIALS в формате folder_id:api_key\n(например: b1abc123:AQVNxxx — из https://console.yandex.cloud)",
+    setCredential: setYandexGptCredentials,
+    defaultModel: YANDEXGPT_DEFAULT_MODEL_REF,
+    applyDefaultConfig: applyYandexGptConfig,
+    applyProviderConfig: applyYandexGptProviderConfig,
+    noteDefault: YANDEXGPT_DEFAULT_MODEL_REF,
+    noteMessage: [
+      "YandexGPT — языковые модели от Яндекса (Yandex Cloud Foundation Models).",
+      "Формат: folder_id:api_key",
+      "API-ключ: https://console.yandex.cloud → IAM → Сервисные аккаунты",
+      "Folder ID: https://console.yandex.cloud → выбрать каталог → ID каталога",
+    ].join("\n"),
+    noteTitle: "YandexGPT (Яндекс Облако)",
   },
   "kilocode-api-key": {
     provider: "kilocode",

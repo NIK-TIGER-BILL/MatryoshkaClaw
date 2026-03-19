@@ -550,3 +550,15 @@ export async function setKilocodeApiKey(
     agentDir: resolveAuthAgentDir(agentDir),
   });
 }
+
+export function setYandexGptCredentials(
+  key: SecretInput,
+  agentDir?: string,
+  options?: ApiKeyStorageOptions,
+) {
+  upsertAuthProfile({
+    profileId: "yandexgpt:default",
+    credential: buildApiKeyCredential("yandexgpt", key, undefined, options),
+    agentDir: resolveAuthAgentDir(agentDir),
+  });
+}

@@ -16,6 +16,7 @@ import {
   applyCloudflareAiGatewayConfig,
   applyKilocodeConfig,
   applyGigaChatConfig,
+  applyYandexGptConfig,
   applyQianfanConfig,
   applyModelStudioConfig,
   applyModelStudioConfigCn,
@@ -42,6 +43,8 @@ import {
   setCloudflareAiGatewayConfig,
   setByteplusApiKey,
   setGigaChatCredentials,
+  setYandexGptCredentials,
+  setYandexGptCredentials,
   setQianfanApiKey,
   setModelStudioApiKey,
   setGeminiApiKey,
@@ -535,6 +538,33 @@ export async function applyNonInteractiveAuthChoice(params: {
       mode: "api_key",
     });
     return applyGigaChatConfig(nextConfig);
+  }
+
+  if (authChoice === "yandexgpt-api-key") {
+    const resolved = await resolveApiKey({
+      provider: "yandexgpt",
+      cfg: baseConfig,
+      flagValue: opts.yandexgptCredentials,
+      flagName: "--yandex-credentials",
+      envVar: "YANDEX_CREDENTIALS",
+      runtime,
+    });
+    if (!resolved) {
+      return null;
+    }
+    if (
+      !(await maybeSetResolvedApiKey(resolved, (value) =>
+        setYandexGptCredentials(value, undefined, apiKeyStorageOptions),
+      ))
+    ) {
+      return null;
+    }
+    nextConfig = applyAuthProfileConfig(nextConfig, {
+      profileId: "yandexgpt:default",
+      provider: "yandexgpt",
+      mode: "api_key",
+    });
+    return applyYandexGptConfig(nextConfig);
   }
 
   if (authChoice === "modelstudio-api-key-cn") {

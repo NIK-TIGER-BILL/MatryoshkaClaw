@@ -15,6 +15,9 @@ import {
   GIGACHAT_DEFAULT_BASE_URL,
   GIGACHAT_DEFAULT_MODEL_ID,
   buildGigaChatProvider,
+  YANDEXGPT_BASE_URL,
+  YANDEXGPT_DEFAULT_MODEL_ID,
+  buildYandexGptProvider,
 } from "../agents/models-config.providers.static.js";
 import {
   buildSyntheticModelDefinition,
@@ -76,6 +79,7 @@ import {
   QIANFAN_BASE_URL,
   QIANFAN_DEFAULT_MODEL_REF,
   GIGACHAT_DEFAULT_MODEL_REF,
+  YANDEXGPT_DEFAULT_MODEL_REF,
   KIMI_CODING_MODEL_ID,
   KIMI_CODING_MODEL_REF,
   MOONSHOT_BASE_URL,
@@ -706,4 +710,27 @@ export function applyModelStudioConfig(cfg: OpenClawConfig): OpenClawConfig {
 export function applyModelStudioConfigCn(cfg: OpenClawConfig): OpenClawConfig {
   const next = applyModelStudioProviderConfigCn(cfg);
   return applyAgentDefaultModelPrimary(next, MODELSTUDIO_DEFAULT_MODEL_REF);
+}
+
+// ─── YandexGPT (Яндекс Foundation Models) ────────────────────────────────────
+
+export function applyYandexGptProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const models = { ...cfg.agents?.defaults?.models };
+  models[YANDEXGPT_DEFAULT_MODEL_REF] = {
+    ...models[YANDEXGPT_DEFAULT_MODEL_REF],
+    alias: models[YANDEXGPT_DEFAULT_MODEL_REF]?.alias ?? "YandexGPT",
+  };
+  return applyProviderConfigWithDefaultModels(cfg, {
+    agentModels: models,
+    providerId: "yandexgpt",
+    api: "openai-completions",
+    baseUrl: YANDEXGPT_BASE_URL,
+    defaultModels: buildYandexGptProvider("").models ?? [],
+    defaultModelId: YANDEXGPT_DEFAULT_MODEL_ID,
+  });
+}
+
+export function applyYandexGptConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const next = applyYandexGptProviderConfig(cfg);
+  return applyAgentDefaultModelPrimary(next, YANDEXGPT_DEFAULT_MODEL_REF);
 }

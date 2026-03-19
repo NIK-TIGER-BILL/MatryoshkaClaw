@@ -25,6 +25,7 @@ type OnboardProviderAuthOptionKey = keyof Pick<
   | "litellmApiKey"
   | "qianfanApiKey"
   | "gigachatCredentials"
+  | "yandexgptCredentials"
   | "modelstudioApiKeyCn"
   | "modelstudioApiKey"
   | "volcengineApiKey"
@@ -203,6 +204,13 @@ export const ONBOARD_PROVIDER_AUTH_FLAGS: ReadonlyArray<OnboardProviderAuthFlag>
     description: "GigaChat GIGACHAT_CREDENTIALS (base64 ClientId:Secret)",
   },
   {
+    optionKey: "yandexgptCredentials",
+    authChoice: "yandexgpt-api-key",
+    cliFlag: "--yandex-credentials",
+    cliOption: "--yandex-credentials <credentials>",
+    description: "YandexGPT credentials (folder_id:api_key)",
+  },
+  {
     optionKey: "modelstudioApiKeyCn",
     authChoice: "modelstudio-api-key-cn",
     cliFlag: "--modelstudio-api-key-cn",
@@ -229,5 +237,12 @@ export const ONBOARD_PROVIDER_AUTH_FLAGS: ReadonlyArray<OnboardProviderAuthFlag>
     cliFlag: "--byteplus-api-key",
     cliOption: "--byteplus-api-key <key>",
     description: "BytePlus API key",
+  },
+  {
+    optionKey: "yandexgptCredentials",
+    authChoice: "yandexgpt-api-key",
+    cliFlag: "--yandex-credentials",
+    cliOption: "--yandex-credentials <credentials>",
+    description: "YandexGPT credentials (folder_id:api_key)",
   },
 ];
