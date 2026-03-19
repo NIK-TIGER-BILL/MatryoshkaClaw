@@ -62,6 +62,7 @@ import { MEMORY_SYSTEM_PROMPT, shouldSuggestMemorySystem } from "./doctor-worksp
 import { noteOpenAIOAuthTlsPrerequisites } from "./oauth-tls-preflight.js";
 import { applyWizardMetadata, printWizardHeader, randomToken } from "./onboard-helpers.js";
 import { ensureSystemdUserLingerInteractive } from "./systemd-linger.js";
+import { noteMatryoshkaHealth } from "./doctor-matryoshka.js";
 
 const intro = (message: string) => clackIntro(stylePromptTitle(message) ?? message);
 const outro = (message: string) => clackOutro(stylePromptTitle(message) ?? message);
@@ -365,5 +366,6 @@ export async function doctorCommand(
     }
   }
 
+  noteMatryoshkaHealth(cfg);
   outro("Doctor complete.");
 }
