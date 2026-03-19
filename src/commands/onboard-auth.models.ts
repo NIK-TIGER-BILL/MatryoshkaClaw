@@ -43,9 +43,6 @@ export const GIGACHAT_DEFAULT_MODEL_REF = `gigachat/${GIGACHAT_DEFAULT_MODEL_ID}
 export { YANDEXGPT_DEFAULT_MODEL_ID };
 export const YANDEXGPT_DEFAULT_MODEL_REF = `yandexgpt/${YANDEXGPT_DEFAULT_MODEL_ID}`;
 
-export { YANDEXGPT_DEFAULT_MODEL_ID };
-export const YANDEXGPT_DEFAULT_MODEL_REF = `yandexgpt/${YANDEXGPT_DEFAULT_MODEL_ID}`;
-
 export const ZAI_CODING_GLOBAL_BASE_URL = "https://api.z.ai/api/coding/paas/v4";
 export const ZAI_CODING_CN_BASE_URL = "https://open.bigmodel.cn/api/coding/paas/v4";
 export const ZAI_GLOBAL_BASE_URL = "https://api.z.ai/api/paas/v4";
