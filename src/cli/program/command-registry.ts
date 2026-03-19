@@ -108,6 +108,11 @@ const coreEntries: CoreCliEntry[] = [
   {
     commands: [
       {
+        name: "babushka",
+        description: "🧓 Мудрость бабушки + ASCII арт. +10 XP к уровню матрёшки",
+        hasSubcommands: false,
+      },
+      {
         name: "doctor",
         description: "Проверка состояния и быстрые исправления для шлюза и каналов",
         hasSubcommands: false,
