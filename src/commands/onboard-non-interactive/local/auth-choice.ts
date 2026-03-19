@@ -44,7 +44,6 @@ import {
   setByteplusApiKey,
   setGigaChatCredentials,
   setYandexGptCredentials,
-  setYandexGptCredentials,
   setQianfanApiKey,
   setModelStudioApiKey,
   setGeminiApiKey,

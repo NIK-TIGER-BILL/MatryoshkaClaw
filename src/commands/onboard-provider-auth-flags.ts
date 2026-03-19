@@ -238,11 +238,4 @@ export const ONBOARD_PROVIDER_AUTH_FLAGS: ReadonlyArray<OnboardProviderAuthFlag>
     cliOption: "--byteplus-api-key <key>",
     description: "BytePlus API key",
   },
-  {
-    optionKey: "yandexgptCredentials",
-    authChoice: "yandexgpt-api-key",
-    cliFlag: "--yandex-credentials",
-    cliOption: "--yandex-credentials <credentials>",
-    description: "YandexGPT credentials (folder_id:api_key)",
-  },
 ];
