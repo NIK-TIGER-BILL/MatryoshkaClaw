@@ -1,12 +1,12 @@
 ---
-summary: "OpenClaw macOS release checklist (Sparkle feed, packaging, signing)"
+summary: "MatryoshkaClaw macOS release checklist (Sparkle feed, packaging, signing)"
 read_when:
-  - Cutting or validating a OpenClaw macOS release
+  - Cutting or validating a MatryoshkaClaw macOS release
   - Updating the Sparkle appcast or feed assets
 title: "macOS Release"
 ---
 
-# OpenClaw macOS release (Sparkle)
+# MatryoshkaClaw macOS release (Sparkle)
 
 This app now ships Sparkle auto-updates. Release builds must be Developer ID–signed, zipped, and published with a signed appcast entry.
 
@@ -15,10 +15,10 @@ This app now ships Sparkle auto-updates. Release builds must be Developer ID–s
 - Developer ID Application cert installed (example: `Developer ID Application: <Developer Name> (<TEAMID>)`).
 - Sparkle private key path set in the environment as `SPARKLE_PRIVATE_KEY_FILE` (path to your Sparkle ed25519 private key; public key baked into Info.plist). If it is missing, check `~/.profile`.
 - Notary credentials (keychain profile or API key) for `xcrun notarytool` if you want Gatekeeper-safe DMG/zip distribution.
-  - We use a Keychain profile named `openclaw-notary`, created from App Store Connect API key env vars in your shell profile:
+  - We use a Keychain profile named `matryoshka-notary`, created from App Store Connect API key env vars in your shell profile:
     - `APP_STORE_CONNECT_API_KEY_P8`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`
-    - `echo "$APP_STORE_CONNECT_API_KEY_P8" | sed 's/\\n/\n/g' > /tmp/openclaw-notary.p8`
-    - `xcrun notarytool store-credentials "openclaw-notary" --key /tmp/openclaw-notary.p8 --key-id "$APP_STORE_CONNECT_KEY_ID" --issuer "$APP_STORE_CONNECT_ISSUER_ID"`
+    - `echo "$APP_STORE_CONNECT_API_KEY_P8" | sed 's/\\n/\n/g' > /tmp/matryoshka-notary.p8`
+    - `xcrun notarytool store-credentials "matryoshka-notary" --key /tmp/matryoshka-notary.p8 --key-id "$APP_STORE_CONNECT_KEY_ID" --issuer "$APP_STORE_CONNECT_ISSUER_ID"`
 - `pnpm` deps installed (`pnpm install --config.node-linker=hoisted`).
 - Sparkle tools are fetched automatically via SwiftPM at `apps/macos/.build/artifacts/sparkle/Sparkle/bin/` (`sign_update`, `generate_appcast`, etc.).
 
@@ -47,16 +47,16 @@ scripts/package-mac-dist.sh
 # `package-mac-dist.sh` already creates the zip + DMG.
 # If you used `package-mac-app.sh` directly instead, create them manually:
 # If you want notarization/stapling in this step, use the NOTARIZE command below.
-ditto -c -k --sequesterRsrc --keepParent dist/OpenClaw.app dist/OpenClaw-2026.3.9.zip
+ditto -c -k --sequesterRsrc --keepParent dist/MatryoshkaClaw.app dist/MatryoshkaClaw-2026.3.9.zip
 
 # Optional: build a styled DMG for humans (drag to /Applications)
-scripts/create-dmg.sh dist/OpenClaw.app dist/OpenClaw-2026.3.9.dmg
+scripts/create-dmg.sh dist/MatryoshkaClaw.app dist/MatryoshkaClaw-2026.3.9.dmg
 
 # Recommended: build + notarize/staple zip + DMG
 # First, create a keychain profile once:
-#   xcrun notarytool store-credentials "openclaw-notary" \
+#   xcrun notarytool store-credentials "matryoshka-notary" \
 #     --apple-id "<apple-id>" --team-id "<team-id>" --password "<app-specific-password>"
-NOTARIZE=1 NOTARYTOOL_PROFILE=openclaw-notary \
+NOTARIZE=1 NOTARYTOOL_PROFILE=matryoshka-notary \
 BUNDLE_ID=ai.openclaw.mac \
 APP_VERSION=2026.3.9 \
 BUILD_CONFIG=release \
@@ -64,7 +64,7 @@ SIGN_IDENTITY="Developer ID Application: <Developer Name> (<TEAMID>)" \
 scripts/package-mac-dist.sh
 
 # Optional: ship dSYM alongside the release
-ditto -c -k --keepParent apps/macos/.build/release/OpenClaw.app.dSYM dist/OpenClaw-2026.3.9.dSYM.zip
+ditto -c -k --keepParent apps/macos/.build/release/MatryoshkaClaw.app.dSYM dist/MatryoshkaClaw-2026.3.9.dSYM.zip
 ```
 
 ## Appcast entry
@@ -72,7 +72,7 @@ ditto -c -k --keepParent apps/macos/.build/release/OpenClaw.app.dSYM dist/OpenCl
 Use the release note generator so Sparkle renders formatted HTML notes:
 
 ```bash
-SPARKLE_PRIVATE_KEY_FILE=/path/to/ed25519-private-key scripts/make_appcast.sh dist/OpenClaw-2026.3.9.zip https://raw.githubusercontent.com/openclaw/openclaw/main/appcast.xml
+SPARKLE_PRIVATE_KEY_FILE=/path/to/ed25519-private-key scripts/make_appcast.sh dist/MatryoshkaClaw-2026.3.9.zip https://raw.githubusercontent.com/openclaw/openclaw/main/appcast.xml
 ```
 
 Generates HTML release notes from `CHANGELOG.md` (via [`scripts/changelog-to-html.sh`](https://github.com/openclaw/openclaw/blob/main/scripts/changelog-to-html.sh)) and embeds them in the appcast entry.
@@ -80,7 +80,7 @@ Commit the updated `appcast.xml` alongside the release assets (zip + dSYM) when 
 
 ## Publish & verify
 
-- Upload `OpenClaw-2026.3.9.zip` (and `OpenClaw-2026.3.9.dSYM.zip`) to the GitHub release for tag `v2026.3.9`.
+- Upload `MatryoshkaClaw-2026.3.9.zip` (and `MatryoshkaClaw-2026.3.9.dSYM.zip`) to the GitHub release for tag `v2026.3.9`.
 - Ensure the raw appcast URL matches the baked feed: `https://raw.githubusercontent.com/openclaw/openclaw/main/appcast.xml`.
 - Sanity checks:
   - `curl -I https://raw.githubusercontent.com/openclaw/openclaw/main/appcast.xml` returns 200.

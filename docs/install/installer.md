@@ -53,7 +53,7 @@ MatryoshkaClaw ships three installer scripts, served from `github.com/NIK-TIGER-
 </Tabs>
 
 <Note>
-If install succeeds but `openclaw` is not found in a new terminal, see [Node.js troubleshooting](/install/node#troubleshooting).
+If install succeeds but `matryoshka` is not found in a new terminal, see [Node.js troubleshooting](/install/node#troubleshooting).
 </Note>
 
 ---
@@ -78,7 +78,7 @@ Recommended for most interactive installs on macOS/Linux/WSL.
   </Step>
   <Step title="Install MatryoshkaClaw">
     - `npm` method (default): global npm install
-    - `git` method: clone/update repo, install deps with pnpm, build, then install wrapper at `~/.local/bin/openclaw`
+    - `git` method: clone/update repo, install deps with pnpm, build, then install wrapper at `~/.local/bin/matryoshka`
   </Step>
   <Step title="Post-install tasks">
     - Runs `matryoshka doctor --non-interactive` on upgrades and git installs (best effort)
@@ -133,7 +133,7 @@ The script exits with code `2` for invalid method selection or invalid `--instal
 | `--git`                         | Shortcut for git method. Alias: `--github`                 |
 | `--version <version\|dist-tag>` | npm version or dist-tag (default: `latest`)                |
 | `--beta`                        | Use beta dist-tag if available, else fallback to `latest`  |
-| `--git-dir <path>`              | Checkout directory (default: `~/openclaw`). Alias: `--dir` |
+| `--git-dir <path>`              | Checkout directory (default: `~/matryoshka`). Alias: `--dir` |
 | `--no-git-update`               | Skip `git pull` for existing checkout                      |
 | `--no-prompt`                   | Disable prompts                                            |
 | `--no-onboard`                  | Skip onboarding                                            |
@@ -181,7 +181,7 @@ Designed for environments where you want everything under a local prefix (defaul
     If Git is missing, attempts install via apt/dnf/yum on Linux or Homebrew on macOS.
   </Step>
   <Step title="Install MatryoshkaClaw under prefix">
-    Installs with npm using `--prefix <prefix>`, then writes wrapper to `<prefix>/bin/openclaw`.
+    Installs with npm using `--prefix <prefix>`, then writes wrapper to `<prefix>/bin/matryoshka`.
   </Step>
 </Steps>
 
@@ -195,12 +195,12 @@ Designed for environments where you want everything under a local prefix (defaul
   </Tab>
   <Tab title="Custom prefix + version">
     ```bash
-    curl -fsSL --proto '=https' --tlsv1.2 https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/install-cli.sh | bash -s -- --prefix /opt/openclaw --version latest
+    curl -fsSL --proto '=https' --tlsv1.2 https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/install-cli.sh | bash -s -- --prefix /opt/matryoshka --version latest
     ```
   </Tab>
   <Tab title="Automation JSON output">
     ```bash
-    curl -fsSL --proto '=https' --tlsv1.2 https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/install-cli.sh | bash -s -- --json --prefix /opt/openclaw
+    curl -fsSL --proto '=https' --tlsv1.2 https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/install-cli.sh | bash -s -- --json --prefix /opt/matryoshka
     ```
   </Tab>
   <Tab title="Run onboarding">
@@ -256,7 +256,7 @@ Designed for environments where you want everything under a local prefix (defaul
   </Step>
   <Step title="Install MatryoshkaClaw">
     - `npm` method (default): global npm install using selected `-Tag`
-    - `git` method: clone/update repo, install/build with pnpm, and install wrapper at `%USERPROFILE%\.local\bin\openclaw.cmd`
+    - `git` method: clone/update repo, install/build with pnpm, and install wrapper at `%USERPROFILE%\.local\bin\matryoshka.cmd`
   </Step>
   <Step title="Post-install tasks">
     Adds needed bin directory to user PATH when possible, then runs `matryoshka doctor --non-interactive` on upgrades and git installs (best effort).
@@ -278,7 +278,7 @@ Designed for environments where you want everything under a local prefix (defaul
   </Tab>
   <Tab title="Custom git directory">
     ```powershell
-    & ([scriptblock]::Create((iwr -useb https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/install.ps1))) -InstallMethod git -GitDir "C:\openclaw"
+    & ([scriptblock]::Create((iwr -useb https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/install.ps1))) -InstallMethod git -GitDir "C:\matryoshka"
     ```
   </Tab>
   <Tab title="Dry run">
@@ -303,7 +303,7 @@ Designed for environments where you want everything under a local prefix (defaul
 | ------------------------- | ------------------------------------------------------ |
 | `-InstallMethod npm\|git` | Install method (default: `npm`)                        |
 | `-Tag <tag>`              | npm dist-tag (default: `latest`)                       |
-| `-GitDir <path>`          | Checkout directory (default: `%USERPROFILE%\openclaw`) |
+| `-GitDir <path>`          | Checkout directory (default: `%USERPROFILE%\matryoshka`) |
 | `-NoOnboard`              | Skip onboarding                                        |
 | `-NoGitUpdate`            | Skip `git pull`                                        |
 | `-DryRun`                 | Print actions only                                     |
@@ -347,7 +347,7 @@ Use non-interactive flags/env vars for predictable runs.
   </Tab>
   <Tab title="install-cli.sh (JSON)">
     ```bash
-    curl -fsSL --proto '=https' --tlsv1.2 https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/install-cli.sh | bash -s -- --json --prefix /opt/openclaw
+    curl -fsSL --proto '=https' --tlsv1.2 https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/install-cli.sh | bash -s -- --json --prefix /opt/matryoshka
     ```
   </Tab>
   <Tab title="install.ps1 (skip onboarding)">
@@ -383,7 +383,7 @@ Use non-interactive flags/env vars for predictable runs.
     Install Git for Windows, reopen PowerShell, rerun installer.
   </Accordion>
 
-  <Accordion title='Windows: "openclaw is not recognized"'>
+  <Accordion title='Windows: "matryoshka is not recognized"'>
     Run `npm config get prefix` and add that directory to your user PATH (no `\bin` suffix needed on Windows), then reopen PowerShell.
   </Accordion>
 
@@ -399,7 +399,7 @@ Use non-interactive flags/env vars for predictable runs.
 
   </Accordion>
 
-  <Accordion title="openclaw not found after install">
+  <Accordion title="matryoshka not found after install">
     Usually a PATH issue. See [Node.js troubleshooting](/install/node#troubleshooting).
   </Accordion>
 </AccordionGroup>

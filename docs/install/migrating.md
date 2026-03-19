@@ -82,7 +82,7 @@ matryoshka gateway stop
 cd ~
 tar -czf openclaw-state.tgz .openclaw
 
-tar -czf openclaw-workspace.tgz .openclaw/workspace
+tar -czf matryoshka-workspace.tgz .openclaw/workspace
 ```
 
 If you have multiple profiles/state dirs (e.g. `~/.openclaw-main`, `~/.openclaw-work`), archive each.
@@ -189,4 +189,4 @@ On the new machine, confirm:
 
 - [Doctor](/gateway/doctor)
 - [Gateway troubleshooting](/gateway/troubleshooting)
-- [Where does MatryoshkaClaw store its data?](/help/faq#where-does-openclaw-store-its-data)
+- [Where does MatryoshkaClaw store its data?](/help/faq#where-does-matryoshka-store-its-data)

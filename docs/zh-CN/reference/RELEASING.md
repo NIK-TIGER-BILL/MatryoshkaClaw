@@ -30,7 +30,7 @@ x-i18n:
 - [ ] 更新 `package.json` 版本（例如 `2026.1.29`）。
 - [ ] 运行 `pnpm plugins:sync` 以对齐扩展包版本和变更日志。
 - [ ] 更新 CLI/版本字符串：[`src/cli/program.ts`](https://github.com/openclaw/openclaw/blob/main/src/cli/program.ts) 和 [`src/provider-web.ts`](https://github.com/openclaw/openclaw/blob/main/src/provider-web.ts) 中的 Baileys user agent。
-- [ ] 确认包元数据（name、description、repository、keywords、license）以及 `bin` 映射指向 [`openclaw.mjs`](https://github.com/openclaw/openclaw/blob/main/openclaw.mjs) 作为 `openclaw`。
+- [ ] 确认包元数据（name、description、repository、keywords、license）以及 `bin` 映射指向 [`openclaw.mjs`](https://github.com/openclaw/openclaw/blob/main/openclaw.mjs) 作为 `matryoshka`。
 - [ ] 如果依赖项有变化，运行 `pnpm install` 确保 `pnpm-lock.yaml` 是最新的。
 
 2. **构建和产物**
@@ -68,18 +68,18 @@ x-i18n:
 - [ ] 保留应用 zip（和可选的 dSYM zip）以便附加到 GitHub 发布。
 - [ ] 按照 [macOS 发布](/platforms/mac/release) 获取确切命令和所需环境变量。
   - `APP_BUILD` 必须是数字且单调递增（不带 `-beta`），以便 Sparkle 正确比较版本。
-  - 如果进行公证，使用从 App Store Connect API 环境变量创建的 `openclaw-notary` 钥匙串配置文件（参见 [macOS 发布](/platforms/mac/release)）。
+  - 如果进行公证，使用从 App Store Connect API 环境变量创建的 `matryoshka-notary` 钥匙串配置文件（参见 [macOS 发布](/platforms/mac/release)）。
 
 6. **发布（npm）**
 
 - [ ] 确认 git 状态干净；根据需要提交并推送。
 - [ ] 如需要，`npm login`（验证 2FA）。
 - [ ] `npm publish --access public`（预发布版本使用 `--tag beta`）。
-- [ ] 验证注册表：`npm view openclaw version`、`npm view openclaw dist-tags` 和 `npx -y openclaw@X.Y.Z --version`（或 `--help`）。
+- [ ] 验证注册表：`npm view matryoshka version`、`npm view matryoshka dist-tags` 和 `npx -y openclaw@X.Y.Z --version`（或 `--help`）。
 
 ### 故障排除（来自 2.0.0-beta2 发布的笔记）
 
-- **npm pack/publish 挂起或产生巨大 tarball**：`dist/OpenClaw.app` 中的 macOS 应用包（和发布 zip）被扫入包中。通过 `package.json` 的 `files` 白名单发布内容来修复（包含 dist 子目录、docs、skills；排除应用包）。用 `npm pack --dry-run` 确认 `dist/OpenClaw.app` 未列出。
+- **npm pack/publish 挂起或产生巨大 tarball**：`dist/MatryoshkaClaw.app` 中的 macOS 应用包（和发布 zip）被扫入包中。通过 `package.json` 的 `files` 白名单发布内容来修复（包含 dist 子目录、docs、skills；排除应用包）。用 `npm pack --dry-run` 确认 `dist/MatryoshkaClaw.app` 未列出。
 - **npm auth dist-tags 的 Web 循环**：使用旧版认证以获取 OTP 提示：
   - `NPM_CONFIG_AUTH_TYPE=legacy npm dist-tag add openclaw@X.Y.Z latest`
 - **`npx` 验证失败并显示 `ECOMPROMISED: Lock compromised`**：使用新缓存重试：
@@ -90,34 +90,34 @@ x-i18n:
 7. **GitHub 发布 + appcast**
 
 - [ ] 打标签并推送：`git tag vX.Y.Z && git push origin vX.Y.Z`（或 `git push --tags`）。
-- [ ] 为 `vX.Y.Z` 创建/刷新 GitHub 发布，**标题为 `openclaw X.Y.Z`**（不仅仅是标签）；正文应包含该版本的**完整**变更日志部分（亮点 + 更改 + 修复），内联显示（无裸链接），且**不得在正文中重复标题**。
-- [ ] 附加产物：`npm pack` tarball（可选）、`OpenClaw-X.Y.Z.zip` 和 `OpenClaw-X.Y.Z.dSYM.zip`（如果生成）。
+- [ ] 为 `vX.Y.Z` 创建/刷新 GitHub 发布，**标题为 `matryoshka X.Y.Z`**（不仅仅是标签）；正文应包含该版本的**完整**变更日志部分（亮点 + 更改 + 修复），内联显示（无裸链接），且**不得在正文中重复标题**。
+- [ ] 附加产物：`npm pack` tarball（可选）、`MatryoshkaClaw-X.Y.Z.zip` 和 `MatryoshkaClaw-X.Y.Z.dSYM.zip`（如果生成）。
 - [ ] 提交更新后的 `appcast.xml` 并推送（Sparkle 从 main 获取源）。
 - [ ] 从干净的临时目录（无 `package.json`），运行 `npx -y openclaw@X.Y.Z send --help` 确认安装/CLI 入口点正常工作。
 - [ ] 宣布/分享发布说明。
 
 ## 插件发布范围（npm）
 
-我们只发布 `@openclaw/*` 范围下的**现有 npm 插件**。不在 npm 上的内置插件保持**仅磁盘树**（仍在 `extensions/**` 中发布）。
+我们只发布 `@matryoshka/*` 范围下的**现有 npm 插件**。不在 npm 上的内置插件保持**仅磁盘树**（仍在 `extensions/**` 中发布）。
 
 获取列表的流程：
 
-1. `npm search @openclaw --json` 并捕获包名。
+1. `npm search @matryoshka --json` 并捕获包名。
 2. 与 `extensions/*/package.json` 名称比较。
 3. 只发布**交集**（已在 npm 上）。
 
 当前 npm 插件列表（根据需要更新）：
 
-- @openclaw/bluebubbles
-- @openclaw/diagnostics-otel
-- @openclaw/discord
-- @openclaw/lobster
-- @openclaw/matrix
-- @openclaw/msteams
-- @openclaw/nextcloud-talk
-- @openclaw/nostr
-- @openclaw/voice-call
-- @openclaw/zalo
-- @openclaw/zalouser
+- @matryoshka/bluebubbles
+- @matryoshka/diagnostics-otel
+- @matryoshka/discord
+- @matryoshka/lobster
+- @matryoshka/matrix
+- @matryoshka/msteams
+- @matryoshka/nextcloud-talk
+- @matryoshka/nostr
+- @matryoshka/voice-call
+- @matryoshka/zalo
+- @matryoshka/zalouser
 
 发布说明还必须标注**默认未启用**的**新可选内置插件**（例如：`tlon`）。

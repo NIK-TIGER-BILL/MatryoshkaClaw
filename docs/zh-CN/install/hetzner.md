@@ -1,10 +1,10 @@
 ---
 read_when:
-  - 你想让 OpenClaw 在云 VPS 上 24/7 运行（而不是你的笔记本电脑）
+  - 你想让 MatryoshkaClaw 在云 VPS 上 24/7 运行（而不是你的笔记本电脑）
   - 你想在自己的 VPS 上运行生产级、永久在线的 Gateway 网关
   - 你想完全控制持久化、二进制文件和重启行为
-  - 你在 Hetzner 或类似提供商上用 Docker 运行 OpenClaw
-summary: 在廉价的 Hetzner VPS（Docker）上 24/7 运行 OpenClaw Gateway 网关，带持久状态和内置二进制文件
+  - 你在 Hetzner 或类似提供商上用 Docker 运行 MatryoshkaClaw
+summary: 在廉价的 Hetzner VPS（Docker）上 24/7 运行 MatryoshkaClaw Gateway 网关，带持久状态和内置二进制文件
 title: Hetzner
 x-i18n:
   generated_at: "2026-02-03T07:52:17Z"
@@ -15,20 +15,20 @@ x-i18n:
   workflow: 15
 ---
 
-# 在 Hetzner 上运行 OpenClaw（Docker，生产 VPS 指南）
+# 在 Hetzner 上运行 MatryoshkaClaw（Docker，生产 VPS 指南）
 
 ## 目标
 
-使用 Docker 在 Hetzner VPS 上运行持久的 OpenClaw Gateway 网关，带持久状态、内置二进制文件和安全的重启行为。
+使用 Docker 在 Hetzner VPS 上运行持久的 MatryoshkaClaw Gateway 网关，带持久状态、内置二进制文件和安全的重启行为。
 
-如果你想要"约 $5 实现 OpenClaw 24/7"，这是最简单可靠的设置。
+如果你想要"约 $5 实现 MatryoshkaClaw 24/7"，这是最简单可靠的设置。
 Hetzner 定价会变化；选择最小的 Debian/Ubuntu VPS，如果遇到 OOM 再扩容。
 
 ## 我们在做什么（简单说明）？
 
 - 租用一台小型 Linux 服务器（Hetzner VPS）
 - 安装 Docker（隔离的应用运行时）
-- 在 Docker 中启动 OpenClaw Gateway 网关
+- 在 Docker 中启动 MatryoshkaClaw Gateway 网关
 - 在主机上持久化 `~/.openclaw` + `~/.openclaw/workspace`（重启/重建后保留）
 - 通过 SSH 隧道从你的笔记本电脑访问控制 UI
 
@@ -47,7 +47,7 @@ Gateway 网关可以通过以下方式访问：
 
 1. 配置 Hetzner VPS
 2. 安装 Docker
-3. 克隆 OpenClaw 仓库
+3. 克隆 MatryoshkaClaw 仓库
 4. 创建持久化主机目录
 5. 配置 `.env` 和 `docker-compose.yml`
 6. 将所需二进制文件烘焙到镜像中
@@ -103,11 +103,11 @@ docker compose version
 
 ---
 
-## 3) 克隆 OpenClaw 仓库
+## 3) 克隆 MatryoshkaClaw 仓库
 
 ```bash
 git clone https://github.com/openclaw/openclaw.git
-cd openclaw
+cd matryoshka
 ```
 
 本指南假设你将构建自定义镜像以保证二进制文件持久化。
@@ -135,7 +135,7 @@ chown -R 1000:1000 /root/.openclaw/workspace
 在仓库根目录创建 `.env`。
 
 ```bash
-OPENCLAW_IMAGE=openclaw:latest
+OPENCLAW_IMAGE=matryoshka:latest
 OPENCLAW_GATEWAY_TOKEN=change-me-now
 OPENCLAW_GATEWAY_BIND=lan
 OPENCLAW_GATEWAY_PORT=18789
@@ -320,7 +320,7 @@ ssh -N -L 18789:127.0.0.1:18789 root@YOUR_VPS_IP
 
 ## 持久化位置（事实来源）
 
-OpenClaw 在 Docker 中运行，但 Docker 不是事实来源。
+MatryoshkaClaw 在 Docker 中运行，但 Docker 不是事实来源。
 所有长期状态必须在重启、重建和重启后保留。
 
 | 组件             | 位置                              | 持久化机制    | 说明                        |

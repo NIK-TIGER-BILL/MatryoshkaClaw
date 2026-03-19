@@ -16,7 +16,7 @@ x-i18n:
 
 macOS 应用**默认通过 launchd 管理 Gateway 网关**，不会将
 Gateway 网关作为子进程生成。它首先尝试连接到配置端口上已运行的
-Gateway 网关；如果无法访问，它会通过外部 `openclaw` CLI（无嵌入式运行时）启用 launchd
+Gateway 网关；如果无法访问，它会通过外部 `matryoshka` CLI（无嵌入式运行时）启用 launchd
 服务。这为你提供了可靠的登录时自动启动和崩溃后重启。
 
 子进程模式（由应用直接生成 Gateway 网关）**目前未使用**。

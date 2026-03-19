@@ -9,7 +9,7 @@ title: "Logging"
 
 # Logging
 
-OpenClaw logs in two places:
+MatryoshkaClaw logs in two places:
 
 - **File logs** (JSON lines) written by the Gateway.
 - **Console output** shown in terminals and the Control UI.
@@ -42,7 +42,7 @@ You can override this in `~/.openclaw/openclaw.json`:
 Use the CLI to tail the gateway log file via RPC:
 
 ```bash
-openclaw logs --follow
+matryoshka logs --follow
 ```
 
 Output modes:
@@ -63,7 +63,7 @@ In JSON mode, the CLI emits `type`-tagged objects:
 If the Gateway is unreachable, the CLI prints a short hint to run:
 
 ```bash
-openclaw doctor
+matryoshka doctor
 ```
 
 ### Control UI (web)
@@ -76,7 +76,7 @@ See [/web/control-ui](/web/control-ui) for how to open it.
 To filter channel activity (WhatsApp/Telegram/etc), use:
 
 ```bash
-openclaw channels logs --channel whatsapp
+matryoshka channels logs --channel whatsapp
 ```
 
 ## Log formats
@@ -118,7 +118,7 @@ All logging configuration lives under `logging` in `~/.openclaw/openclaw.json`.
 - `logging.level`: **file logs** (JSONL) level.
 - `logging.consoleLevel`: **console** verbosity level.
 
-You can override both via the **`OPENCLAW_LOG_LEVEL`** environment variable (e.g. `OPENCLAW_LOG_LEVEL=debug`). The env var takes precedence over the config file, so you can raise verbosity for a single run without editing `openclaw.json`. You can also pass the global CLI option **`--log-level <level>`** (for example, `openclaw --log-level debug gateway run`), which overrides the environment variable for that command.
+You can override both via the **`OPENCLAW_LOG_LEVEL`** environment variable (e.g. `OPENCLAW_LOG_LEVEL=debug`). The env var takes precedence over the config file, so you can raise verbosity for a single run without editing `openclaw.json`. You can also pass the global CLI option **`--log-level <level>`** (for example, `matryoshka --log-level debug gateway run`), which overrides the environment variable for that command.
 
 `--verbose` only affects console output; it does not change file log levels.
 
@@ -152,7 +152,7 @@ diagnostics + the exporter plugin are enabled.
 
 - **OpenTelemetry (OTel)**: the data model + SDKs for traces, metrics, and logs.
 - **OTLP**: the wire protocol used to export OTel data to a collector/backend.
-- OpenClaw exports via **OTLP/HTTP (protobuf)** today.
+- MatryoshkaClaw exports via **OTLP/HTTP (protobuf)** today.
 
 ### Signals exported
 
@@ -255,7 +255,7 @@ works with any OpenTelemetry collector/backend that accepts OTLP/HTTP.
 
 Notes:
 
-- You can also enable the plugin with `openclaw plugins enable diagnostics-otel`.
+- You can also enable the plugin with `matryoshka plugins enable diagnostics-otel`.
 - `protocol` currently supports `http/protobuf` only. `grpc` is ignored.
 - Metrics include token usage, cost, context size, run duration, and message-flow
   counters/histograms (webhooks, queueing, session state, queue depth/wait).
@@ -269,60 +269,60 @@ Notes:
 
 Model usage:
 
-- `openclaw.tokens` (counter, attrs: `openclaw.token`, `openclaw.channel`,
-  `openclaw.provider`, `openclaw.model`)
-- `openclaw.cost.usd` (counter, attrs: `openclaw.channel`, `openclaw.provider`,
-  `openclaw.model`)
-- `openclaw.run.duration_ms` (histogram, attrs: `openclaw.channel`,
-  `openclaw.provider`, `openclaw.model`)
-- `openclaw.context.tokens` (histogram, attrs: `openclaw.context`,
-  `openclaw.channel`, `openclaw.provider`, `openclaw.model`)
+- `matryoshka.tokens` (counter, attrs: `matryoshka.token`, `matryoshka.channel`,
+  `matryoshka.provider`, `matryoshka.model`)
+- `matryoshka.cost.usd` (counter, attrs: `matryoshka.channel`, `matryoshka.provider`,
+  `matryoshka.model`)
+- `matryoshka.run.duration_ms` (histogram, attrs: `matryoshka.channel`,
+  `matryoshka.provider`, `matryoshka.model`)
+- `matryoshka.context.tokens` (histogram, attrs: `matryoshka.context`,
+  `matryoshka.channel`, `matryoshka.provider`, `matryoshka.model`)
 
 Message flow:
 
-- `openclaw.webhook.received` (counter, attrs: `openclaw.channel`,
-  `openclaw.webhook`)
-- `openclaw.webhook.error` (counter, attrs: `openclaw.channel`,
-  `openclaw.webhook`)
-- `openclaw.webhook.duration_ms` (histogram, attrs: `openclaw.channel`,
-  `openclaw.webhook`)
-- `openclaw.message.queued` (counter, attrs: `openclaw.channel`,
-  `openclaw.source`)
-- `openclaw.message.processed` (counter, attrs: `openclaw.channel`,
-  `openclaw.outcome`)
-- `openclaw.message.duration_ms` (histogram, attrs: `openclaw.channel`,
-  `openclaw.outcome`)
+- `matryoshka.webhook.received` (counter, attrs: `matryoshka.channel`,
+  `matryoshka.webhook`)
+- `matryoshka.webhook.error` (counter, attrs: `matryoshka.channel`,
+  `matryoshka.webhook`)
+- `matryoshka.webhook.duration_ms` (histogram, attrs: `matryoshka.channel`,
+  `matryoshka.webhook`)
+- `matryoshka.message.queued` (counter, attrs: `matryoshka.channel`,
+  `matryoshka.source`)
+- `matryoshka.message.processed` (counter, attrs: `matryoshka.channel`,
+  `matryoshka.outcome`)
+- `matryoshka.message.duration_ms` (histogram, attrs: `matryoshka.channel`,
+  `matryoshka.outcome`)
 
 Queues + sessions:
 
-- `openclaw.queue.lane.enqueue` (counter, attrs: `openclaw.lane`)
-- `openclaw.queue.lane.dequeue` (counter, attrs: `openclaw.lane`)
-- `openclaw.queue.depth` (histogram, attrs: `openclaw.lane` or
-  `openclaw.channel=heartbeat`)
-- `openclaw.queue.wait_ms` (histogram, attrs: `openclaw.lane`)
-- `openclaw.session.state` (counter, attrs: `openclaw.state`, `openclaw.reason`)
-- `openclaw.session.stuck` (counter, attrs: `openclaw.state`)
-- `openclaw.session.stuck_age_ms` (histogram, attrs: `openclaw.state`)
-- `openclaw.run.attempt` (counter, attrs: `openclaw.attempt`)
+- `matryoshka.queue.lane.enqueue` (counter, attrs: `matryoshka.lane`)
+- `matryoshka.queue.lane.dequeue` (counter, attrs: `matryoshka.lane`)
+- `matryoshka.queue.depth` (histogram, attrs: `matryoshka.lane` or
+  `matryoshka.channel=heartbeat`)
+- `matryoshka.queue.wait_ms` (histogram, attrs: `matryoshka.lane`)
+- `matryoshka.session.state` (counter, attrs: `matryoshka.state`, `matryoshka.reason`)
+- `matryoshka.session.stuck` (counter, attrs: `matryoshka.state`)
+- `matryoshka.session.stuck_age_ms` (histogram, attrs: `matryoshka.state`)
+- `matryoshka.run.attempt` (counter, attrs: `matryoshka.attempt`)
 
 ### Exported spans (names + key attributes)
 
-- `openclaw.model.usage`
-  - `openclaw.channel`, `openclaw.provider`, `openclaw.model`
-  - `openclaw.sessionKey`, `openclaw.sessionId`
-  - `openclaw.tokens.*` (input/output/cache_read/cache_write/total)
-- `openclaw.webhook.processed`
-  - `openclaw.channel`, `openclaw.webhook`, `openclaw.chatId`
-- `openclaw.webhook.error`
-  - `openclaw.channel`, `openclaw.webhook`, `openclaw.chatId`,
-    `openclaw.error`
-- `openclaw.message.processed`
-  - `openclaw.channel`, `openclaw.outcome`, `openclaw.chatId`,
-    `openclaw.messageId`, `openclaw.sessionKey`, `openclaw.sessionId`,
-    `openclaw.reason`
-- `openclaw.session.stuck`
-  - `openclaw.state`, `openclaw.ageMs`, `openclaw.queueDepth`,
-    `openclaw.sessionKey`, `openclaw.sessionId`
+- `matryoshka.model.usage`
+  - `matryoshka.channel`, `matryoshka.provider`, `matryoshka.model`
+  - `matryoshka.sessionKey`, `matryoshka.sessionId`
+  - `matryoshka.tokens.*` (input/output/cache_read/cache_write/total)
+- `matryoshka.webhook.processed`
+  - `matryoshka.channel`, `matryoshka.webhook`, `matryoshka.chatId`
+- `matryoshka.webhook.error`
+  - `matryoshka.channel`, `matryoshka.webhook`, `matryoshka.chatId`,
+    `matryoshka.error`
+- `matryoshka.message.processed`
+  - `matryoshka.channel`, `matryoshka.outcome`, `matryoshka.chatId`,
+    `matryoshka.messageId`, `matryoshka.sessionKey`, `matryoshka.sessionId`,
+    `matryoshka.reason`
+- `matryoshka.session.stuck`
+  - `matryoshka.state`, `matryoshka.ageMs`, `matryoshka.queueDepth`,
+    `matryoshka.sessionKey`, `matryoshka.sessionId`
 
 ### Sampling + flushing
 
@@ -346,7 +346,7 @@ Queues + sessions:
 
 ## Troubleshooting tips
 
-- **Gateway not reachable?** Run `openclaw doctor` first.
+- **Gateway not reachable?** Run `matryoshka doctor` first.
 - **Logs empty?** Check that the Gateway is running and writing to the file path
   in `logging.file`.
 - **Need more detail?** Set `logging.level` to `debug` or `trace` and retry.

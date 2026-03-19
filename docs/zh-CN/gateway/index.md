@@ -19,17 +19,17 @@ x-i18n:
 ## 是什么
 
 - 拥有单一 Baileys/Telegram 连接和控制/事件平面的常驻进程。
-- 替代旧版 `gateway` 命令。CLI 入口点：`openclaw gateway`。
+- 替代旧版 `gateway` 命令。CLI 入口点：`matryoshka gateway`。
 - 运行直到停止；出现致命错误时以非零退出码退出，以便 supervisor 重启它。
 
 ## 如何运行（本地）
 
 ```bash
-openclaw gateway --port 18789
+matryoshka gateway --port 18789
 # 在 stdio 中获取完整的调试/追踪日志：
-openclaw gateway --port 18789 --verbose
+matryoshka gateway --port 18789 --verbose
 # 如果端口被占用，终止监听器然后启动：
-openclaw gateway --force
+matryoshka gateway --force
 # 开发循环（TS 更改时自动重载）：
 pnpm gateway:watch
 ```
@@ -72,11 +72,11 @@ pnpm gateway:watch
 
 - macOS：`bot.molt.<profile>`（旧版 `com.openclaw.*` 可能仍然存在）
 - Linux：`openclaw-gateway-<profile>.service`
-- Windows：`OpenClaw Gateway (<profile>)`
+- Windows：`MatryoshkaClaw Gateway (<profile>)`
 
 安装元数据嵌入在服务配置中：
 
-- `OPENCLAW_SERVICE_MARKER=openclaw`
+- `OPENCLAW_SERVICE_MARKER=matryoshka`
 - `OPENCLAW_SERVICE_KIND=gateway`
 - `OPENCLAW_SERVICE_VERSION=<version>`
 
@@ -87,11 +87,11 @@ pnpm gateway:watch
 快速路径：运行完全隔离的 dev 实例（配置/状态/工作区）而不触及你的主设置。
 
 ```bash
-openclaw --dev setup
-openclaw --dev gateway --allow-unconfigured
+matryoshka --dev setup
+matryoshka --dev gateway --allow-unconfigured
 # 然后定位到 dev 实例：
-openclaw --dev status
-openclaw --dev health
+matryoshka --dev status
+matryoshka --dev health
 ```
 
 默认值（可通过 env/flags/config 覆盖）：
@@ -121,15 +121,15 @@ openclaw --dev health
 按配置文件安装服务：
 
 ```bash
-openclaw --profile main gateway install
-openclaw --profile rescue gateway install
+matryoshka --profile main gateway install
+matryoshka --profile rescue gateway install
 ```
 
 示例：
 
 ```bash
-OPENCLAW_CONFIG_PATH=~/.openclaw/a.json OPENCLAW_STATE_DIR=~/.openclaw-a openclaw gateway --port 19001
-OPENCLAW_CONFIG_PATH=~/.openclaw/b.json OPENCLAW_STATE_DIR=~/.openclaw-b openclaw gateway --port 19002
+OPENCLAW_CONFIG_PATH=~/.openclaw/a.json OPENCLAW_STATE_DIR=~/.openclaw-a matryoshka gateway --port 19001
+OPENCLAW_CONFIG_PATH=~/.openclaw/b.json OPENCLAW_STATE_DIR=~/.openclaw-b matryoshka gateway --port 19002
 ```
 
 ## 协议（运维视角）
@@ -145,7 +145,7 @@ OPENCLAW_CONFIG_PATH=~/.openclaw/b.json OPENCLAW_STATE_DIR=~/.openclaw-b opencla
 
 ## 方法（初始集）
 
-- `health` — 完整健康快照（与 `openclaw health --json` 形状相同）。
+- `health` — 完整健康快照（与 `matryoshka health --json` 形状相同）。
 - `status` — 简短摘要。
 - `system-presence` — 当前 presence 列表。
 - `system-event` — 发布 presence/系统注释（结构化）。
@@ -205,26 +205,26 @@ OPENCLAW_CONFIG_PATH=~/.openclaw/b.json OPENCLAW_STATE_DIR=~/.openclaw-b opencla
 ## 监管（macOS 示例）
 
 - 使用 launchd 保持服务存活：
-  - Program：`openclaw` 的路径
+  - Program：`matryoshka` 的路径
   - Arguments：`gateway`
   - KeepAlive：true
   - StandardOut/Err：文件路径或 `syslog`
 - 失败时，launchd 重启；致命的配置错误应保持退出，以便运维人员注意到。
 - LaunchAgents 是按用户的，需要已登录的会话；对于无头设置，使用自定义 LaunchDaemon（未随附）。
-  - `openclaw gateway install` 写入 `~/Library/LaunchAgents/bot.molt.gateway.plist`
+  - `matryoshka gateway install` 写入 `~/Library/LaunchAgents/bot.molt.gateway.plist`
     （或 `bot.molt.<profile>.plist`；旧版 `com.openclaw.*` 会被清理）。
-  - `openclaw doctor` 审计 LaunchAgent 配置，可以将其更新为当前默认值。
+  - `matryoshka doctor` 审计 LaunchAgent 配置，可以将其更新为当前默认值。
 
 ## Gateway 网关服务管理（CLI）
 
 使用 Gateway 网关 CLI 进行 install/start/stop/restart/status：
 
 ```bash
-openclaw gateway status
-openclaw gateway install
-openclaw gateway stop
-openclaw gateway restart
-openclaw logs --follow
+matryoshka gateway status
+matryoshka gateway install
+matryoshka gateway stop
+matryoshka gateway restart
+matryoshka logs --follow
 ```
 
 注意事项：
@@ -237,40 +237,40 @@ openclaw logs --follow
 - `gateway status` 打印配置路径 + 探测目标以避免"localhost vs LAN 绑定"混淆和配置文件不匹配。
 - `gateway status` 在服务看起来正在运行但端口已关闭时包含最后一行 Gateway 网关错误。
 - `logs` 通过 RPC 尾随 Gateway 网关文件日志（无需手动 `tail`/`grep`）。
-- 如果检测到其他类似 Gateway 网关的服务，CLI 会发出警告，除非它们是 OpenClaw 配置文件服务。
+- 如果检测到其他类似 Gateway 网关的服务，CLI 会发出警告，除非它们是 MatryoshkaClaw 配置文件服务。
   我们仍然建议大多数设置**每台机器一个 Gateway 网关**；使用隔离的配置文件/端口进行冗余或救援机器人。参见[多个 Gateway 网关](/gateway/multiple-gateways)。
-  - 清理：`openclaw gateway uninstall`（当前服务）和 `openclaw doctor`（旧版迁移）。
-- `gateway install` 在已安装时是无操作的；使用 `openclaw gateway install --force` 重新安装（配置文件/env/路径更改）。
+  - 清理：`matryoshka gateway uninstall`（当前服务）和 `matryoshka doctor`（旧版迁移）。
+- `gateway install` 在已安装时是无操作的；使用 `matryoshka gateway install --force` 重新安装（配置文件/env/路径更改）。
 
 捆绑的 mac 应用：
 
-- OpenClaw.app 可以捆绑基于 Node 的 Gateway 网关中继并安装标记为
+- MatryoshkaClaw.app 可以捆绑基于 Node 的 Gateway 网关中继并安装标记为
   `bot.molt.gateway`（或 `bot.molt.<profile>`；旧版 `com.openclaw.*` 标签仍能干净卸载）的按用户 LaunchAgent。
-- 要干净地停止它，使用 `openclaw gateway stop`（或 `launchctl bootout gui/$UID/bot.molt.gateway`）。
-- 要重启，使用 `openclaw gateway restart`（或 `launchctl kickstart -k gui/$UID/bot.molt.gateway`）。
-  - `launchctl` 仅在 LaunchAgent 已安装时有效；否则先使用 `openclaw gateway install`。
+- 要干净地停止它，使用 `matryoshka gateway stop`（或 `launchctl bootout gui/$UID/bot.molt.gateway`）。
+- 要重启，使用 `matryoshka gateway restart`（或 `launchctl kickstart -k gui/$UID/bot.molt.gateway`）。
+  - `launchctl` 仅在 LaunchAgent 已安装时有效；否则先使用 `matryoshka gateway install`。
   - 运行命名配置文件时，将标签替换为 `bot.molt.<profile>`。
 
 ## 监管（systemd 用户单元）
 
-OpenClaw 在 Linux/WSL2 上默认安装 **systemd 用户服务**。我们
+MatryoshkaClaw 在 Linux/WSL2 上默认安装 **systemd 用户服务**。我们
 建议单用户机器使用用户服务（更简单的 env，按用户配置）。
 对于多用户或常驻服务器使用**系统服务**（无需 lingering，
 共享监管）。
 
-`openclaw gateway install` 写入用户单元。`openclaw doctor` 审计
+`matryoshka gateway install` 写入用户单元。`matryoshka doctor` 审计
 单元并可以将其更新以匹配当前推荐的默认值。
 
 创建 `~/.config/systemd/user/openclaw-gateway[-<profile>].service`：
 
 ```
 [Unit]
-Description=OpenClaw Gateway (profile: <profile>, v<version>)
+Description=MatryoshkaClaw Gateway (profile: <profile>, v<version>)
 After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/openclaw gateway --port 18789
+ExecStart=/usr/local/bin/matryoshka gateway --port 18789
 Restart=always
 RestartSec=5
 Environment=OPENCLAW_GATEWAY_TOKEN=
@@ -322,14 +322,14 @@ Windows 安装应使用 **WSL2** 并遵循上面的 Linux systemd 部分。
 
 ## CLI 辅助工具
 
-- `openclaw gateway health|status` — 通过 Gateway 网关 WS 请求 health/status。
-- `openclaw message send --target <num> --message "hi" [--media ...]` — 通过 Gateway 网关发送（对 WhatsApp 是幂等的）。
-- `openclaw agent --message "hi" --to <num>` — 运行智能体轮次（默认等待最终结果）。
-- `openclaw gateway call <method> --params '{"k":"v"}'` — 用于调试的原始方法调用器。
-- `openclaw gateway stop|restart` — 停止/重启受监管的 Gateway 网关服务（launchd/systemd）。
+- `matryoshka gateway health|status` — 通过 Gateway 网关 WS 请求 health/status。
+- `matryoshka message send --target <num> --message "hi" [--media ...]` — 通过 Gateway 网关发送（对 WhatsApp 是幂等的）。
+- `matryoshka agent --message "hi" --to <num>` — 运行智能体轮次（默认等待最终结果）。
+- `matryoshka gateway call <method> --params '{"k":"v"}'` — 用于调试的原始方法调用器。
+- `matryoshka gateway stop|restart` — 停止/重启受监管的 Gateway 网关服务（launchd/systemd）。
 - Gateway 网关辅助子命令假设 `--url` 上有运行中的 Gateway 网关；它们不再自动生成一个。
 
 ## 迁移指南
 
-- 淘汰 `openclaw gateway` 和旧版 TCP 控制端口的使用。
+- 淘汰 `matryoshka gateway` 和旧版 TCP 控制端口的使用。
 - 更新客户端以使用带有强制 connect 和结构化 presence 的 WS 协议。

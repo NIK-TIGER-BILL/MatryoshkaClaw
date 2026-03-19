@@ -150,7 +150,7 @@ Running on a VPS? See [Hetzner (Docker VPS)](/install/hetzner).
 
 Official pre-built images are published at:
 
-- [GitHub Container Registry package](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/pkgs/container/openclaw)
+- [GitHub Container Registry package](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/pkgs/container/matryoshka)
 
 Use image name `ghcr.io/openclaw/openclaw` (not similarly named Docker Hub
 images).
@@ -195,7 +195,7 @@ export OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest"
 ./docker-setup.sh
 ```
 
-The script detects that `OPENCLAW_IMAGE` is not the default `openclaw:local` and
+The script detects that `OPENCLAW_IMAGE` is not the default `matryoshka:local` and
 runs `docker pull` instead of `docker build`. Everything else (onboarding,
 gateway start, token generation) works the same way.
 
@@ -224,7 +224,7 @@ See [`ClawDock` Helper README](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/
 ### Manual flow (compose)
 
 ```bash
-docker build -t openclaw:local -f Dockerfile .
+docker build -t matryoshka:local -f Dockerfile .
 docker compose run --rm openclaw-cli onboard
 docker compose up -d openclaw-gateway
 ```
@@ -397,7 +397,7 @@ The image runs as `node` (uid 1000). If you see permission errors on
 Example (Linux host):
 
 ```bash
-sudo chown -R 1000:1000 /path/to/openclaw-config /path/to/openclaw-workspace
+sudo chown -R 1000:1000 /path/to/openclaw-config /path/to/matryoshka-workspace
 ```
 
 If you choose to run as root for convenience, you accept the security tradeoff.
@@ -540,7 +540,7 @@ docker compose run --rm openclaw-cli devices list --url ws://127.0.0.1:18789
 
 - **Persistent host data:** Docker Compose bind-mounts `OPENCLAW_CONFIG_DIR` to `/home/node/.openclaw` and `OPENCLAW_WORKSPACE_DIR` to `/home/node/.openclaw/workspace`, so those paths survive container replacement.
 - **Ephemeral sandbox tmpfs:** when `agents.defaults.sandbox` is enabled, the sandbox containers use `tmpfs` for `/tmp`, `/var/tmp`, and `/run`. Those mounts are separate from the top-level Compose stack and disappear with the sandbox container.
-- **Disk growth hotspots:** watch `media/`, `agents/<agentId>/sessions/sessions.json`, transcript JSONL files, `cron/runs/*.jsonl`, and rolling file logs under `/tmp/openclaw/` (or your configured `logging.file`). If you also run the macOS app outside Docker, its service logs are separate again: `~/.openclaw/logs/gateway.log`, `~/.openclaw/logs/gateway.err.log`, and `/tmp/openclaw/openclaw-gateway.log`.
+- **Disk growth hotspots:** watch `media/`, `agents/<agentId>/sessions/sessions.json`, transcript JSONL files, `cron/runs/*.jsonl`, and rolling file logs under `/tmp/matryoshka/` (or your configured `logging.file`). If you also run the macOS app outside Docker, its service logs are separate again: `~/.openclaw/logs/gateway.log`, `~/.openclaw/logs/gateway.err.log`, and `/tmp/matryoshka/openclaw-gateway.log`.
 
 ## Agent Sandbox (host gateway + Docker tools)
 
@@ -600,7 +600,7 @@ If you plan to install packages in `setupCommand`, note:
 - `user` must be root for `apt-get` (omit `user` or set `user: "0:0"`).
   MatryoshkaClaw auto-recreates containers when `setupCommand` (or docker config) changes
   unless the container was **recently used** (within ~5 minutes). Hot containers
-  log a warning with the exact `openclaw sandbox recreate ...` command.
+  log a warning with the exact `matryoshka sandbox recreate ...` command.
 
 ```json5
 {
@@ -792,14 +792,14 @@ Prune rules (`agents.defaults.sandbox.prune`) apply to browser containers too.
 Build your own image and point config to it:
 
 ```bash
-docker build -t my-openclaw-sbx -f Dockerfile.sandbox .
+docker build -t my-matryoshka-sbx -f Dockerfile.sandbox .
 ```
 
 ```json5
 {
   agents: {
     defaults: {
-      sandbox: { docker: { image: "my-openclaw-sbx" } },
+      sandbox: { docker: { image: "my-matryoshka-sbx" } },
     },
   },
 }

@@ -38,7 +38,7 @@ x-i18n:
 }
 ```
 
-`openclaw onboard`、`openclaw configure` 或 `openclaw setup` 将创建工作区并在缺失时填充引导文件。
+`matryoshka onboard`、`matryoshka configure` 或 `matryoshka setup` 将创建工作区并在缺失时填充引导文件。
 
 如果你已经自己管理工作区文件，可以禁用引导文件创建：
 
@@ -48,16 +48,16 @@ x-i18n:
 
 ## 额外的工作区文件夹
 
-旧版安装可能创建了 `~/openclaw`。保留多个工作区目录可能会导致混乱的认证或状态漂移，因为同一时间只有一个工作区是活动的。
+旧版安装可能创建了 `~/matryoshka`。保留多个工作区目录可能会导致混乱的认证或状态漂移，因为同一时间只有一个工作区是活动的。
 
-**建议：** 保持单个活动工作区。如果你不再使用额外的文件夹，请归档或移至废纸篓（例如 `trash ~/openclaw`）。
+**建议：** 保持单个活动工作区。如果你不再使用额外的文件夹，请归档或移至废纸篓（例如 `trash ~/matryoshka`）。
 如果你有意保留多个工作区，请确保 `agents.defaults.workspace` 指向活动的那个。
 
-`openclaw doctor` 在检测到额外工作区目录时会发出警告。
+`matryoshka doctor` 在检测到额外工作区目录时会发出警告。
 
 ## 工作区文件映射（每个文件的含义）
 
-这些是 OpenClaw 在工作区内期望的标准文件：
+这些是 MatryoshkaClaw 在工作区内期望的标准文件：
 
 - `AGENTS.md`
   - 智能体的操作指南以及它应该如何使用记忆。
@@ -110,8 +110,8 @@ x-i18n:
 - `canvas/`（可选）
   - 用于节点显示的 Canvas UI 文件（例如 `canvas/index.html`）。
 
-如果任何引导文件缺失，OpenClaw 会在会话中注入"缺失文件"标记并继续。大型引导文件在注入时会被截断；使用 `agents.defaults.bootstrapMaxChars` 调整限制（默认：20000）。
-`openclaw setup` 可以重新创建缺失的默认值而不覆盖现有文件。
+如果任何引导文件缺失，MatryoshkaClaw 会在会话中注入"缺失文件"标记并继续。大型引导文件在注入时会被截断；使用 `agents.defaults.bootstrapMaxChars` 调整限制（默认：20000）。
+`matryoshka setup` 可以重新创建缺失的默认值而不覆盖现有文件。
 
 ## 工作区中不包含的内容
 
@@ -160,7 +160,7 @@ git push -u origin main
 
 ```bash
 gh auth login
-gh repo create openclaw-workspace --private --source . --remote origin --push
+gh repo create matryoshka-workspace --private --source . --remote origin --push
 ```
 
 选项 C：GitLab 网页界面
@@ -209,7 +209,7 @@ git push
 
 1. 将仓库克隆到所需路径（默认 `~/.openclaw/workspace`）。
 2. 在 `~/.openclaw/openclaw.json` 中将 `agents.defaults.workspace` 设置为该路径。
-3. 运行 `openclaw setup --workspace <path>` 来填充任何缺失的文件。
+3. 运行 `matryoshka setup --workspace <path>` 来填充任何缺失的文件。
 4. 如果你需要会话，请单独从旧机器复制 `~/.openclaw/agents/<agentId>/sessions/`。
 
 ## 高级注意事项

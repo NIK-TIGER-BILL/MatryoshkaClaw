@@ -92,7 +92,7 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
       <Tab title="pnpm">
         ```bash
         pnpm add -g matryoshkaclaw@latest
-        pnpm approve-builds -g        # approve openclaw, node-llama-cpp, sharp, etc.
+        pnpm approve-builds -g        # approve matryoshka, node-llama-cpp, sharp, etc.
         matryoshka onboard --install-daemon
         ```
 
@@ -113,20 +113,20 @@ For VPS/cloud hosts, avoid third-party "1-click" marketplace images when possibl
 
         ```bash
         git clone https://github.com/NIK-TIGER-BILL/MatryoshkaClaw.git
-        cd openclaw
+        cd matryoshka
         pnpm install
         pnpm ui:build
         pnpm build
         ```
       </Step>
       <Step title="Link the CLI">
-        Make the `openclaw` command available globally:
+        Make the `matryoshka` command available globally:
 
         ```bash
         pnpm link --global
         ```
 
-        Alternatively, skip the link and run commands via `pnpm openclaw ...` from inside the repo.
+        Alternatively, skip the link and run commands via `pnpm matryoshka ...` from inside the repo.
       </Step>
       <Step title="Run onboarding">
         ```bash
@@ -178,7 +178,7 @@ If you need custom runtime paths, use:
 
 See [Environment vars](/help/environment) for precedence and full details.
 
-## Troubleshooting: `openclaw` not found
+## Troubleshooting: `matryoshka` not found
 
 <Accordion title="PATH diagnosis and fix">
   Quick diagnosis:
@@ -190,7 +190,7 @@ npm prefix -g
 echo "$PATH"
 ```
 
-If `$(npm prefix -g)/bin` (macOS/Linux) or `$(npm prefix -g)` (Windows) is **not** in your `$PATH`, your shell can't find global npm binaries (including `openclaw`).
+If `$(npm prefix -g)/bin` (macOS/Linux) or `$(npm prefix -g)` (Windows) is **not** in your `$PATH`, your shell can't find global npm binaries (including `matryoshka`).
 
 Fix — add it to your shell startup file (`~/.zshrc` or `~/.bashrc`):
 

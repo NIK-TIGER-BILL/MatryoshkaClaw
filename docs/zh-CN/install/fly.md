@@ -1,5 +1,5 @@
 ---
-description: Deploy OpenClaw on Fly.io
+description: Deploy MatryoshkaClaw on Fly.io
 title: Fly.io
 x-i18n:
   generated_at: "2026-02-03T07:52:55Z"
@@ -12,7 +12,7 @@ x-i18n:
 
 # Fly.io 部署
 
-**目标：** OpenClaw Gateway 网关运行在 [Fly.io](https://fly.io) 机器上，具有持久存储、自动 HTTPS 和 Discord/渠道访问。
+**目标：** MatryoshkaClaw Gateway 网关运行在 [Fly.io](https://fly.io) 机器上，具有持久存储、自动 HTTPS 和 Discord/渠道访问。
 
 ## 你需要什么
 
@@ -33,10 +33,10 @@ x-i18n:
 ```bash
 # Clone the repo
 git clone https://github.com/openclaw/openclaw.git
-cd openclaw
+cd matryoshka
 
 # Create a new Fly app (pick your own name)
-fly apps create my-openclaw
+fly apps create my-matryoshka
 
 # Create a persistent volume (1GB is usually enough)
 fly volumes create openclaw_data --size 1 --region iad
@@ -51,7 +51,7 @@ fly volumes create openclaw_data --size 1 --region iad
 **安全注意事项：** 默认配置暴露公共 URL。对于没有公共 IP 的加固部署，参见[私有部署](#私有部署加固)或使用 `fly.private.toml`。
 
 ```toml
-app = "my-openclaw"  # Your app name
+app = "my-matryoshka"  # Your app name
 primary_region = "iad"
 
 [build]
@@ -228,7 +228,7 @@ fly machine restart <machine-id>
 fly open
 ```
 
-或访问 `https://my-openclaw.fly.dev/`
+或访问 `https://my-matryoshka.fly.dev/`
 
 粘贴你的 Gateway 网关 token（来自 `OPENCLAW_GATEWAY_TOKEN` 的那个）进行认证。
 
@@ -385,18 +385,18 @@ fly deploy -c fly.private.toml
 
 ```bash
 # List current IPs
-fly ips list -a my-openclaw
+fly ips list -a my-matryoshka
 
 # Release public IPs
-fly ips release <public-ipv4> -a my-openclaw
-fly ips release <public-ipv6> -a my-openclaw
+fly ips release <public-ipv4> -a my-matryoshka
+fly ips release <public-ipv6> -a my-matryoshka
 
 # Switch to private config so future deploys don't re-allocate public IPs
 # (remove [http_service] or deploy with the private template)
 fly deploy -c fly.private.toml
 
 # Allocate private-only IPv6
-fly ips allocate-v6 --private -a my-openclaw
+fly ips allocate-v6 --private -a my-matryoshka
 ```
 
 此后，`fly ips list` 应该只显示 `private` 类型的 IP：
@@ -414,7 +414,7 @@ v6       fdaa:x:x:x:x::x      private          global
 
 ```bash
 # Forward local port 3000 to the app
-fly proxy 3000:3000 -a my-openclaw
+fly proxy 3000:3000 -a my-matryoshka
 
 # Then open http://localhost:3000 in browser
 ```
@@ -432,7 +432,7 @@ fly wireguard create
 **选项 3：仅 SSH**
 
 ```bash
-fly ssh console -a my-openclaw
+fly ssh console -a my-matryoshka
 ```
 
 ### 私有部署的 Webhooks

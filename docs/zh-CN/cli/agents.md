@@ -1,7 +1,7 @@
 ---
 read_when:
   - 你需要多个隔离的智能体（工作区 + 路由 + 认证）
-summary: "`openclaw agents` 的 CLI 参考（列出/添加/删除/设置身份）"
+summary: "`matryoshka agents` 的 CLI 参考（列出/添加/删除/设置身份）"
 title: agents
 x-i18n:
   generated_at: "2026-02-01T19:58:38Z"
@@ -12,7 +12,7 @@ x-i18n:
   workflow: 14
 ---
 
-# `openclaw agents`
+# `matryoshka agents`
 
 管理隔离的智能体（工作区 + 认证 + 路由）。
 
@@ -24,11 +24,11 @@ x-i18n:
 ## 示例
 
 ```bash
-openclaw agents list
-openclaw agents add work --workspace ~/.openclaw/workspace-work
-openclaw agents set-identity --workspace ~/.openclaw/workspace --from-identity
-openclaw agents set-identity --agent main --avatar avatars/openclaw.png
-openclaw agents delete work
+matryoshka agents list
+matryoshka agents add work --workspace ~/.openclaw/workspace-work
+matryoshka agents set-identity --workspace ~/.openclaw/workspace --from-identity
+matryoshka agents set-identity --agent main --avatar avatars/matryoshka.png
+matryoshka agents delete work
 ```
 
 ## 身份文件
@@ -52,13 +52,13 @@ openclaw agents delete work
 从 `IDENTITY.md` 加载：
 
 ```bash
-openclaw agents set-identity --workspace ~/.openclaw/workspace --from-identity
+matryoshka agents set-identity --workspace ~/.openclaw/workspace --from-identity
 ```
 
 显式覆盖字段：
 
 ```bash
-openclaw agents set-identity --agent main --name "OpenClaw" --emoji "🦞" --avatar avatars/openclaw.png
+matryoshka agents set-identity --agent main --name "MatryoshkaClaw" --emoji "🦞" --avatar avatars/matryoshka.png
 ```
 
 配置示例：
@@ -70,10 +70,10 @@ openclaw agents set-identity --agent main --name "OpenClaw" --emoji "🦞" --ava
       {
         id: "main",
         identity: {
-          name: "OpenClaw",
+          name: "MatryoshkaClaw",
           theme: "space lobster",
           emoji: "🦞",
-          avatar: "avatars/openclaw.png",
+          avatar: "avatars/matryoshka.png",
         },
       },
     ],

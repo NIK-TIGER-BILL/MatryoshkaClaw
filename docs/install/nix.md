@@ -9,7 +9,7 @@ title: "Nix"
 
 # Nix Installation
 
-The recommended way to run MatryoshkaClaw with Nix is via **[nix-openclaw](https://github.com/openclaw/nix-openclaw)** — a batteries-included Home Manager module.
+The recommended way to run MatryoshkaClaw with Nix is via **[nix-openclaw](https://github.com/matryoshka/nix-openclaw)** — a batteries-included Home Manager module.
 
 ## Quick Start
 
@@ -17,11 +17,11 @@ Paste this to your AI agent (Claude, Cursor, etc.):
 
 ```text
 I want to set up nix-openclaw on my Mac.
-Repository: github:openclaw/nix-openclaw
+Repository: github:matryoshka/nix-openclaw
 
 What I need you to do:
 1. Check if Determinate Nix is installed (if not, install it)
-2. Create a local flake at ~/code/openclaw-local using templates/agent-first/flake.nix
+2. Create a local flake at ~/code/matryoshka-local using templates/agent-first/flake.nix
 3. Help me create a Telegram bot (@BotFather) and get my chat ID (@userinfobot)
 4. Set up secrets (bot token, model provider API key) - plain files at ~/.secrets/ is fine
 5. Fill in the template placeholders and run home-manager switch
@@ -30,7 +30,7 @@ What I need you to do:
 Reference the nix-openclaw README for module options.
 ```
 
-> **📦 Full guide: [github.com/openclaw/nix-openclaw](https://github.com/openclaw/nix-openclaw)**
+> **📦 Full guide: [github.com/matryoshka/nix-openclaw](https://github.com/matryoshka/nix-openclaw)**
 >
 > The nix-openclaw repo is the source of truth for Nix installation. This page is just a quick overview.
 
@@ -58,7 +58,7 @@ On macOS, the GUI app does not automatically inherit shell env vars. You can
 also enable Nix mode via defaults:
 
 ```bash
-defaults write ai.openclaw.mac openclaw.nixMode -bool true
+defaults write ai.openclaw.mac matryoshka.nixMode -bool true
 ```
 
 ### Config + state paths
@@ -93,6 +93,6 @@ packaging and Nix builds (which do not rely on a full Xcode toolchain).
 
 ## Related
 
-- [nix-openclaw](https://github.com/openclaw/nix-openclaw) — full setup guide
+- [nix-openclaw](https://github.com/matryoshka/nix-openclaw) — full setup guide
 - [Wizard](/start/wizard) — non-Nix CLI setup
 - [Docker](/install/docker) — containerized setup

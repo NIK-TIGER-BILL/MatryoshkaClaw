@@ -14,7 +14,7 @@ This page assumes exe.dev's default **exeuntu** image. If you picked a different
 
 ## Beginner quick path
 
-1. [https://exe.new/openclaw](https://exe.new/openclaw)
+1. [https://exe.new/matryoshka](https://exe.new/matryoshka)
 2. Fill in your auth key/token as needed
 3. Click on "Agent" next to your VM, and wait...
 4. ???
@@ -31,7 +31,7 @@ Shelley, [exe.dev](https://exe.dev)'s agent, can install MatryoshkaClaw instantl
 prompt. The prompt used is as below:
 
 ```
-Set up MatryoshkaClaw (https://docs.github.com/NIK-TIGER-BILL/MatryoshkaClaw/install) on this VM. Use the non-interactive and accept-risk flags for matryoshka onboarding. Add the supplied auth or token as needed. Configure nginx to forward from the default port 18789 to the root location on the default enabled site config, making sure to enable Websocket support. Pairing is done by "openclaw devices list" and "openclaw devices approve <request id>". Make sure the dashboard shows that MatryoshkaClaw's health is OK. exe.dev handles forwarding from port 8000 to port 80/443 and HTTPS for us, so the final "reachable" should be <vm-name>.exe.xyz, without port specification.
+Set up MatryoshkaClaw (https://docs.github.com/NIK-TIGER-BILL/MatryoshkaClaw/install) on this VM. Use the non-interactive and accept-risk flags for matryoshka onboarding. Add the supplied auth or token as needed. Configure nginx to forward from the default port 18789 to the root location on the default enabled site config, making sure to enable Websocket support. Pairing is done by "matryoshka devices list" and "matryoshka devices approve <request id>". Make sure the dashboard shows that MatryoshkaClaw's health is OK. exe.dev handles forwarding from port 8000 to port 80/443 and HTTPS for us, so the final "reachable" should be <vm-name>.exe.xyz, without port specification.
 ```
 
 ## Manual installation
@@ -104,9 +104,9 @@ server {
 ## 5) Access MatryoshkaClaw and grant privileges
 
 Access `https://<vm-name>.exe.xyz/` (see the Control UI output from onboarding). If it prompts for auth, paste the
-token from `gateway.auth.token` on the VM (retrieve with `openclaw config get gateway.auth.token`, or generate one
-with `matryoshka doctor --generate-gateway-token`). Approve devices with `openclaw devices list` and
-`openclaw devices approve <requestId>`. When in doubt, use Shelley from your browser!
+token from `gateway.auth.token` on the VM (retrieve with `matryoshka config get gateway.auth.token`, or generate one
+with `matryoshka doctor --generate-gateway-token`). Approve devices with `matryoshka devices list` and
+`matryoshka devices approve <requestId>`. When in doubt, use Shelley from your browser!
 
 ## Remote Access
 
@@ -120,7 +120,7 @@ with email auth.
 npm i -g openclaw@latest
 matryoshka doctor
 matryoshka gateway restart
-openclaw health
+matryoshka health
 ```
 
 Guide: [Updating](/install/updating)

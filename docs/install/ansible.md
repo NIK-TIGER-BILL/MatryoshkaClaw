@@ -16,7 +16,7 @@ The recommended way to deploy MatryoshkaClaw to production servers is via **[ope
 One-command install:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/openclaw/openclaw-ansible/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/matryoshka/openclaw-ansible/main/install.sh | bash
 ```
 
 > **📦 Full guide: [github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw-ansible)**
@@ -54,7 +54,7 @@ Note: The gateway runs **directly on the host** (not in Docker), but agent sandb
 
 ## Post-Install Setup
 
-After installation completes, switch to the openclaw user:
+After installation completes, switch to the matryoshka user:
 
 ```bash
 sudo -i -u openclaw
@@ -71,17 +71,17 @@ The post-install script will guide you through:
 
 ```bash
 # Check service status
-sudo systemctl status openclaw
+sudo systemctl status matryoshka
 
 # View live logs
 sudo journalctl -u openclaw -f
 
 # Restart gateway
-sudo systemctl restart openclaw
+sudo systemctl restart matryoshka
 
-# Provider login (run as openclaw user)
+# Provider login (run as matryoshka user)
 sudo -i -u openclaw
-openclaw channels login
+matryoshka channels login
 ```
 
 ## Security Architecture
@@ -127,7 +127,7 @@ ansible-galaxy collection install -r requirements.yml
 # 4. Run playbook
 ./run-playbook.sh
 
-# Or run directly (then manually execute /tmp/openclaw-setup.sh after)
+# Or run directly (then manually execute /tmp/matryoshka-setup.sh after)
 # ansible-playbook playbook.yml --ask-become-pass
 ```
 
@@ -161,11 +161,11 @@ If you're locked out:
 sudo journalctl -u openclaw -n 100
 
 # Verify permissions
-sudo ls -la /opt/openclaw
+sudo ls -la /opt/matryoshka
 
 # Test manual start
 sudo -i -u openclaw
-cd ~/openclaw
+cd ~/matryoshka
 pnpm start
 ```
 
@@ -185,11 +185,11 @@ sudo -u openclaw ./scripts/sandbox-setup.sh
 
 ### Provider login fails
 
-Make sure you're running as the `openclaw` user:
+Make sure you're running as the `matryoshka` user:
 
 ```bash
 sudo -i -u openclaw
-openclaw channels login
+matryoshka channels login
 ```
 
 ## Advanced Configuration

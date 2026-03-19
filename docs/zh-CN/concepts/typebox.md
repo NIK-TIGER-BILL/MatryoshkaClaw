@@ -91,7 +91,7 @@ Connect（第一条消息）：
     "minProtocol": 2,
     "maxProtocol": 2,
     "client": {
-      "id": "openclaw-macos",
+      "id": "matryoshka-macos",
       "displayName": "macos",
       "version": "1.0.0",
       "platform": "macos 15.1",

@@ -8,7 +8,7 @@ title: "Updating"
 
 # Updating
 
-MatryoshkaClaw is moving fast (pre “1.0”). Treat updates like shipping infra: update → run checks → restart (or use `openclaw update`, which restarts) → verify.
+MatryoshkaClaw is moving fast (pre “1.0”). Treat updates like shipping infra: update → run checks → restart (or use `matryoshka update`, which restarts) → verify.
 
 ## Recommended: re-run the website installer (upgrade in place)
 
@@ -60,9 +60,9 @@ We do **not** recommend Bun for the Gateway runtime (WhatsApp/Telegram bugs).
 To switch update channels (git + npm installs):
 
 ```bash
-openclaw update --channel beta
-openclaw update --channel dev
-openclaw update --channel stable
+matryoshka update --channel beta
+matryoshka update --channel dev
+matryoshka update --channel stable
 ```
 
 Use `--tag <dist-tag|version>` for a one-off install tag/version.
@@ -93,16 +93,16 @@ Behavior:
 
 - `stable`: when a new version is seen, MatryoshkaClaw waits `stableDelayHours` and then applies a deterministic per-install jitter in `stableJitterHours` (spread rollout).
 - `beta`: checks on `betaCheckIntervalHours` cadence (default: hourly) and applies when an update is available.
-- `dev`: no automatic apply; use manual `openclaw update`.
+- `dev`: no automatic apply; use manual `matryoshka update`.
 
-Use `openclaw update --dry-run` to preview update actions before enabling automation.
+Use `matryoshka update --dry-run` to preview update actions before enabling automation.
 
 Then:
 
 ```bash
 matryoshka doctor
 matryoshka gateway restart
-openclaw health
+matryoshka health
 ```
 
 Notes:
@@ -110,12 +110,12 @@ Notes:
 - If your Gateway runs as a service, `matryoshka gateway restart` is preferred over killing PIDs.
 - If you’re pinned to a specific version, see “Rollback / pinning” below.
 
-## Update (`openclaw update`)
+## Update (`matryoshka update`)
 
 For **source installs** (git checkout), prefer:
 
 ```bash
-openclaw update
+matryoshka update
 ```
 
 It runs a safe-ish update flow:
@@ -126,13 +126,13 @@ It runs a safe-ish update flow:
 - Installs deps, builds, builds the Control UI, and runs `matryoshka doctor`.
 - Restarts the gateway by default (use `--no-restart` to skip).
 
-If you installed via **npm/pnpm** (no git metadata), `openclaw update` will try to update via your package manager. If it can’t detect the install, use “Update (global install)” instead.
+If you installed via **npm/pnpm** (no git metadata), `matryoshka update` will try to update via your package manager. If it can’t detect the install, use “Update (global install)” instead.
 
 ## Update (Control UI / RPC)
 
 The Control UI has **Update & Restart** (RPC: `update.run`). It:
 
-1. Runs the same source-update flow as `openclaw update` (git checkout only).
+1. Runs the same source-update flow as `matryoshka update` (git checkout only).
 2. Writes a restart sentinel with a structured report (stdout/stderr tail).
 3. Restarts the gateway and pings the last active session with the report.
 
@@ -145,7 +145,7 @@ From the repo checkout:
 Preferred:
 
 ```bash
-openclaw update
+matryoshka update
 ```
 
 Manual (equivalent-ish):
@@ -156,21 +156,21 @@ pnpm install
 pnpm build
 pnpm ui:build # auto-installs UI deps on first run
 matryoshka doctor
-openclaw health
+matryoshka health
 ```
 
 Notes:
 
-- `pnpm build` matters when you run the packaged `openclaw` binary ([`openclaw.mjs`](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/blob/main/openclaw.mjs)) or use Node to run `dist/`.
-- If you run from a repo checkout without a global install, use `pnpm openclaw ...` for CLI commands.
-- If you run directly from TypeScript (`pnpm openclaw ...`), a rebuild is usually unnecessary, but **config migrations still apply** → run doctor.
+- `pnpm build` matters when you run the packaged `matryoshka` binary ([`openclaw.mjs`](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/blob/main/openclaw.mjs)) or use Node to run `dist/`.
+- If you run from a repo checkout without a global install, use `pnpm matryoshka ...` for CLI commands.
+- If you run directly from TypeScript (`pnpm matryoshka ...`), a rebuild is usually unnecessary, but **config migrations still apply** → run doctor.
 - Switching between global and git installs is easy: install the other flavor, then run `matryoshka doctor` so the gateway service entrypoint is rewritten to the current install.
 
 ## Always Run: `matryoshka doctor`
 
 Doctor is the “safe update” command. It’s intentionally boring: repair + migrate + warn.
 
-Note: if you’re on a **source install** (git checkout), `matryoshka doctor` will offer to run `openclaw update` first.
+Note: if you’re on a **source install** (git checkout), `matryoshka doctor` will offer to run `matryoshka update` first.
 
 Typical things it does:
 
@@ -191,7 +191,7 @@ matryoshka gateway status
 matryoshka gateway stop
 matryoshka gateway restart
 matryoshka gateway --port 18789
-openclaw logs --follow
+matryoshka logs --follow
 ```
 
 If you’re supervised:
@@ -217,7 +217,7 @@ npm i -g openclaw@<version>
 pnpm add -g matryoshkaclaw@<version>
 ```
 
-Tip: to see the current published version, run `npm view openclaw version`.
+Tip: to see the current published version, run `npm view matryoshka version`.
 
 Then restart + re-run doctor:
 

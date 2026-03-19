@@ -10,7 +10,7 @@ sidebarTitle: "Wizard Reference"
 
 # Onboarding Wizard Reference
 
-This is the full reference for the `openclaw onboard` CLI wizard.
+This is the full reference for the `matryoshka onboard` CLI wizard.
 For a high-level overview, see [Onboarding Wizard](/start/wizard).
 
 ## Flow details (local mode)
@@ -23,7 +23,7 @@ For a high-level overview, see [Onboarding Wizard](/start/wizard).
     - CLI `--reset` defaults to `config+creds+sessions`; use `--reset-scope full`
       to also remove workspace.
     - If the config is invalid or contains legacy keys, the wizard stops and asks
-      you to run `openclaw doctor` before continuing.
+      you to run `matryoshka doctor` before continuing.
     - Reset uses `trash` (never `rm`) and offers scopes:
       - Config only
       - Config + credentials + sessions
@@ -92,13 +92,13 @@ For a high-level overview, see [Onboarding Wizard](/start/wizard).
     - [Signal](/channels/signal): optional `signal-cli` install + account config.
     - [BlueBubbles](/channels/bluebubbles): **recommended for iMessage**; server URL + password + webhook.
     - [iMessage](/channels/imessage): legacy `imsg` CLI path + DB access.
-    - DM security: default is pairing. First DM sends a code; approve via `openclaw pairing approve <channel> <code>` or use allowlists.
+    - DM security: default is pairing. First DM sends a code; approve via `matryoshka pairing approve <channel> <code>` or use allowlists.
   </Step>
   <Step title="Web search">
     - Pick a provider: Perplexity, Brave, Gemini, Grok, or Kimi (or skip).
     - Paste your API key (QuickStart auto-detects keys from env vars or existing config).
     - Skip with `--skip-search`.
-    - Configure later: `openclaw configure --section web`.
+    - Configure later: `matryoshka configure --section web`.
   </Step>
   <Step title="Daemon install">
     - macOS: LaunchAgent
@@ -112,8 +112,8 @@ For a high-level overview, see [Onboarding Wizard](/start/wizard).
     - If both `gateway.auth.token` and `gateway.auth.password` are configured and `gateway.auth.mode` is unset, daemon install is blocked until mode is set explicitly.
   </Step>
   <Step title="Health check">
-    - Starts the Gateway (if needed) and runs `openclaw health`.
-    - Tip: `openclaw status --deep` adds gateway health probes to status output (requires a reachable gateway).
+    - Starts the Gateway (if needed) and runs `matryoshka health`.
+    - Tip: `matryoshka status --deep` adds gateway health probes to status output (requires a reachable gateway).
   </Step>
   <Step title="Skills (recommended)">
     - Reads the available skills and checks requirements.
@@ -135,7 +135,7 @@ If the Control UI assets are missing, the wizard attempts to build them; fallbac
 Use `--non-interactive` to automate or script onboarding:
 
 ```bash
-openclaw onboard --non-interactive \
+matryoshka onboard --non-interactive \
   --mode local \
   --auth-choice apiKey \
   --anthropic-api-key "$ANTHROPIC_API_KEY" \
@@ -152,7 +152,7 @@ Gateway token SecretRef in non-interactive mode:
 
 ```bash
 export OPENCLAW_GATEWAY_TOKEN="your-token"
-openclaw onboard --non-interactive \
+matryoshka onboard --non-interactive \
   --mode local \
   --auth-choice skip \
   --gateway-auth token \
@@ -168,7 +168,7 @@ openclaw onboard --non-interactive \
 <AccordionGroup>
   <Accordion title="Gemini example">
     ```bash
-    openclaw onboard --non-interactive \
+    matryoshka onboard --non-interactive \
       --mode local \
       --auth-choice gemini-api-key \
       --gemini-api-key "$GEMINI_API_KEY" \
@@ -178,7 +178,7 @@ openclaw onboard --non-interactive \
   </Accordion>
   <Accordion title="Z.AI example">
     ```bash
-    openclaw onboard --non-interactive \
+    matryoshka onboard --non-interactive \
       --mode local \
       --auth-choice zai-api-key \
       --zai-api-key "$ZAI_API_KEY" \
@@ -188,7 +188,7 @@ openclaw onboard --non-interactive \
   </Accordion>
   <Accordion title="Vercel AI Gateway example">
     ```bash
-    openclaw onboard --non-interactive \
+    matryoshka onboard --non-interactive \
       --mode local \
       --auth-choice ai-gateway-api-key \
       --ai-gateway-api-key "$AI_GATEWAY_API_KEY" \
@@ -198,7 +198,7 @@ openclaw onboard --non-interactive \
   </Accordion>
   <Accordion title="Cloudflare AI Gateway example">
     ```bash
-    openclaw onboard --non-interactive \
+    matryoshka onboard --non-interactive \
       --mode local \
       --auth-choice cloudflare-ai-gateway-api-key \
       --cloudflare-ai-gateway-account-id "your-account-id" \
@@ -210,7 +210,7 @@ openclaw onboard --non-interactive \
   </Accordion>
   <Accordion title="Moonshot example">
     ```bash
-    openclaw onboard --non-interactive \
+    matryoshka onboard --non-interactive \
       --mode local \
       --auth-choice moonshot-api-key \
       --moonshot-api-key "$MOONSHOT_API_KEY" \
@@ -220,7 +220,7 @@ openclaw onboard --non-interactive \
   </Accordion>
   <Accordion title="Synthetic example">
     ```bash
-    openclaw onboard --non-interactive \
+    matryoshka onboard --non-interactive \
       --mode local \
       --auth-choice synthetic-api-key \
       --synthetic-api-key "$SYNTHETIC_API_KEY" \
@@ -230,7 +230,7 @@ openclaw onboard --non-interactive \
   </Accordion>
   <Accordion title="OpenCode example">
     ```bash
-    openclaw onboard --non-interactive \
+    matryoshka onboard --non-interactive \
       --mode local \
       --auth-choice opencode-zen \
       --opencode-zen-api-key "$OPENCODE_API_KEY" \
@@ -244,7 +244,7 @@ openclaw onboard --non-interactive \
 ### Add agent (non-interactive)
 
 ```bash
-openclaw agents add work \
+matryoshka agents add work \
   --workspace ~/.openclaw/workspace-work \
   --model openai/gpt-5.2 \
   --bind whatsapp:biz \
@@ -289,7 +289,7 @@ Typical fields in `~/.openclaw/openclaw.json`:
 - `wizard.lastRunCommand`
 - `wizard.lastRunMode`
 
-`openclaw agents add` writes `agents.list[]` and optional `bindings`.
+`matryoshka agents add` writes `agents.list[]` and optional `bindings`.
 
 WhatsApp credentials go under `~/.openclaw/credentials/whatsapp/<accountId>/`.
 Sessions are stored under `~/.openclaw/agents/<agentId>/sessions/`.

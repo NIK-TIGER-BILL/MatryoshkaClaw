@@ -108,7 +108,7 @@ docker compose version
 
 ```bash
 git clone https://github.com/NIK-TIGER-BILL/MatryoshkaClaw.git
-cd openclaw
+cd matryoshka
 ```
 
 This guide assumes you will build a custom image to guarantee binary persistence.
@@ -134,7 +134,7 @@ chown -R 1000:1000 /root/.openclaw
 Create `.env` in the repository root.
 
 ```bash
-OPENCLAW_IMAGE=openclaw:latest
+OPENCLAW_IMAGE=matryoshka:latest
 OPENCLAW_GATEWAY_TOKEN=change-me-now
 OPENCLAW_GATEWAY_BIND=lan
 OPENCLAW_GATEWAY_PORT=18789

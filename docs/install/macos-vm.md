@@ -172,7 +172,7 @@ Add your channels:
 Then login to WhatsApp (scan QR):
 
 ```bash
-openclaw channels login
+matryoshka channels login
 ```
 
 ---
@@ -233,14 +233,14 @@ Before customizing further, snapshot your clean state:
 
 ```bash
 lume stop openclaw
-lume clone openclaw openclaw-golden
+lume clone openclaw matryoshka-golden
 ```
 
 Reset anytime:
 
 ```bash
 lume stop openclaw && lume delete openclaw
-lume clone openclaw-golden openclaw
+lume clone openclaw-golden matryoshka
 lume run openclaw --no-display
 ```
 
@@ -265,7 +265,7 @@ For true always-on, consider a dedicated Mac mini or a small VPS. See [VPS hosti
 | Can't SSH into VM        | Check "Remote Login" is enabled in VM's System Settings                            |
 | VM IP not showing        | Wait for VM to fully boot, run `lume get openclaw` again                           |
 | Lume command not found   | Add `~/.local/bin` to your PATH                                                    |
-| WhatsApp QR not scanning | Ensure you're logged into the VM (not host) when running `openclaw channels login` |
+| WhatsApp QR not scanning | Ensure you're logged into the VM (not host) when running `matryoshka channels login` |
 
 ---
 

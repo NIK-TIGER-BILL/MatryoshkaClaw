@@ -46,7 +46,7 @@ Docker 是可选的；这仅用于容器化的新手引导冒烟测试。
 scripts/e2e/onboard-docker.sh
 ```
 
-此脚本通过伪终端驱动交互式向导，验证配置/工作区/会话文件，然后启动 Gateway 网关并运行 `openclaw health`。
+此脚本通过伪终端驱动交互式向导，验证配置/工作区/会话文件，然后启动 Gateway 网关并运行 `matryoshka health`。
 
 ## QR 导入冒烟测试（Docker）
 

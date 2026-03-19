@@ -89,8 +89,8 @@ All steps can be done via the web UI at [https://console.cloud.google.com](https
 **CLI:**
 
 ```bash
-gcloud projects create my-openclaw-project --name="MatryoshkaClaw Gateway"
-gcloud config set project my-openclaw-project
+gcloud projects create my-matryoshka-project --name="MatryoshkaClaw Gateway"
+gcloud config set project my-matryoshka-project
 ```
 
 Enable billing at [https://console.cloud.google.com/billing](https://console.cloud.google.com/billing) (required for Compute Engine).
@@ -192,7 +192,7 @@ docker compose version
 
 ```bash
 git clone https://github.com/NIK-TIGER-BILL/MatryoshkaClaw.git
-cd openclaw
+cd matryoshka
 ```
 
 This guide assumes you will build a custom image to guarantee binary persistence.
@@ -216,7 +216,7 @@ mkdir -p ~/.openclaw/workspace
 Create `.env` in the repository root.
 
 ```bash
-OPENCLAW_IMAGE=openclaw:latest
+OPENCLAW_IMAGE=matryoshka:latest
 OPENCLAW_GATEWAY_TOKEN=change-me-now
 OPENCLAW_GATEWAY_BIND=lan
 OPENCLAW_GATEWAY_PORT=18789
@@ -447,7 +447,7 @@ All long-lived state must survive restarts, rebuilds, and reboots.
 To update MatryoshkaClaw on the VM:
 
 ```bash
-cd ~/openclaw
+cd ~/matryoshka
 git pull
 docker compose build
 docker compose up -d
@@ -506,8 +506,8 @@ For automation or CI/CD pipelines, create a dedicated service account with minim
 2. Grant Compute Instance Admin role (or narrower custom role):
 
    ```bash
-   gcloud projects add-iam-policy-binding my-openclaw-project \
-     --member="serviceAccount:openclaw-deploy@my-openclaw-project.iam.gserviceaccount.com" \
+   gcloud projects add-iam-policy-binding my-matryoshka-project \
+     --member="serviceAccount:openclaw-deploy@my-matryoshka-project.iam.gserviceaccount.com" \
      --role="roles/compute.instanceAdmin.v1"
    ```
 

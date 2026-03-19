@@ -1,8 +1,8 @@
 ---
 read_when:
-  - 你想从机器上移除 OpenClaw
+  - 你想从机器上移除 MatryoshkaClaw
   - 卸载后 Gateway 网关服务仍在运行
-summary: 完全卸载 OpenClaw（CLI、服务、状态、工作区）
+summary: 完全卸载 MatryoshkaClaw（CLI、服务、状态、工作区）
 title: 卸载
 x-i18n:
   generated_at: "2026-02-03T07:50:10Z"
@@ -17,7 +17,7 @@ x-i18n:
 
 两种方式：
 
-- 如果 `openclaw` 仍已安装，使用**简单方式**。
+- 如果 `matryoshka` 仍已安装，使用**简单方式**。
 - 如果 CLI 已删除但服务仍在运行，使用**手动服务移除**。
 
 ## 简单方式（CLI 仍已安装）
@@ -25,14 +25,14 @@ x-i18n:
 推荐：使用内置卸载程序：
 
 ```bash
-openclaw uninstall
+matryoshka uninstall
 ```
 
 非交互式（自动化 / npx）：
 
 ```bash
-openclaw uninstall --all --yes --non-interactive
-npx -y openclaw uninstall --all --yes --non-interactive
+matryoshka uninstall --all --yes --non-interactive
+npx -y matryoshka uninstall --all --yes --non-interactive
 ```
 
 手动步骤（效果相同）：
@@ -40,13 +40,13 @@ npx -y openclaw uninstall --all --yes --non-interactive
 1. 停止 Gateway 网关服务：
 
 ```bash
-openclaw gateway stop
+matryoshka gateway stop
 ```
 
 2. 卸载 Gateway 网关服务（launchd/systemd/schtasks）：
 
 ```bash
-openclaw gateway uninstall
+matryoshka gateway uninstall
 ```
 
 3. 删除状态 + 配置：
@@ -66,15 +66,15 @@ rm -rf ~/.openclaw/workspace
 5. 移除 CLI 安装（选择你使用的那个）：
 
 ```bash
-npm rm -g openclaw
-pnpm remove -g openclaw
-bun remove -g openclaw
+npm rm -g matryoshka
+pnpm remove -g matryoshka
+bun remove -g matryoshka
 ```
 
 6. 如果你安装了 macOS 应用：
 
 ```bash
-rm -rf /Applications/OpenClaw.app
+rm -rf /Applications/MatryoshkaClaw.app
 ```
 
 注意事项：
@@ -84,7 +84,7 @@ rm -rf /Applications/OpenClaw.app
 
 ## 手动服务移除（CLI 未安装）
 
-如果 Gateway 网关服务持续运行但 `openclaw` 缺失，请使用此方法。
+如果 Gateway 网关服务持续运行但 `matryoshka` 缺失，请使用此方法。
 
 ### macOS（launchd）
 
@@ -109,11 +109,11 @@ systemctl --user daemon-reload
 
 ### Windows（计划任务）
 
-默认任务名称是 `OpenClaw Gateway`（或 `OpenClaw Gateway (<profile>)`）。
+默认任务名称是 `MatryoshkaClaw Gateway`（或 `MatryoshkaClaw Gateway (<profile>)`）。
 任务脚本位于你的状态目录下。
 
 ```powershell
-schtasks /Delete /F /TN "OpenClaw Gateway"
+schtasks /Delete /F /TN "MatryoshkaClaw Gateway"
 Remove-Item -Force "$env:USERPROFILE\.openclaw\gateway.cmd"
 ```
 
@@ -124,11 +124,11 @@ Remove-Item -Force "$env:USERPROFILE\.openclaw\gateway.cmd"
 ### 普通安装（install.sh / npm / pnpm / bun）
 
 如果你使用了 `https://openclaw.ai/install.sh` 或 `install.ps1`，CLI 是通过 `npm install -g openclaw@latest` 安装的。
-使用 `npm rm -g openclaw` 移除（或 `pnpm remove -g` / `bun remove -g`，如果你是用那种方式安装的）。
+使用 `npm rm -g matryoshka` 移除（或 `pnpm remove -g` / `bun remove -g`，如果你是用那种方式安装的）。
 
 ### 源码检出（git clone）
 
-如果你从仓库检出运行（`git clone` + `openclaw ...` / `bun run openclaw ...`）：
+如果你从仓库检出运行（`git clone` + `matryoshka ...` / `bun run matryoshka ...`）：
 
 1. 在删除仓库**之前**卸载 Gateway 网关服务（使用上面的简单方式或手动服务移除）。
 2. 删除仓库目录。

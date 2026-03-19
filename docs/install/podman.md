@@ -53,27 +53,27 @@ Then open `http://127.0.0.1:18789/` and use the token from `~openclaw/.openclaw/
 
 ## Systemd (Quadlet, optional)
 
-If you ran `./setup-podman.sh --quadlet` (or `OPENCLAW_PODMAN_QUADLET=1`), a [Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) unit is installed so the gateway runs as a systemd user service for the openclaw user. The service is enabled and started at the end of setup.
+If you ran `./setup-podman.sh --quadlet` (or `OPENCLAW_PODMAN_QUADLET=1`), a [Podman Quadlet](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html) unit is installed so the gateway runs as a systemd user service for the matryoshka user. The service is enabled and started at the end of setup.
 
 - **Start:** `sudo systemctl --machine openclaw@ --user start openclaw.service`
 - **Stop:** `sudo systemctl --machine openclaw@ --user stop openclaw.service`
 - **Status:** `sudo systemctl --machine openclaw@ --user status openclaw.service`
 - **Logs:** `sudo journalctl --machine openclaw@ --user -u openclaw.service -f`
 
-The quadlet file lives at `~openclaw/.config/containers/systemd/openclaw.container`. To change ports or env, edit that file (or the `.env` it sources), then `sudo systemctl --machine openclaw@ --user daemon-reload` and restart the service. On boot, the service starts automatically if lingering is enabled for openclaw (setup does this when loginctl is available).
+The quadlet file lives at `~openclaw/.config/containers/systemd/openclaw.container`. To change ports or env, edit that file (or the `.env` it sources), then `sudo systemctl --machine openclaw@ --user daemon-reload` and restart the service. On boot, the service starts automatically if lingering is enabled for matryoshka (setup does this when loginctl is available).
 
 To add quadlet **after** an initial setup that did not use it, re-run: `./setup-podman.sh --quadlet`.
 
-## The openclaw user (non-login)
+## The matryoshka user (non-login)
 
-`setup-podman.sh` creates a dedicated system user `openclaw`:
+`setup-podman.sh` creates a dedicated system user `matryoshka`:
 
 - **Shell:** `nologin` — no interactive login; reduces attack surface.
 - **Home:** e.g. `/home/openclaw` — holds `~/.openclaw` (config, workspace) and the launch script `run-openclaw-podman.sh`.
 - **Rootless Podman:** The user must have a **subuid** and **subgid** range. Many distros assign these automatically when the user is created. If setup prints a warning, add lines to `/etc/subuid` and `/etc/subgid`:
 
   ```text
-  openclaw:100000:65536
+  matryoshka:100000:65536
   ```
 
   Then start the gateway as that user (e.g. from cron or systemd):
@@ -83,7 +83,7 @@ To add quadlet **after** an initial setup that did not use it, re-run: `./setup-
   sudo -u openclaw /home/openclaw/run-openclaw-podman.sh setup
   ```
 
-- **Config:** Only `openclaw` and root can access `/home/openclaw/.openclaw`. To edit config: use the Control UI once the gateway is running, or `sudo -u openclaw $EDITOR /home/openclaw/.openclaw/openclaw.json`.
+- **Config:** Only `matryoshka` and root can access `/home/openclaw/.openclaw`. To edit config: use the Control UI once the gateway is running, or `sudo -u openclaw $EDITOR /home/openclaw/.openclaw/openclaw.json`.
 
 ## Environment and config
 
@@ -97,7 +97,7 @@ To add quadlet **after** an initial setup that did not use it, re-run: `./setup-
 
 - **Persistent host data:** `OPENCLAW_CONFIG_DIR` and `OPENCLAW_WORKSPACE_DIR` are bind-mounted into the container and retain state on the host.
 - **Ephemeral sandbox tmpfs:** if you enable `agents.defaults.sandbox`, the tool sandbox containers mount `tmpfs` at `/tmp`, `/var/tmp`, and `/run`. Those paths are memory-backed and disappear with the sandbox container; the top-level Podman container setup does not add its own tmpfs mounts.
-- **Disk growth hotspots:** the main paths to watch are `media/`, `agents/<agentId>/sessions/sessions.json`, transcript JSONL files, `cron/runs/*.jsonl`, and rolling file logs under `/tmp/openclaw/` (or your configured `logging.file`).
+- **Disk growth hotspots:** the main paths to watch are `media/`, `agents/<agentId>/sessions/sessions.json`, transcript JSONL files, `cron/runs/*.jsonl`, and rolling file logs under `/tmp/matryoshka/` (or your configured `logging.file`).
 
 `setup-podman.sh` now stages the image tar in a private temp directory and prints the chosen base dir during setup. For non-root runs it accepts `TMPDIR` only when that base is safe to use; otherwise it falls back to `/var/tmp`, then `/tmp`. The saved tar stays owner-only and is streamed into the target user’s `podman load`, so private caller temp dirs do not block setup.
 
@@ -112,11 +112,11 @@ To add quadlet **after** an initial setup that did not use it, re-run: `./setup-
 
 - **Permission denied (EACCES) on config or auth-profiles:** The container defaults to `--userns=keep-id` and runs as the same uid/gid as the host user running the script. Ensure your host `OPENCLAW_CONFIG_DIR` and `OPENCLAW_WORKSPACE_DIR` are owned by that user.
 - **Gateway start blocked (missing `gateway.mode=local`):** Ensure `~openclaw/.openclaw/openclaw.json` exists and sets `gateway.mode="local"`. `setup-podman.sh` creates this file if missing.
-- **Rootless Podman fails for user openclaw:** Check `/etc/subuid` and `/etc/subgid` contain a line for `openclaw` (e.g. `openclaw:100000:65536`). Add it if missing and restart.
+- **Rootless Podman fails for user matryoshka:** Check `/etc/subuid` and `/etc/subgid` contain a line for `matryoshka` (e.g. `matryoshka:100000:65536`). Add it if missing and restart.
 - **Container name in use:** The launch script uses `podman run --replace`, so the existing container is replaced when you start again. To clean up manually: `podman rm -f openclaw`.
-- **Script not found when running as openclaw:** Ensure `setup-podman.sh` was run so that `run-openclaw-podman.sh` is copied to openclaw’s home (e.g. `/home/openclaw/run-openclaw-podman.sh`).
+- **Script not found when running as matryoshka:** Ensure `setup-podman.sh` was run so that `run-openclaw-podman.sh` is copied to matryoshka’s home (e.g. `/home/openclaw/run-openclaw-podman.sh`).
 - **Quadlet service not found or fails to start:** Run `sudo systemctl --machine openclaw@ --user daemon-reload` after editing the `.container` file. Quadlet requires cgroups v2: `podman info --format '{{.Host.CgroupsVersion}}'` should show `2`.
 
 ## Optional: run as your own user
 
-To run the gateway as your normal user (no dedicated openclaw user): build the image, create `~/.openclaw/.env` with `OPENCLAW_GATEWAY_TOKEN`, and run the container with `--userns=keep-id` and mounts to your `~/.openclaw`. The launch script is designed for the openclaw-user flow; for a single-user setup you can instead run the `podman run` command from the script manually, pointing config and workspace to your home. Recommended for most users: use `setup-podman.sh` and run as the openclaw user so config and process are isolated.
+To run the gateway as your normal user (no dedicated matryoshka user): build the image, create `~/.openclaw/.env` with `OPENCLAW_GATEWAY_TOKEN`, and run the container with `--userns=keep-id` and mounts to your `~/.openclaw`. The launch script is designed for the matryoshka-user flow; for a single-user setup you can instead run the `podman run` command from the script manually, pointing config and workspace to your home. Recommended for most users: use `setup-podman.sh` and run as the matryoshka user so config and process are isolated.

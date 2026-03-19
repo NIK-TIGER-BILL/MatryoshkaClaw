@@ -30,10 +30,10 @@ read_when:
 ```bash
 # Clone the repo
 git clone https://github.com/NIK-TIGER-BILL/MatryoshkaClaw.git
-cd openclaw
+cd matryoshka
 
 # Create a new Fly app (pick your own name)
-fly apps create my-openclaw
+fly apps create my-matryoshka
 
 # Create a persistent volume (1GB is usually enough)
 fly volumes create openclaw_data --size 1 --region iad
@@ -48,7 +48,7 @@ Edit `fly.toml` to match your app name and requirements.
 **Security note:** The default config exposes a public URL. For a hardened deployment with no public IP, see [Private Deployment](#private-deployment-hardened) or use `fly.private.toml`.
 
 ```toml
-app = "my-openclaw"  # Your app name
+app = "my-matryoshka"  # Your app name
 primary_region = "iad"
 
 [build]
@@ -225,7 +225,7 @@ Open in browser:
 fly open
 ```
 
-Or visit `https://my-openclaw.fly.dev/`
+Or visit `https://my-matryoshka.fly.dev/`
 
 Paste your gateway token (the one from `OPENCLAW_GATEWAY_TOKEN`) to authenticate.
 
@@ -382,18 +382,18 @@ Or convert an existing deployment:
 
 ```bash
 # List current IPs
-fly ips list -a my-openclaw
+fly ips list -a my-matryoshka
 
 # Release public IPs
-fly ips release <public-ipv4> -a my-openclaw
-fly ips release <public-ipv6> -a my-openclaw
+fly ips release <public-ipv4> -a my-matryoshka
+fly ips release <public-ipv6> -a my-matryoshka
 
 # Switch to private config so future deploys don't re-allocate public IPs
 # (remove [http_service] or deploy with the private template)
 fly deploy -c fly.private.toml
 
 # Allocate private-only IPv6
-fly ips allocate-v6 --private -a my-openclaw
+fly ips allocate-v6 --private -a my-matryoshka
 ```
 
 After this, `fly ips list` should show only a `private` type IP:
@@ -411,7 +411,7 @@ Since there's no public URL, use one of these methods:
 
 ```bash
 # Forward local port 3000 to the app
-fly proxy 3000:3000 -a my-openclaw
+fly proxy 3000:3000 -a my-matryoshka
 
 # Then open http://localhost:3000 in browser
 ```
@@ -429,7 +429,7 @@ fly wireguard create
 **Option 3: SSH only**
 
 ```bash
-fly ssh console -a my-openclaw
+fly ssh console -a my-matryoshka
 ```
 
 ### Webhooks with private deployment

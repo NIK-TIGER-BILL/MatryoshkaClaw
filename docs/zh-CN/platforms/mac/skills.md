@@ -15,7 +15,7 @@ x-i18n:
 
 # Skills（macOS）
 
-macOS 应用通过 Gateway 网关展示 OpenClaw Skills；它不会在本地解析 Skills。
+macOS 应用通过 Gateway 网关展示 MatryoshkaClaw Skills；它不会在本地解析 Skills。
 
 ## 数据来源
 
