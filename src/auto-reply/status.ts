@@ -49,6 +49,7 @@ import type { CommandCategory } from "./commands-registry.types.js";
 import { resolveActiveFallbackState } from "./fallback-state.js";
 import { formatProviderModelRef, resolveSelectedAndActiveModel } from "./model-runtime.js";
 import type { ElevatedLevel, ReasoningLevel, ThinkLevel, VerboseLevel } from "./thinking.js";
+import { resolveMatryoshkaLevelLine } from "./matryoshka-level.js";
 
 type AgentDefaults = NonNullable<NonNullable<OpenClawConfig["agents"]>["defaults"]>;
 type AgentConfig = Partial<AgentDefaults> & {
@@ -657,6 +658,7 @@ export function buildStatusMessage(args: StatusArgs): string {
     : null;
   const commit = resolveCommitHash({ moduleUrl: import.meta.url });
   const versionLine = `🪆 MatryoshkaClaw ${VERSION}${commit ? ` (${commit})` : ""}`;
+  const levelLine = resolveMatryoshkaLevelLine(totalTokens ?? 0);
   const usagePair = formatUsagePair(inputTokens, outputTokens);
   const cacheLine = formatCacheLine(inputTokens, cacheRead, cacheWrite);
   const costLine = costLabel ? `💵 Cost: ${costLabel}` : null;
@@ -667,6 +669,7 @@ export function buildStatusMessage(args: StatusArgs): string {
 
   return [
     versionLine,
+    levelLine,
     args.timeLine,
     modelLine,
     fallbackLine,

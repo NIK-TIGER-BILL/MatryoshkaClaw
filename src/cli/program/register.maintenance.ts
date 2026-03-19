@@ -1,4 +1,5 @@
 import type { Command } from "commander";
+import { babushkaCommand } from "../../commands/babushka.js";
 import { dashboardCommand } from "../../commands/dashboard.js";
 import { doctorCommand } from "../../commands/doctor.js";
 import { resetCommand } from "../../commands/reset.js";
@@ -9,6 +10,13 @@ import { theme } from "../../terminal/theme.js";
 import { runCommandWithRuntime } from "../cli-utils.js";
 
 export function registerMaintenanceCommands(program: Command) {
+  program
+    .command("babushka")
+    .description("🧓 Мудрость бабушки + ASCII арт. +10 XP к уровню матрёшки")
+    .action(() => {
+      babushkaCommand();
+    });
+
   program
     .command("doctor")
     .description("Health checks + quick fixes for the gateway and channels")
