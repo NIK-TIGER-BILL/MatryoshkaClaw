@@ -233,7 +233,7 @@ export async function setupSearch(
       {
         value: "__skip__" as const,
         label: "Skip for now",
-        hint: "Configure later with openclaw configure --section web",
+        hint: "Configure later with matryoshka configure --section web",
       },
     ],
     initialValue: defaultProvider as PickerValue,
