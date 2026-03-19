@@ -495,6 +495,18 @@ export function setQianfanApiKey(
   });
 }
 
+export function setGigaChatCredentials(
+  key: SecretInput,
+  agentDir?: string,
+  options?: ApiKeyStorageOptions,
+) {
+  upsertAuthProfile({
+    profileId: "gigachat:default",
+    credential: buildApiKeyCredential("gigachat", key, undefined, options),
+    agentDir: resolveAuthAgentDir(agentDir),
+  });
+}
+
 export function setModelStudioApiKey(
   key: SecretInput,
   agentDir?: string,
@@ -535,6 +547,18 @@ export async function setKilocodeApiKey(
   upsertAuthProfile({
     profileId: "kilocode:default",
     credential: buildApiKeyCredential("kilocode", key, undefined, options),
+    agentDir: resolveAuthAgentDir(agentDir),
+  });
+}
+
+export function setYandexGptCredentials(
+  key: SecretInput,
+  agentDir?: string,
+  options?: ApiKeyStorageOptions,
+) {
+  upsertAuthProfile({
+    profileId: "yandexgpt:default",
+    credential: buildApiKeyCredential("yandexgpt", key, undefined, options),
     agentDir: resolveAuthAgentDir(agentDir),
   });
 }

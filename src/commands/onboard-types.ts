@@ -51,6 +51,8 @@ export type AuthChoice =
   | "volcengine-api-key"
   | "byteplus-api-key"
   | "qianfan-api-key"
+  | "gigachat-api-key"
+  | "yandexgpt-api-key"
   | "modelstudio-api-key-cn"
   | "modelstudio-api-key"
   | "custom-api-key"
@@ -80,6 +82,8 @@ export type AuthChoiceGroupId =
   | "together"
   | "huggingface"
   | "qianfan"
+  | "gigachat"
+  | "yandexgpt"
   | "modelstudio"
   | "xai"
   | "volcengine"
@@ -142,6 +146,8 @@ export type OnboardOptions = {
   volcengineApiKey?: string;
   byteplusApiKey?: string;
   qianfanApiKey?: string;
+  gigachatCredentials?: string;
+  yandexgptCredentials?: string;
   modelstudioApiKeyCn?: string;
   modelstudioApiKey?: string;
   customBaseUrl?: string;

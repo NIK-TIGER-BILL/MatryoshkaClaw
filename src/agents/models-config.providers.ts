@@ -26,6 +26,7 @@ import {
   buildDoubaoCodingProvider,
   buildDoubaoProvider,
   buildGigaChatProvider,
+  buildYandexGptProvider,
   buildKimiCodingProvider,
   buildKilocodeProvider,
   buildMinimaxPortalProvider,
@@ -54,9 +55,12 @@ export {
   buildXiaomiProvider,
   MODELSTUDIO_BASE_URL,
   MODELSTUDIO_DEFAULT_MODEL_ID,
+  GIGACHAT_DEFAULT_MODEL_ID,
   QIANFAN_BASE_URL,
   QIANFAN_DEFAULT_MODEL_ID,
   XIAOMI_DEFAULT_MODEL_ID,
+  YANDEXGPT_BASE_URL,
+  YANDEXGPT_DEFAULT_MODEL_ID,
 } from "./models-config.providers.static.js";
 import {
   MINIMAX_OAUTH_MARKER,
@@ -534,6 +538,16 @@ const SIMPLE_IMPLICIT_PROVIDER_LOADERS: ImplicitProviderLoader[] = [
     if (!apiKey) return undefined;
     const baseUrl = ctx.env.GIGACHAT_BASE_URL?.trim() || GIGACHAT_DEFAULT_BASE_URL;
     return { gigachat: { ...buildGigaChatProvider(baseUrl), apiKey } };
+  },
+  async (ctx) => {
+    const { apiKey: combinedCredential } = ctx.resolveProviderApiKey("yandexgpt");
+    if (!combinedCredential) return undefined;
+    const colonIdx = (combinedCredential as string).indexOf(":");
+    if (colonIdx < 1) return undefined;
+    const folderId = (combinedCredential as string).slice(0, colonIdx).trim();
+    const apiKey = (combinedCredential as string).slice(colonIdx + 1).trim();
+    if (!folderId || !apiKey) return undefined;
+    return { yandexgpt: { ...buildYandexGptProvider(folderId), apiKey } };
   },
 ];
 

@@ -556,3 +556,52 @@ export function buildKilocodeProvider(): ProviderConfig {
     })),
   };
 }
+
+// ─── YandexGPT (Яндекс Foundation Models) ────────────────────────────────────
+export const YANDEXGPT_BASE_URL = "https://llm.api.cloud.yandex.net/v1";
+export const YANDEXGPT_DEFAULT_MODEL_ID = "yandexgpt";
+const YANDEXGPT_DEFAULT_CONTEXT_WINDOW = 32768;
+const YANDEXGPT_DEFAULT_MAX_TOKENS = 8192;
+const YANDEXGPT_DEFAULT_COST = {
+  input: 0,
+  output: 0,
+  cacheRead: 0,
+  cacheWrite: 0,
+};
+
+export function buildYandexGptProvider(folderId: string): ProviderConfig {
+  return {
+    baseUrl: YANDEXGPT_BASE_URL,
+    api: "openai-completions",
+    headers: { "x-folder-id": folderId },
+    models: [
+      {
+        id: "yandexgpt",
+        name: "YandexGPT Pro",
+        reasoning: false,
+        input: ["text"],
+        cost: YANDEXGPT_DEFAULT_COST,
+        contextWindow: YANDEXGPT_DEFAULT_CONTEXT_WINDOW,
+        maxTokens: YANDEXGPT_DEFAULT_MAX_TOKENS,
+      },
+      {
+        id: "yandexgpt-lite",
+        name: "YandexGPT Lite",
+        reasoning: false,
+        input: ["text"],
+        cost: YANDEXGPT_DEFAULT_COST,
+        contextWindow: YANDEXGPT_DEFAULT_CONTEXT_WINDOW,
+        maxTokens: YANDEXGPT_DEFAULT_MAX_TOKENS,
+      },
+      {
+        id: "yandexgpt-32k",
+        name: "YandexGPT Pro 32k",
+        reasoning: false,
+        input: ["text"],
+        cost: YANDEXGPT_DEFAULT_COST,
+        contextWindow: 32768,
+        maxTokens: 8192,
+      },
+    ],
+  };
+}

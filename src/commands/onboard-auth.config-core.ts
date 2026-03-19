@@ -12,6 +12,14 @@ import {
   XIAOMI_DEFAULT_MODEL_ID,
 } from "../agents/models-config.providers.js";
 import {
+  GIGACHAT_DEFAULT_BASE_URL,
+  GIGACHAT_DEFAULT_MODEL_ID,
+  buildGigaChatProvider,
+  YANDEXGPT_BASE_URL,
+  YANDEXGPT_DEFAULT_MODEL_ID,
+  buildYandexGptProvider,
+} from "../agents/models-config.providers.static.js";
+import {
   buildSyntheticModelDefinition,
   SYNTHETIC_BASE_URL,
   SYNTHETIC_DEFAULT_MODEL_REF,
@@ -70,6 +78,8 @@ import {
   MISTRAL_DEFAULT_MODEL_ID,
   QIANFAN_BASE_URL,
   QIANFAN_DEFAULT_MODEL_REF,
+  GIGACHAT_DEFAULT_MODEL_REF,
+  YANDEXGPT_DEFAULT_MODEL_REF,
   KIMI_CODING_MODEL_ID,
   KIMI_CODING_MODEL_REF,
   MOONSHOT_BASE_URL,
@@ -578,6 +588,41 @@ export function applyQianfanConfig(cfg: OpenClawConfig): OpenClawConfig {
   return applyAgentDefaultModelPrimary(next, QIANFAN_DEFAULT_MODEL_REF);
 }
 
+// ─── GigaChat (Сбер) ─────────────────────────────────────────────────────────
+
+export function applyGigaChatProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const models = { ...cfg.agents?.defaults?.models };
+  models[GIGACHAT_DEFAULT_MODEL_REF] = {
+    ...models[GIGACHAT_DEFAULT_MODEL_REF],
+    alias: models[GIGACHAT_DEFAULT_MODEL_REF]?.alias ?? "GigaChat",
+  };
+  const defaultProvider = buildGigaChatProvider(GIGACHAT_DEFAULT_BASE_URL);
+  const existingProvider = cfg.models?.providers?.gigachat as
+    | { baseUrl?: unknown; api?: unknown }
+    | undefined;
+  const existingBaseUrl =
+    typeof existingProvider?.baseUrl === "string" ? existingProvider.baseUrl.trim() : "";
+  const resolvedBaseUrl = existingBaseUrl || GIGACHAT_DEFAULT_BASE_URL;
+  const resolvedApi =
+    typeof existingProvider?.api === "string"
+      ? (existingProvider.api as ModelApi)
+      : "openai-completions";
+
+  return applyProviderConfigWithDefaultModels(cfg, {
+    agentModels: models,
+    providerId: "gigachat",
+    api: resolvedApi,
+    baseUrl: resolvedBaseUrl,
+    defaultModels: defaultProvider.models ?? [],
+    defaultModelId: GIGACHAT_DEFAULT_MODEL_ID,
+  });
+}
+
+export function applyGigaChatConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const next = applyGigaChatProviderConfig(cfg);
+  return applyAgentDefaultModelPrimary(next, GIGACHAT_DEFAULT_MODEL_REF);
+}
+
 // Alibaba Cloud Model Studio Coding Plan
 
 function applyModelStudioProviderConfigWithBaseUrl(
@@ -665,4 +710,27 @@ export function applyModelStudioConfig(cfg: OpenClawConfig): OpenClawConfig {
 export function applyModelStudioConfigCn(cfg: OpenClawConfig): OpenClawConfig {
   const next = applyModelStudioProviderConfigCn(cfg);
   return applyAgentDefaultModelPrimary(next, MODELSTUDIO_DEFAULT_MODEL_REF);
+}
+
+// ─── YandexGPT (Яндекс Foundation Models) ────────────────────────────────────
+
+export function applyYandexGptProviderConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const models = { ...cfg.agents?.defaults?.models };
+  models[YANDEXGPT_DEFAULT_MODEL_REF] = {
+    ...models[YANDEXGPT_DEFAULT_MODEL_REF],
+    alias: models[YANDEXGPT_DEFAULT_MODEL_REF]?.alias ?? "YandexGPT",
+  };
+  return applyProviderConfigWithDefaultModels(cfg, {
+    agentModels: models,
+    providerId: "yandexgpt",
+    api: "openai-completions",
+    baseUrl: YANDEXGPT_BASE_URL,
+    defaultModels: buildYandexGptProvider("").models ?? [],
+    defaultModelId: YANDEXGPT_DEFAULT_MODEL_ID,
+  });
+}
+
+export function applyYandexGptConfig(cfg: OpenClawConfig): OpenClawConfig {
+  const next = applyYandexGptProviderConfig(cfg);
+  return applyAgentDefaultModelPrimary(next, YANDEXGPT_DEFAULT_MODEL_REF);
 }

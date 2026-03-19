@@ -126,6 +126,18 @@ const AUTH_CHOICE_GROUP_DEFS: {
     choices: ["qianfan-api-key"],
   },
   {
+    value: "gigachat",
+    label: "GigaChat (Сбербанк)",
+    hint: "GIGACHAT_CREDENTIALS",
+    choices: ["gigachat-api-key"],
+  },
+  {
+    value: "yandexgpt",
+    label: "YandexGPT (Яндекс)",
+    hint: "folder_id:api_key",
+    choices: ["yandexgpt-api-key"],
+  },
+  {
     value: "modelstudio",
     label: "Alibaba Cloud Model Studio",
     hint: "Coding Plan API key (CN / Global)",
@@ -211,6 +223,7 @@ const PROVIDER_AUTH_CHOICE_OPTION_HINTS: Partial<Record<AuthChoice, string>> = {
 
 const PROVIDER_AUTH_CHOICE_OPTION_LABELS: Partial<Record<AuthChoice, string>> = {
   "moonshot-api-key": "Kimi API key (.ai)",
+  "yandexgpt-api-key": "YandexGPT API key (folder_id:api_key)",
   "moonshot-api-key-cn": "Kimi API key (.cn)",
   "kimi-code-api-key": "Kimi Code API key (subscription)",
   "cloudflare-ai-gateway-api-key": "Cloudflare AI Gateway",
@@ -319,6 +332,8 @@ const BASE_AUTH_CHOICE_OPTIONS: ReadonlyArray<AuthChoiceOption> = [
     hint: "Official fast tier (legacy: Lightning)",
   },
   { value: "qianfan-api-key", label: "Qianfan API key" },
+  { value: "gigachat-api-key", label: "GigaChat (GIGACHAT_CREDENTIALS)" },
+  { value: "yandexgpt-api-key", label: "YandexGPT (folder_id:api_key)" },
   {
     value: "modelstudio-api-key-cn",
     label: "Coding Plan API Key for China (subscription)",

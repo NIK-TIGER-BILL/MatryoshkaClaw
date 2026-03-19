@@ -15,6 +15,8 @@ import {
   applyAuthProfileConfig,
   applyCloudflareAiGatewayConfig,
   applyKilocodeConfig,
+  applyGigaChatConfig,
+  applyYandexGptConfig,
   applyQianfanConfig,
   applyModelStudioConfig,
   applyModelStudioConfigCn,
@@ -40,6 +42,8 @@ import {
   setAnthropicApiKey,
   setCloudflareAiGatewayConfig,
   setByteplusApiKey,
+  setGigaChatCredentials,
+  setYandexGptCredentials,
   setQianfanApiKey,
   setModelStudioApiKey,
   setGeminiApiKey,
@@ -506,6 +510,60 @@ export async function applyNonInteractiveAuthChoice(params: {
       mode: "api_key",
     });
     return applyQianfanConfig(nextConfig);
+  }
+
+  if (authChoice === "gigachat-api-key") {
+    const resolved = await resolveApiKey({
+      provider: "gigachat",
+      cfg: baseConfig,
+      flagValue: opts.gigachatCredentials,
+      flagName: "--gigachat-credentials",
+      envVar: "GIGACHAT_CREDENTIALS",
+      runtime,
+    });
+    if (!resolved) {
+      return null;
+    }
+    if (
+      !(await maybeSetResolvedApiKey(resolved, (value) =>
+        setGigaChatCredentials(value, undefined, apiKeyStorageOptions),
+      ))
+    ) {
+      return null;
+    }
+    nextConfig = applyAuthProfileConfig(nextConfig, {
+      profileId: "gigachat:default",
+      provider: "gigachat",
+      mode: "api_key",
+    });
+    return applyGigaChatConfig(nextConfig);
+  }
+
+  if (authChoice === "yandexgpt-api-key") {
+    const resolved = await resolveApiKey({
+      provider: "yandexgpt",
+      cfg: baseConfig,
+      flagValue: opts.yandexgptCredentials,
+      flagName: "--yandex-credentials",
+      envVar: "YANDEX_CREDENTIALS",
+      runtime,
+    });
+    if (!resolved) {
+      return null;
+    }
+    if (
+      !(await maybeSetResolvedApiKey(resolved, (value) =>
+        setYandexGptCredentials(value, undefined, apiKeyStorageOptions),
+      ))
+    ) {
+      return null;
+    }
+    nextConfig = applyAuthProfileConfig(nextConfig, {
+      profileId: "yandexgpt:default",
+      provider: "yandexgpt",
+      mode: "api_key",
+    });
+    return applyYandexGptConfig(nextConfig);
   }
 
   if (authChoice === "modelstudio-api-key-cn") {
