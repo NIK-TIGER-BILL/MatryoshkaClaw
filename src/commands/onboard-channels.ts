@@ -77,7 +77,7 @@ async function promptConfiguredAction(params: {
     skipOption,
   ];
   return await prompter.select({
-    message: `${label} already configured. What do you want to do?`,
+    message: `${label} уже настроен. Что сделать?`,
     options,
     initialValue: "update",
   });
@@ -100,7 +100,7 @@ async function promptRemovalAccountId(params: {
     return defaultAccountId;
   }
   const selected = await prompter.select({
-    message: `${label} account`,
+    message: `Аккаунт ${label}`,
     options: accountIds.map((accountId) => ({
       value: accountId,
       label: formatAccountLabel(accountId),
@@ -174,7 +174,7 @@ export async function noteChannelStatus(params: {
     accountOverrides: params.accountOverrides ?? {},
   });
   if (statusLines.length > 0) {
-    await params.prompter.note(statusLines.join("\n"), "Channel status");
+    await params.prompter.note(statusLines.join("\n"), "Статус канала");
   }
 }
 
@@ -260,7 +260,7 @@ async function maybeConfigureDmPolicies(params: {
       `${policy.label} DM access`,
     );
     return (await prompter.select({
-      message: `${policy.label} DM policy`,
+      message: `Политика DM: ${policy.label}`,
       options: [
         { value: "pairing", label: "Pairing (рекомендуется)" },
         { value: "allowlist", label: "Allowlist (только выбранные пользователи)" },
@@ -308,7 +308,7 @@ export async function setupChannels(
   const { installedPlugins, catalogEntries, statusByChannel, statusLines } =
     await collectChannelStatus({ cfg: next, options, accountOverrides });
   if (!options?.skipStatusNote && statusLines.length > 0) {
-    await prompter.note(statusLines.join("\n"), "Channel status");
+    await prompter.note(statusLines.join("\n"), "Статус канала");
   }
 
   const shouldConfigure = options?.skipConfirm
@@ -458,7 +458,7 @@ export async function setupChannels(
     if (!result.enabled) {
       await prompter.note(
         `Cannot enable ${channel}: ${result.reason ?? "plugin disabled"}.`,
-        "Channel setup",
+        "Настройка канала",
       );
       return false;
     }
@@ -478,12 +478,12 @@ export async function setupChannels(
           `${channel} plugin not available (continuing with onboarding). If the channel still doesn't work after setup, run \`${formatCliCommand(
             "openclaw plugins list",
           )}\` and \`${formatCliCommand("openclaw plugins enable " + channel)}\`, then restart the gateway.`,
-          "Channel setup",
+          "Настройка канала",
         );
         await refreshStatus(channel);
         return true;
       }
-      await prompter.note(`${channel} plugin not available.`, "Channel setup");
+      await prompter.note(`${channel} плагин недоступен.`, "Настройка канала");
       return false;
     }
     await refreshStatus(channel);
@@ -513,7 +513,7 @@ export async function setupChannels(
   const configureChannel = async (channel: ChannelChoice) => {
     const adapter = getChannelOnboardingAdapter(channel);
     if (!adapter) {
-      await prompter.note(`${channel} does not support onboarding yet.`, "Channel setup");
+      await prompter.note(`${channel} пока не поддерживает настройку.`, "Настройка канала");
       return;
     }
     const result = await adapter.configure({
@@ -571,7 +571,7 @@ export async function setupChannels(
     }
 
     if (action === "delete" && !supportsDelete) {
-      await prompter.note(`${label} does not support deleting config entries.`, "Remove channel");
+      await prompter.note(`${label} не поддерживает удаление конфига.`, "Удалить канал");
       return;
     }
 
@@ -594,7 +594,7 @@ export async function setupChannels(
 
     if (action === "delete") {
       const confirmed = await prompter.confirm({
-        message: `Delete ${label} account "${accountLabel}"?`,
+        message: `Удалить аккаунт ${label} "${accountLabel}"?`,
         initialValue: false,
       });
       if (!confirmed) {
@@ -686,7 +686,7 @@ export async function setupChannels(
         {
           value: "__skip__",
           label: "Пропустить",
-          hint: `You can add channels later via \`${formatCliCommand("openclaw channels add")}\``,
+          hint: `Каналы можно добавить позже через \`${formatCliCommand("matryoshka channels add")}\``,
         },
       ],
       initialValue: quickstartDefault,
@@ -706,7 +706,7 @@ export async function setupChannels(
           {
             value: doneValue,
             label: "Готово",
-            hint: selection.length > 0 ? "Done" : "Пропустить",
+            hint: selection.length > 0 ? "Готово" : "Пропустить",
           },
         ],
         initialValue,

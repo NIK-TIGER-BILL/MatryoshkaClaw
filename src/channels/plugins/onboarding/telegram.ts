@@ -84,9 +84,9 @@ async function promptTelegramAllowFrom(params: {
     prompter,
     existing: existingAllowFrom,
     token,
-    message: "Telegram allowFrom (numeric sender id; @username resolves to id)",
+    message: "Telegram allowFrom (числовой id; @username будет преобразован в id)",
     placeholder: "@username",
-    label: "Telegram allowlist",
+    label: "Список разрешённых Telegram",
     parseInputs: splitOnboardingEntries,
     parseId: parseTelegramAllowFromId,
     invalidWithoutTokenNote:

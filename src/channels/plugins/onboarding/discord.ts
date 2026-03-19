@@ -117,7 +117,7 @@ async function promptDiscordAllowFrom(params: {
       "Multiple entries: comma-separated.",
       `Docs: ${formatDocsLink("/discord", "discord")}`,
     ],
-    message: "Discord allowFrom (usernames or ids)",
+    message: "Discord allowFrom (имена пользователей или id)",
     placeholder: "@alice, 123456789012345678",
     parseId,
     invalidWithoutTokenNote: "Bot token missing; use numeric user ids (or mention form) only.",
@@ -226,7 +226,7 @@ export const discordOnboardingAdapter: ChannelOnboardingAdapter = {
     next = await configureChannelAccessWithAllowlist({
       cfg: next,
       prompter,
-      label: "Discord channels",
+      label: "Каналы Discord",
       currentPolicy: resolvedAccount.config.groupPolicy ?? "allowlist",
       currentEntries,
       placeholder: "My Server/#general, guildId/channelId, #support",
@@ -263,7 +263,7 @@ export const discordOnboardingAdapter: ChannelOnboardingAdapter = {
               .map((entry) => entry.input);
             await noteChannelLookupSummary({
               prompter,
-              label: "Discord channels",
+              label: "Каналы Discord",
               resolvedSections: [
                 {
                   title: "Resolved channels",
@@ -283,7 +283,7 @@ export const discordOnboardingAdapter: ChannelOnboardingAdapter = {
           } catch (err) {
             await noteChannelLookupFailure({
               prompter,
-              label: "Discord channels",
+              label: "Каналы Discord",
               error: err,
             });
           }

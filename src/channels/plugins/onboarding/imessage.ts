@@ -71,7 +71,7 @@ async function promptIMessageAllowFrom(params: {
       "Multiple entries: comma-separated.",
       `Docs: ${formatDocsLink("/imessage", "imessage")}`,
     ],
-    message: "iMessage allowFrom (handle or chat_id)",
+    message: "iMessage allowFrom (номер/handle или chat_id)",
     placeholder: "+15555550123, user@example.com, chat_id:123",
     parseEntries: parseIMessageAllowFromEntries,
     getExistingAllowFrom: ({ cfg, accountId }) => {

@@ -80,7 +80,7 @@ async function promptSignalAllowFrom(params: {
       "Multiple entries: comma-separated.",
       `Docs: ${formatDocsLink("/signal", "signal")}`,
     ],
-    message: "Signal allowFrom (E.164 or uuid)",
+    message: "Signal allowFrom (E.164 или uuid)",
     placeholder: "+15555550123, uuid:123e4567-e89b-12d3-a456-426614174000",
     parseEntries: parseSignalAllowFromEntries,
     getExistingAllowFrom: ({ cfg, accountId }) => {

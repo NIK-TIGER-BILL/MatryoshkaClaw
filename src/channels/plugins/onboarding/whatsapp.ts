@@ -53,7 +53,7 @@ async function promptWhatsAppOwnerAllowFrom(params: {
     "WhatsApp number",
   );
   const entry = await prompter.text({
-    message: "Your personal WhatsApp number (the phone you will message from)",
+    message: "Ваш номер WhatsApp (телефон, с которого будете писать)",
     placeholder: "+15555550123",
     initialValue: existingAllowFrom[0],
     validate: (value) => {
@@ -156,10 +156,10 @@ async function promptWhatsAppAllowFrom(
   );
 
   const phoneMode = await prompter.select({
-    message: "WhatsApp phone setup",
+    message: "Настройка WhatsApp",
     options: [
-      { value: "personal", label: "This is my personal phone number" },
-      { value: "separate", label: "Separate phone just for OpenClaw" },
+      { value: "personal", label: "Это мой личный номер телефона" },
+      { value: "separate", label: "Отдельный телефон только для MatryoshkaClaw" },
     ],
   });
 
@@ -177,12 +177,12 @@ async function promptWhatsAppAllowFrom(
   }
 
   const policy = (await prompter.select({
-    message: "WhatsApp DM policy",
+    message: "Политика DM для WhatsApp",
     options: [
-      { value: "pairing", label: "Pairing (recommended)" },
-      { value: "allowlist", label: "Allowlist only (block unknown senders)" },
-      { value: "open", label: "Open (public inbound DMs)" },
-      { value: "disabled", label: "Disabled (ignore WhatsApp DMs)" },
+      { value: "pairing", label: "Паринг (рекомендуется)" },
+      { value: "allowlist", label: "Список разрешённых (блокировать неизвестных)" },
+      { value: "open", label: "Открытый (публичные входящие)" },
+      { value: "disabled", label: "Отключено (игнорировать сообщения)" },
     ],
   })) as DmPolicy;
 
@@ -200,20 +200,20 @@ async function promptWhatsAppAllowFrom(
   const allowOptions =
     existingAllowFrom.length > 0
       ? ([
-          { value: "keep", label: "Keep current allowFrom" },
+          { value: "keep", label: "Оставить текущий allowFrom" },
           {
             value: "unset",
-            label: "Unset allowFrom (use pairing approvals only)",
+            label: "Сбросить allowFrom (только паринг)",
           },
-          { value: "list", label: "Set allowFrom to specific numbers" },
+          { value: "list", label: "Задать список разрешённых номеров" },
         ] as const)
       : ([
-          { value: "unset", label: "Unset allowFrom (default)" },
-          { value: "list", label: "Set allowFrom to specific numbers" },
+          { value: "unset", label: "Сбросить allowFrom (по умолчанию)" },
+          { value: "list", label: "Задать список разрешённых номеров" },
         ] as const);
 
   const mode = await prompter.select({
-    message: "WhatsApp allowFrom (optional pre-allowlist)",
+    message: "WhatsApp allowFrom (предварительный список)",
     options: allowOptions.map((opt) => ({
       value: opt.value,
       label: opt.label,
@@ -226,7 +226,7 @@ async function promptWhatsAppAllowFrom(
     next = setWhatsAppAllowFrom(next, undefined);
   } else {
     const allowRaw = await prompter.text({
-      message: "Allowed sender numbers (comma-separated, E.164)",
+      message: "Разрешённые номера через запятую (E.164)",
       placeholder: "+15555550123, +447700900123",
       validate: (value) => {
         const raw = String(value ?? "").trim();
@@ -325,7 +325,7 @@ export const whatsappOnboardingAdapter: ChannelOnboardingAdapter = {
       );
     }
     const wantsLink = await prompter.confirm({
-      message: linked ? "WhatsApp already linked. Re-link now?" : "Link WhatsApp now (QR)?",
+      message: linked ? "WhatsApp уже подключён. Переподключить?" : "Подключить WhatsApp сейчас (QR)?",
       initialValue: !linked,
     });
     if (wantsLink) {

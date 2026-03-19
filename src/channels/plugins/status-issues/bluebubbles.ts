@@ -63,7 +63,7 @@ export function collectBlueBubblesStatusIssues(
           channel: "bluebubbles",
           accountId,
           kind: "config",
-          message: "Not configured (missing serverUrl or password).",
+          message: "Не настроен (отсутствует serverUrl или пароль).",
           fix: "Run: matryoshka channels add bluebubbles --http-url <server-url> --password <password>",
         });
         return;
@@ -80,7 +80,7 @@ export function collectBlueBubblesStatusIssues(
           channel: "bluebubbles",
           accountId,
           kind: "runtime",
-          message: `BlueBubbles server unreachable${errorDetail}`,
+          message: `Сервер BlueBubbles недоступен${errorDetail}`,
           fix: "Check that the BlueBubbles server is running and accessible. Verify serverUrl and password in your config.",
         });
       }
@@ -91,7 +91,7 @@ export function collectBlueBubblesStatusIssues(
           channel: "bluebubbles",
           accountId,
           kind: "runtime",
-          message: `Channel error: ${lastError}`,
+          message: `Ошибка канала: ${lastError}`,
           fix: "Check gateway logs for details. If the webhook is failing, verify the webhook URL is configured in BlueBubbles server settings.",
         });
       }
