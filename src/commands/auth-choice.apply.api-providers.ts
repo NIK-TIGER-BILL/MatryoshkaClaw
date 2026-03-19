@@ -22,6 +22,8 @@ import {
   applyCloudflareAiGatewayProviderConfig,
   applyKilocodeConfig,
   applyKilocodeProviderConfig,
+  applyGigaChatConfig,
+  applyGigaChatProviderConfig,
   applyQianfanConfig,
   applyQianfanProviderConfig,
   applyKimiCodeConfig,
@@ -53,6 +55,7 @@ import {
   CLOUDFLARE_AI_GATEWAY_DEFAULT_MODEL_REF,
   KILOCODE_DEFAULT_MODEL_REF,
   LITELLM_DEFAULT_MODEL_REF,
+  GIGACHAT_DEFAULT_MODEL_REF,
   QIANFAN_DEFAULT_MODEL_REF,
   KIMI_CODING_MODEL_REF,
   MOONSHOT_DEFAULT_MODEL_REF,
@@ -63,6 +66,7 @@ import {
   VERCEL_AI_GATEWAY_DEFAULT_MODEL_REF,
   XIAOMI_DEFAULT_MODEL_REF,
   setCloudflareAiGatewayConfig,
+  setGigaChatCredentials,
   setQianfanApiKey,
   setGeminiApiKey,
   setKilocodeApiKey,
@@ -111,6 +115,7 @@ const API_KEY_TOKEN_PROVIDER_AUTH_CHOICE: Record<string, AuthChoice> = {
   "opencode-go": "opencode-go",
   kilocode: "kilocode-api-key",
   qianfan: "qianfan-api-key",
+  gigachat: "gigachat-api-key",
 };
 
 const ZAI_AUTH_CHOICE_ENDPOINT: Partial<
@@ -313,6 +318,25 @@ const SIMPLE_API_KEY_PROVIDER_FLOWS: Partial<Record<AuthChoice, SimpleApiKeyProv
       "API key format: bce-v3/ALTAK-...",
     ].join("\n"),
     noteTitle: "QIANFAN",
+  },
+  "gigachat-api-key": {
+    provider: "gigachat",
+    profileId: "gigachat:default",
+    expectedProviders: ["gigachat"],
+    envLabel: "GIGACHAT_CREDENTIALS",
+    promptMessage:
+      "Введите GIGACHAT_CREDENTIALS (base64: ClientId:Secret — из личного кабинета Сбера)",
+    setCredential: setGigaChatCredentials,
+    defaultModel: GIGACHAT_DEFAULT_MODEL_REF,
+    applyDefaultConfig: applyGigaChatConfig,
+    applyProviderConfig: applyGigaChatProviderConfig,
+    noteDefault: GIGACHAT_DEFAULT_MODEL_REF,
+    noteMessage: [
+      "GigaChat — российская LLM от Сбербанка.",
+      "GIGACHAT_CREDENTIALS = base64(ClientId:Secret) из личного кабинета: https://developers.sber.ru/studio/workspaces/",
+      "⚠️ Для работы требуется обмен токена: LiteLLM proxy или прямой OAuth2 через https://ngw.devices.sberbank.ru:9443/api/v2/oauth",
+    ].join("\n"),
+    noteTitle: "GigaChat (Сбербанк)",
   },
   "kilocode-api-key": {
     provider: "kilocode",

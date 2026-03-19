@@ -495,6 +495,18 @@ export function setQianfanApiKey(
   });
 }
 
+export function setGigaChatCredentials(
+  key: SecretInput,
+  agentDir?: string,
+  options?: ApiKeyStorageOptions,
+) {
+  upsertAuthProfile({
+    profileId: "gigachat:default",
+    credential: buildApiKeyCredential("gigachat", key, undefined, options),
+    agentDir: resolveAuthAgentDir(agentDir),
+  });
+}
+
 export function setModelStudioApiKey(
   key: SecretInput,
   agentDir?: string,

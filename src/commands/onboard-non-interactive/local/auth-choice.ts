@@ -15,6 +15,7 @@ import {
   applyAuthProfileConfig,
   applyCloudflareAiGatewayConfig,
   applyKilocodeConfig,
+  applyGigaChatConfig,
   applyQianfanConfig,
   applyModelStudioConfig,
   applyModelStudioConfigCn,
@@ -40,6 +41,7 @@ import {
   setAnthropicApiKey,
   setCloudflareAiGatewayConfig,
   setByteplusApiKey,
+  setGigaChatCredentials,
   setQianfanApiKey,
   setModelStudioApiKey,
   setGeminiApiKey,
@@ -506,6 +508,33 @@ export async function applyNonInteractiveAuthChoice(params: {
       mode: "api_key",
     });
     return applyQianfanConfig(nextConfig);
+  }
+
+  if (authChoice === "gigachat-api-key") {
+    const resolved = await resolveApiKey({
+      provider: "gigachat",
+      cfg: baseConfig,
+      flagValue: opts.gigachatCredentials,
+      flagName: "--gigachat-credentials",
+      envVar: "GIGACHAT_CREDENTIALS",
+      runtime,
+    });
+    if (!resolved) {
+      return null;
+    }
+    if (
+      !(await maybeSetResolvedApiKey(resolved, (value) =>
+        setGigaChatCredentials(value, undefined, apiKeyStorageOptions),
+      ))
+    ) {
+      return null;
+    }
+    nextConfig = applyAuthProfileConfig(nextConfig, {
+      profileId: "gigachat:default",
+      provider: "gigachat",
+      mode: "api_key",
+    });
+    return applyGigaChatConfig(nextConfig);
   }
 
   if (authChoice === "modelstudio-api-key-cn") {

@@ -24,6 +24,7 @@ type OnboardProviderAuthOptionKey = keyof Pick<
   | "xaiApiKey"
   | "litellmApiKey"
   | "qianfanApiKey"
+  | "gigachatCredentials"
   | "modelstudioApiKeyCn"
   | "modelstudioApiKey"
   | "volcengineApiKey"
@@ -193,6 +194,13 @@ export const ONBOARD_PROVIDER_AUTH_FLAGS: ReadonlyArray<OnboardProviderAuthFlag>
     cliFlag: "--qianfan-api-key",
     cliOption: "--qianfan-api-key <key>",
     description: "QIANFAN API key",
+  },
+  {
+    optionKey: "gigachatCredentials",
+    authChoice: "gigachat-api-key",
+    cliFlag: "--gigachat-credentials",
+    cliOption: "--gigachat-credentials <credentials>",
+    description: "GigaChat GIGACHAT_CREDENTIALS (base64 ClientId:Secret)",
   },
   {
     optionKey: "modelstudioApiKeyCn",

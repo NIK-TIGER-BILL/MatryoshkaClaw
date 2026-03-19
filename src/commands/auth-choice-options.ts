@@ -126,6 +126,12 @@ const AUTH_CHOICE_GROUP_DEFS: {
     choices: ["qianfan-api-key"],
   },
   {
+    value: "gigachat",
+    label: "GigaChat (Сбербанк)",
+    hint: "GIGACHAT_CREDENTIALS",
+    choices: ["gigachat-api-key"],
+  },
+  {
     value: "modelstudio",
     label: "Alibaba Cloud Model Studio",
     hint: "Coding Plan API key (CN / Global)",
@@ -319,6 +325,7 @@ const BASE_AUTH_CHOICE_OPTIONS: ReadonlyArray<AuthChoiceOption> = [
     hint: "Official fast tier (legacy: Lightning)",
   },
   { value: "qianfan-api-key", label: "Qianfan API key" },
+  { value: "gigachat-api-key", label: "GigaChat API key (GIGACHAT_CREDENTIALS)" },
   {
     value: "modelstudio-api-key-cn",
     label: "Coding Plan API Key for China (subscription)",
