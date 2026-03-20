@@ -79,7 +79,7 @@ const TAGLINES: string[] = [
   "More integrations than your therapist's intake form.",
   "Running on your hardware, reading your logs, judging nothing (mostly).",
   "The only open-source project where the mascot could eat the competition.",
-  "Self-hosted, self-updating, self-aware (just kidding... unless?).",
+  "Самоуправляемый, самообновляемый, самосознающий (шутка... наверное).",
   "I autocomplete your thoughts—just slower and with more API calls.",
   "Somewhere between 'hello world' and 'oh god what have I built.'",
   "Your .zshrc wishes it could do what I do.",

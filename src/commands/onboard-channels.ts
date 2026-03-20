@@ -193,17 +193,17 @@ async function noteChannelPrimer(
   );
   await prompter.note(
     [
-      "DM security: default is pairing; unknown DMs get a pairing code.",
-      `Approve with: ${formatCliCommand("openclaw pairing approve <channel> <code>")}`,
-      'Public DMs require dmPolicy="open" + allowFrom=["*"].',
-      "Multi-user DMs: run: " +
+      "Безопасность DM: по умолчанию паринг; неизвестные DM получают код подтверждения.",
+      `Подтвердить: ${formatCliCommand("openclaw pairing approve <channel> <code>")}`,
+      'Публичные DM требуют dmPolicy="open" + allowFrom=["*"].',
+      "Мульти-пользователь: " +
         formatCliCommand('openclaw config set session.dmScope "per-channel-peer"') +
-        ' (or "per-account-channel-peer" for multi-account channels) to isolate sessions.',
-      `Docs: ${formatDocsLink("/channels/pairing", "channels/pairing")}`,
+        ' (или "per-account-channel-peer" для мульти-аккаунтных каналов).',
+      `Документация: ${formatDocsLink("/channels/pairing", "channels/pairing")}`,
       "",
       ...channelLines,
     ].join("\n"),
-    "How channels work",
+    "Как работают каналы",
   );
 }
 
@@ -475,9 +475,9 @@ export async function setupChannels(
       const adapter = getChannelOnboardingAdapter(channel);
       if (adapter) {
         await prompter.note(
-          `${channel} plugin not available (continuing with onboarding). If the channel still doesn't work after setup, run \`${formatCliCommand(
+          `Плагин ${channel} недоступен (продолжаем онбординг). Если канал не заработает после настройки — запустите \`${formatCliCommand(
             "openclaw plugins list",
-          )}\` and \`${formatCliCommand("openclaw plugins enable " + channel)}\`, then restart the gateway.`,
+          )}\` и \`${formatCliCommand("openclaw plugins enable " + channel)}\`, затем перезапустите шлюз.`,
           "Настройка канала",
         );
         await refreshStatus(channel);

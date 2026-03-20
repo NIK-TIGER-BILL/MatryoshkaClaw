@@ -233,22 +233,22 @@ export async function runOnboardingWizard(
         return "LAN";
       }
       if (value === "custom") {
-        return "Custom IP";
+        return "Произвольный IP";
       }
       if (value === "tailnet") {
         return "Tailnet (Tailscale IP)";
       }
-      return "Auto";
+      return "Авто";
     };
     const formatAuth = (value: GatewayAuthChoice) => {
       if (value === "token") {
-        return "Token (default)";
+        return "Токен (по умолчанию)";
       }
-      return "Password";
+      return "Пароль";
     };
     const formatTailscale = (value: "off" | "serve" | "funnel") => {
       if (value === "off") {
-        return "Off";
+        return "Выкл";
       }
       if (value === "serve") {
         return "Serve";
@@ -258,21 +258,21 @@ export async function runOnboardingWizard(
     const quickstartLines = quickstartGateway.hasExisting
       ? [
           "Keeping your current gateway settings:",
-          `Gateway port: ${quickstartGateway.port}`,
-          `Gateway bind: ${formatBind(quickstartGateway.bind)}`,
+          `Порт шлюза: ${quickstartGateway.port}`,
+          `Привязка: ${formatBind(quickstartGateway.bind)}`,
           ...(quickstartGateway.bind === "custom" && quickstartGateway.customBindHost
             ? [`Gateway custom IP: ${quickstartGateway.customBindHost}`]
             : []),
-          `Gateway auth: ${formatAuth(quickstartGateway.authMode)}`,
-          `Tailscale exposure: ${formatTailscale(quickstartGateway.tailscaleMode)}`,
-          "Direct to chat channels.",
+          `Аутентификация: ${formatAuth(quickstartGateway.authMode)}`,
+          `Tailscale: ${formatTailscale(quickstartGateway.tailscaleMode)}`,
+          "Прямое подключение к каналам чата.",
         ]
       : [
-          `Gateway port: ${DEFAULT_GATEWAY_PORT}`,
-          "Gateway bind: Loopback (127.0.0.1)",
-          "Gateway auth: Token (default)",
-          "Tailscale exposure: Off",
-          "Direct to chat channels.",
+          `Порт шлюза: ${DEFAULT_GATEWAY_PORT}`,
+          "Привязка: Loopback (127.0.0.1)",
+          "Аутентификация: Токен (по умолчанию)",
+          "Tailscale: Выкл",
+          "Прямое подключение к каналам чата.",
         ];
     await prompter.note(quickstartLines.join("\n"), "QuickStart");
   }

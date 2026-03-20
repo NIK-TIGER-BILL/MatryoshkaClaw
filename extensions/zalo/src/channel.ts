@@ -53,7 +53,7 @@ const meta = {
   selectionLabel: "Zalo (Bot API)",
   docsPath: "/channels/zalo",
   docsLabel: "zalo",
-  blurb: "Vietnam-focused messaging platform with Bot API.",
+  blurb: "вьетнамская платформа с Bot API.",
   aliases: ["zl"],
   order: 80,
   quickstartAllowFrom: true,

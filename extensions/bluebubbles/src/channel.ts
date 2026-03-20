@@ -55,7 +55,7 @@ const meta = {
   detailLabel: "BlueBubbles",
   docsPath: "/channels/bluebubbles",
   docsLabel: "bluebubbles",
-  blurb: "iMessage via the BlueBubbles mac app + REST API.",
+  blurb: "iMessage через BlueBubbles mac app + REST API.",
   systemImage: "bubble.left.and.text.bubble.right",
   aliases: ["bb"],
   order: 75,

@@ -45,7 +45,7 @@ const meta = {
   selectionLabel: "Nextcloud Talk (self-hosted)",
   docsPath: "/channels/nextcloud-talk",
   docsLabel: "nextcloud-talk",
-  blurb: "Self-hosted chat via Nextcloud Talk webhook bots.",
+  blurb: "self-hosted чат через Nextcloud Talk webhook ботов.",
   aliases: ["nc-talk", "nc"],
   order: 65,
   quickstartAllowFrom: true,

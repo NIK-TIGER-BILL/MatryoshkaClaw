@@ -68,7 +68,7 @@ export async function finalizeOnboardingWizard(
     process.platform === "linux" ? await isSystemdUserServiceAvailable() : true;
   if (process.platform === "linux" && !systemdAvailable) {
     await prompter.note(
-      "Systemd user services are unavailable. Skipping lingering checks and service install.",
+      "Systemd user services недоступны. Пропускаем проверки и установку сервиса.",
       "Systemd",
     );
   }
@@ -105,7 +105,7 @@ export async function finalizeOnboardingWizard(
 
   if (process.platform === "linux" && !systemdAvailable && installDaemon) {
     await prompter.note(
-      "Systemd user services are unavailable; skipping service install. Use your container supervisor or `docker compose up -d`.",
+      "Systemd user services недоступны; установка сервиса пропущена. Используйте ваш container supervisor или `docker compose up -d`.",
       "Gateway service",
     );
     installDaemon = false;
@@ -232,11 +232,11 @@ export async function finalizeOnboardingWizard(
       runtime.error(formatHealthCheckFailure(err));
       await prompter.note(
         [
-          "Docs:",
+          "Документация:",
           "https://docs.openclaw.ai/gateway/health",
           "https://docs.openclaw.ai/gateway/troubleshooting",
         ].join("\n"),
-        "Health check help",
+        "Помощь по проверке здоровья",
       );
     }
   }
@@ -252,10 +252,10 @@ export async function finalizeOnboardingWizard(
 
   await prompter.note(
     [
-      "Add nodes for extra features:",
-      "- macOS app (system + notifications)",
-      "- iOS app (camera/canvas)",
-      "- Android app (camera/canvas)",
+      "Добавьте узлы для дополнительных возможностей:",
+      "- macOS приложение (система + уведомления)",
+      "- iOS приложение (камера/холст)",
+      "- Android приложение (камера/холст)",
     ].join("\n"),
     "Optional apps",
   );
@@ -400,13 +400,13 @@ export async function finalizeOnboardingWizard(
         [
           `Dashboard link (with token): ${authedUrl}`,
           controlUiOpened
-            ? "Opened in your browser. Keep that tab to control OpenClaw."
-            : "Copy/paste this URL in a browser on this machine to control OpenClaw.",
+            ? "Открыто в браузере. Сохраните эту вкладку для управления MatryoshkaClaw."
+            : "Скопируйте эту ссылку и откройте в браузере на этом компьютере для управления MatryoshkaClaw.",
           controlUiOpenHint,
         ]
           .filter(Boolean)
           .join("\n"),
-        "Dashboard ready",
+        "Панель управления готова",
       );
     } else {
       await prompter.note(
@@ -415,20 +415,20 @@ export async function finalizeOnboardingWizard(
       );
     }
   } else if (opts.skipUi) {
-    await prompter.note("Skipping Control UI/TUI prompts.", "Control UI");
+    await prompter.note("Пропускаем настройку Control UI.", "Control UI");
   }
 
   await prompter.note(
     [
-      "Back up your agent workspace.",
-      "Docs: https://docs.openclaw.ai/concepts/agent-workspace",
+      "Создайте резервную копию workspace агента.",
+      "Документация: https://docs.openclaw.ai/concepts/agent-workspace",
     ].join("\n"),
-    "Workspace backup",
+    "Резервная копия",
   );
 
   await prompter.note(
-    "Running agents on your computer is risky — harden your setup: https://docs.openclaw.ai/security",
-    "Security",
+    "Запуск агентов на компьютере несёт риски — укрепите вашу установку: https://docs.openclaw.ai/security",
+    "Безопасность",
   );
 
   await setupOnboardingShellCompletion({ flow, prompter });
@@ -461,13 +461,13 @@ export async function finalizeOnboardingWizard(
       [
         `Dashboard link (with token): ${authedUrl}`,
         controlUiOpened
-          ? "Opened in your browser. Keep that tab to control OpenClaw."
-          : "Copy/paste this URL in a browser on this machine to control OpenClaw.",
+          ? "Открыто в браузере. Сохраните эту вкладку для управления MatryoshkaClaw."
+          : "Скопируйте эту ссылку и откройте в браузере на этом компьютере для управления MatryoshkaClaw.",
         controlUiOpenHint,
       ]
         .filter(Boolean)
         .join("\n"),
-      "Dashboard ready",
+      "Панель управления готова",
     );
   }
 
@@ -542,27 +542,27 @@ export async function finalizeOnboardingWizard(
     } else {
       await prompter.note(
         [
-          "Web search was skipped. You can enable it later:",
+          "Веб-поиск пропущен. Включить позже:",
           `  ${formatCliCommand("openclaw configure --section web")}`,
           "",
-          "Docs: https://docs.openclaw.ai/tools/web",
+          "Документация: https://docs.openclaw.ai/tools/web",
         ].join("\n"),
-        "Web search",
+        "Веб-поиск",
       );
     }
   }
 
   await prompter.note(
-    'What now: https://openclaw.ai/showcase ("What People Are Building").',
-    "What now",
+    'Что дальше: https://openclaw.ai/showcase ("What People Are Building").',
+    "Что дальше",
   );
 
   await prompter.outro(
     controlUiOpened
-      ? "Onboarding complete. Dashboard opened; keep that tab to control OpenClaw."
+      ? "Настройка завершена. Панель управления открыта; сохраните эту вкладку."
       : seededInBackground
-        ? "Onboarding complete. Web UI seeded in the background; open it anytime with the dashboard link above."
-        : "Onboarding complete. Use the dashboard link above to control OpenClaw.",
+        ? "Настройка завершена. Web UI запускается в фоне; откройте его через ссылку выше."
+        : "Настройка завершена. Используйте ссылку выше для управления MatryoshkaClaw.",
   );
 
   return { launchedTui };

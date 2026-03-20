@@ -199,7 +199,7 @@ const meta = {
   detailLabel: "Mattermost Bot",
   docsPath: "/channels/mattermost",
   docsLabel: "mattermost",
-  blurb: "self-hosted Slack-style chat; install the plugin to enable.",
+  blurb: "self-hosted чат в стиле Slack; установите плагин для включения.",
   systemImage: "bubble.left.and.bubble.right",
   order: 65,
   quickstartAllowFrom: true,

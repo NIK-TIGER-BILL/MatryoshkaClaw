@@ -197,11 +197,11 @@ export async function setupSearch(
 ): Promise<OpenClawConfig> {
   await prompter.note(
     [
-      "Web search lets your agent look things up online.",
-      "Choose a provider and paste your API key.",
-      "Docs: https://docs.openclaw.ai/tools/web",
+      "Веб-поиск позволяет агенту искать информацию в интернете.",
+      "Выберите провайдера и вставьте API ключ.",
+      "Документация: https://docs.openclaw.ai/tools/web",
     ].join("\n"),
-    "Web search",
+    "Веб-поиск",
   );
 
   const existingProvider = config.tools?.web?.search?.provider;
@@ -227,12 +227,12 @@ export async function setupSearch(
 
   type PickerValue = SearchProvider | "__skip__";
   const choice = await prompter.select<PickerValue>({
-    message: "Search provider",
+    message: "Провайдер поиска",
     options: [
       ...options,
       {
         value: "__skip__" as const,
-        label: "Skip for now",
+        label: "Пропустить",
         hint: "Configure later with matryoshka configure --section web",
       },
     ],

@@ -24,7 +24,7 @@ export async function applyAuthChoiceAnthropic(
   ) {
     let nextConfig = params.config;
     await params.prompter.note(
-      ["Run `claude setup-token` in your terminal.", "Then paste the generated token below."].join(
+      ["Выполните `claude setup-token` в терминале.", "Затем вставьте сгенерированный токен ниже."].join(
         "\n",
       ),
       "Anthropic setup-token",
@@ -34,8 +34,8 @@ export async function applyAuthChoiceAnthropic(
       prompter: params.prompter,
       explicitMode: requestedSecretInputMode,
       copy: {
-        modeMessage: "How do you want to provide this setup token?",
-        plaintextLabel: "Paste setup token now",
+        modeMessage: "Как предоставить setup-token?",
+        plaintextLabel: "Вставить токен сейчас",
         plaintextHint: "Stores the token directly in the auth profile",
       },
     });
@@ -56,7 +56,7 @@ export async function applyAuthChoiceAnthropic(
       tokenRef = resolved.ref;
     } else {
       const tokenRaw = await params.prompter.text({
-        message: "Paste Anthropic setup-token",
+        message: "Вставьте Anthropic setup-token",
         validate: (value) => validateAnthropicSetupToken(String(value ?? "")),
       });
       token = String(tokenRaw ?? "").trim();
@@ -67,7 +67,7 @@ export async function applyAuthChoiceAnthropic(
     }
 
     const profileNameRaw = await params.prompter.text({
-      message: "Token name (blank = default)",
+      message: "Имя токена (пусто = по умолчанию)",
       placeholder: "default",
     });
     const provider = "anthropic";

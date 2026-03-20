@@ -48,7 +48,7 @@ const meta = {
   selectionLabel: "Matrix (plugin)",
   docsPath: "/channels/matrix",
   docsLabel: "matrix",
-  blurb: "open protocol; configure a homeserver + access token.",
+  blurb: "открытый протокол; установите плагин для включения.",
   order: 70,
   quickstartAllowFrom: true,
 };

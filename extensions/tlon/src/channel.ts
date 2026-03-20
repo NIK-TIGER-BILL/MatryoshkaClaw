@@ -282,7 +282,7 @@ export const tlonPlugin: ChannelPlugin = {
     selectionLabel: "Tlon (Urbit)",
     docsPath: "/channels/tlon",
     docsLabel: "tlon",
-    blurb: "Decentralized messaging on Urbit",
+    blurb: "децентрализованный мессенджер на Urbit; установите плагин для включения.",
     aliases: ["urbit"],
     order: 90,
   },

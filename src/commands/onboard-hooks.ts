@@ -12,12 +12,12 @@ export async function setupInternalHooks(
 ): Promise<OpenClawConfig> {
   await prompter.note(
     [
-      "Hooks let you automate actions when agent commands are issued.",
-      "Example: Save session context to memory when you issue /new or /reset.",
+      "Хуки позволяют автоматизировать действия при выполнении команд агента.",
+      "Пример: сохранять контекст сессии в память при команде /new или /reset.",
       "",
-      "Learn more: https://docs.openclaw.ai/automation/hooks",
+      "Подробнее: https://docs.openclaw.ai/automation/hooks",
     ].join("\n"),
-    "Hooks",
+    "Хуки",
   );
 
   // Discover available hooks using the hook discovery system
@@ -36,9 +36,9 @@ export async function setupInternalHooks(
   }
 
   const toEnable = await prompter.multiselect({
-    message: "Enable hooks?",
+    message: "Включить хуки?",
     options: [
-      { value: "__skip__", label: "Skip for now" },
+      { value: "__skip__", label: "Пропустить" },
       ...eligibleHooks.map((hook) => ({
         value: hook.name,
         label: `${hook.emoji ?? "🔗"} ${hook.name}`,

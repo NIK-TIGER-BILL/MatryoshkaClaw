@@ -61,7 +61,7 @@ const meta = {
   selectionLabel: "Zalo (Personal Account)",
   docsPath: "/channels/zalouser",
   docsLabel: "zalouser",
-  blurb: "Zalo personal account via QR code login.",
+  blurb: "личный аккаунт Zalo через QR код.",
   aliases: ["zlu"],
   order: 85,
   quickstartAllowFrom: true,

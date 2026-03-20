@@ -65,16 +65,16 @@ export async function setupSkills(
 
   await prompter.note(
     [
-      `Eligible: ${eligible.length}`,
-      `Missing requirements: ${missing.length}`,
-      `Unsupported on this OS: ${unsupportedOs.length}`,
-      `Blocked by allowlist: ${blocked.length}`,
+      `Доступно: ${eligible.length}`,
+      `Нет требований: ${missing.length}`,
+      `Не поддерживается на этой ОС: ${unsupportedOs.length}`,
+      `Заблокировано allowlist: ${blocked.length}`,
     ].join("\n"),
-    "Skills status",
+    "Статус навыков",
   );
 
   const shouldConfigure = await prompter.confirm({
-    message: "Configure skills now? (recommended)",
+    message: "Настроить навыки сейчас? (рекомендуется)",
     initialValue: true,
   });
   if (!shouldConfigure) {
