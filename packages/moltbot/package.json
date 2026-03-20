@@ -11,6 +11,6 @@
     "./cli-entry": "./bin/moltbot.js"
   },
   "dependencies": {
-    "matryoshkaclaw": "workspace:*"
+    "openclaw": "workspace:*"
   }
 }
