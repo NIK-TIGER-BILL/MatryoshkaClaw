@@ -24,6 +24,18 @@ const AUTH_CHOICE_GROUP_DEFS: {
   choices: AuthChoice[];
 }[] = [
   {
+    value: "gigachat",
+    label: "GigaChat (Сбербанк)",
+    hint: "GIGACHAT_CREDENTIALS",
+    choices: ["gigachat-api-key"],
+  },
+  {
+    value: "yandexgpt",
+    label: "YandexGPT (Яндекс)",
+    hint: "folder_id:api_key",
+    choices: ["yandexgpt-api-key"],
+  },
+  {
     value: "openai",
     label: "OpenAI",
     hint: "Codex OAuth + API key",
@@ -124,18 +136,6 @@ const AUTH_CHOICE_GROUP_DEFS: {
     label: "Qianfan",
     hint: "API key",
     choices: ["qianfan-api-key"],
-  },
-  {
-    value: "gigachat",
-    label: "GigaChat (Сбербанк)",
-    hint: "GIGACHAT_CREDENTIALS",
-    choices: ["gigachat-api-key"],
-  },
-  {
-    value: "yandexgpt",
-    label: "YandexGPT (Яндекс)",
-    hint: "folder_id:api_key",
-    choices: ["yandexgpt-api-key"],
   },
   {
     value: "modelstudio",

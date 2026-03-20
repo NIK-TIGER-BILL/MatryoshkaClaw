@@ -30,39 +30,37 @@ async function requireRiskAcknowledgement(params: {
 
   await params.prompter.note(
     [
-      "Security warning — please read.",
+      "MatryoshkaClaw находится в бета-версии. Ожидайте острых углов.",
+      "По умолчанию MatryoshkaClaw — личный агент: один доверенный оператор.",
+      "Этот бот может читать файлы и выполнять действия если инструменты включены.",
+      "Плохой промпт может обмануть его на небезопасные действия.",
       "",
-      "OpenClaw is a hobby project and still in beta. Expect sharp edges.",
-      "By default, OpenClaw is a personal agent: one trusted operator boundary.",
-      "This bot can read files and run actions if tools are enabled.",
-      "A bad prompt can trick it into doing unsafe things.",
+      "MatryoshkaClaw не защищён от враждебных многопользовательских сценариев по умолчанию.",
+      "Если несколько пользователей пишут одному агенту с инструментами — они делят привилегии.",
       "",
-      "OpenClaw is not a hostile multi-tenant boundary by default.",
-      "If multiple users can message one tool-enabled agent, they share that delegated tool authority.",
+      "Если вы не готовы настраивать безопасность — не запускайте MatryoshkaClaw.",
+      "Обратитесь к опытному специалисту перед включением инструментов или выходом в интернет.",
       "",
-      "If you’re not comfortable with security hardening and access control, don’t run OpenClaw.",
-      "Ask someone experienced to help before enabling tools or exposing it to the internet.",
+      "Рекомендуемый минимум:",
+      "- Паринг/allowlist + mention gating.",
+      "- Мульти-пользователь: разделите trust boundaries (отдельный шлюз, учётные данные, OS пользователи).",
+      "- Sandbox + минимальные права инструментов.",
+      "- Общие inbox: изолируйте DM сессии (`session.dmScope: per-channel-peer`).",
+      "- Держите секреты вне файловой системы агента.",
+      "- Используйте самую мощную модель для ботов с инструментами.",
       "",
-      "Recommended baseline:",
-      "- Pairing/allowlists + mention gating.",
-      "- Multi-user/shared inbox: split trust boundaries (separate gateway/credentials, ideally separate OS users/hosts).",
-      "- Sandbox + least-privilege tools.",
-      "- Shared inboxes: isolate DM sessions (`session.dmScope: per-channel-peer`) and keep tool access minimal.",
-      "- Keep secrets out of the agent’s reachable filesystem.",
-      "- Use the strongest available model for any bot with tools or untrusted inboxes.",
+      "Запускайте регулярно:",
+      "matryoshka security audit --deep",
+      "matryoshka security audit --fix",
       "",
-      "Run regularly:",
-      "openclaw security audit --deep",
-      "openclaw security audit --fix",
-      "",
-      "Must read: https://docs.openclaw.ai/gateway/security",
+      "Документация: https://docs.openclaw.ai/gateway/security",
     ].join("\n"),
     "Security",
   );
 
   const ok = await params.prompter.confirm({
     message:
-      "I understand this is personal-by-default and shared/multi-user use requires lock-down. Continue?",
+      "Я понимаю, что это личный агент и многопользовательский режим требует настройки. Продолжить?",
     initialValue: false,
   });
   if (!ok) {
@@ -77,7 +75,7 @@ export async function runOnboardingWizard(
 ) {
   const onboardHelpers = await import("../commands/onboard-helpers.js");
   onboardHelpers.printWizardHeader(runtime);
-  await prompter.intro("OpenClaw onboarding");
+  await prompter.intro("🪆 Добро пожаловать в MatryoshkaClaw");
   await requireRiskAcknowledgement({ opts, prompter });
 
   const snapshot = await readConfigFileSnapshot();
@@ -96,14 +94,14 @@ export async function runOnboardingWizard(
       );
     }
     await prompter.outro(
-      `Config invalid. Run \`${formatCliCommand("openclaw doctor")}\` to repair it, then re-run onboarding.`,
+      `Конфигурация повреждена. Запустите \`${formatCliCommand("matryoshka doctor")}\` для исправления, затем повторите настройку.`,
     );
     runtime.exit(1);
     return;
   }
 
-  const quickstartHint = `Configure details later via ${formatCliCommand("openclaw configure")}.`;
-  const manualHint = "Configure port, network, Tailscale, and auth options.";
+  const quickstartHint = `Настроить детали позже: ${formatCliCommand("matryoshka configure")}.`;
+  const manualHint = "Настроить порт, сеть, Tailscale и аутентификацию.";
   const explicitFlowRaw = opts.flow?.trim();
   const normalizedExplicitFlow = explicitFlowRaw === "manual" ? "advanced" : explicitFlowRaw;
   if (
@@ -122,17 +120,17 @@ export async function runOnboardingWizard(
   let flow: WizardFlow =
     explicitFlow ??
     (await prompter.select({
-      message: "Onboarding mode",
+      message: "Режим настройки",
       options: [
         { value: "quickstart", label: "QuickStart", hint: quickstartHint },
-        { value: "advanced", label: "Manual", hint: manualHint },
+        { value: "advanced", label: "Вручную", hint: manualHint },
       ],
       initialValue: "quickstart",
     }));
 
   if (opts.mode === "remote" && flow === "quickstart") {
     await prompter.note(
-      "QuickStart only supports local gateways. Switching to Manual mode.",
+      "QuickStart поддерживает только локальные шлюзы. Переключаемся на ручной режим.",
       "QuickStart",
     );
     flow = "advanced";
@@ -141,15 +139,15 @@ export async function runOnboardingWizard(
   if (snapshot.exists) {
     await prompter.note(
       onboardHelpers.summarizeExistingConfig(baseConfig),
-      "Existing config detected",
+      "Найдена существующая конфигурация",
     );
 
     const action = await prompter.select({
-      message: "Config handling",
+      message: "Конфигурация",
       options: [
-        { value: "keep", label: "Use existing values" },
-        { value: "modify", label: "Update values" },
-        { value: "reset", label: "Reset" },
+        { value: "keep", label: "Использовать существующие значения" },
+        { value: "modify", label: "Обновить значения" },
+        { value: "reset", label: "Сбросить" },
       ],
     });
 
@@ -157,16 +155,16 @@ export async function runOnboardingWizard(
       const workspaceDefault =
         baseConfig.agents?.defaults?.workspace ?? onboardHelpers.DEFAULT_WORKSPACE;
       const resetScope = (await prompter.select({
-        message: "Reset scope",
+        message: "Область сброса",
         options: [
-          { value: "config", label: "Config only" },
+          { value: "config", label: "Только конфигурация" },
           {
             value: "config+creds+sessions",
-            label: "Config + creds + sessions",
+            label: "Конфигурация + учётные данные + сессии",
           },
           {
             value: "full",
-            label: "Full reset (config + creds + sessions + workspace)",
+            label: "Полный сброс (конфигурация + учётные данные + сессии + workspace)",
           },
         ],
       })) as ResetScope;
@@ -494,7 +492,7 @@ export async function runOnboardingWizard(
   const settings = gateway.settings;
 
   if (opts.skipChannels ?? opts.skipProviders) {
-    await prompter.note("Skipping channel setup.", "Channels");
+    await prompter.note("Пропускаем настройку каналов.", "Каналы");
   } else {
     const { listChannelPlugins } = await import("../channels/plugins/index.js");
     const { setupChannels } = await import("../commands/onboard-channels.js");
@@ -522,7 +520,7 @@ export async function runOnboardingWizard(
   });
 
   if (opts.skipSearch) {
-    await prompter.note("Skipping search setup.", "Search");
+    await prompter.note("Пропускаем настройку поиска.", "Поиск");
   } else {
     const { setupSearch } = await import("../commands/onboard-search.js");
     nextConfig = await setupSearch(nextConfig, runtime, prompter, {
@@ -532,7 +530,7 @@ export async function runOnboardingWizard(
   }
 
   if (opts.skipSkills) {
-    await prompter.note("Skipping skills setup.", "Skills");
+    await prompter.note("Пропускаем настройку навыков.", "Навыки");
   } else {
     const { setupSkills } = await import("../commands/onboard-skills.js");
     nextConfig = await setupSkills(nextConfig, workspaceDir, runtime, prompter);

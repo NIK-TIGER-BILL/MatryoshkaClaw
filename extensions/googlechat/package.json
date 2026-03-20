@@ -8,7 +8,7 @@
     "google-auth-library": "^10.6.1"
   },
   "devDependencies": {
-    "openclaw": "workspace:*"
+    "matryoshkaclaw": "workspace:*"
   },
   "peerDependencies": {
     "openclaw": ">=2026.3.7"
