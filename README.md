@@ -14,6 +14,8 @@
 [![Агентов: ∞](https://img.shields.io/badge/Агентов-∞-red?style=for-the-badge)](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw)
 [![Матрёшек: тоже ∞](https://img.shields.io/badge/Матрёшек-тоже_∞-green?style=for-the-badge)](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw)
 
+[🌐 Сайт](https://matryoshkaclaw.ru) · [📱 Telegram](https://t.me/MatryoshkaClaw) · [GitHub](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw) · [Issues](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/issues)
+
 </div>
 
 ---
@@ -282,6 +284,6 @@ MIT — потому что даже импортозамещение иногд
 *\*\* Никакой реальной связи с государственными структурами нет*
 *\*\*\* Это опенсорс-проект, а не государственная разработка*
 
-[🌐 Сайт](https://matryoshkaclaw.ru) · [📱 Telegram](https://t.me/MatryoshkaClaw) · [GitHub](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw) · [Issues](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/issues) · [Discussions](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/discussions)
+[🌐 Сайт](https://matryoshkaclaw.ru) · [📱 Telegram](https://t.me/MatryoshkaClaw) · [GitHub](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw) · [Issues](https://github.com/NIK-TIGER-BILL/MatryoshkaClaw/issues)
 
 </div>
