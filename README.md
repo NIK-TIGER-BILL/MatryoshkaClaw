@@ -2,6 +2,8 @@
 
 [🇷🇺 Русский](README.md) | [🇬🇧 English](README.en.md)
 
+<img src="docs/assets/banner.png" alt="MatryoshkaClaw — Не импортозамещение. Матрёшкозамещение." width="100%" />
+
 # 🪆 MatryoshkaClaw
 
 ### *Российская платформа автономных AI-агентов*
