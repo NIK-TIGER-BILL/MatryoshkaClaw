@@ -1,5 +1,6 @@
 import type { Command } from "commander";
 import { babushkaCommand } from "../../commands/babushka.js";
+import { blinyCommand } from "../../commands/bliny.js";
 import { dashboardCommand } from "../../commands/dashboard.js";
 import { doctorCommand } from "../../commands/doctor.js";
 import { resetCommand } from "../../commands/reset.js";
@@ -15,6 +16,13 @@ export function registerMaintenanceCommands(program: Command) {
     .description("🧓 Мудрость бабушки + ASCII арт. +10 XP к уровню матрёшки")
     .action(() => {
       babushkaCommand();
+    });
+
+  program
+    .command("блины")
+    .description("🥞 Рецепт блинов от бабушки-матрёшки + напоминание поесть. +5 XP")
+    .action(() => {
+      blinyCommand();
     });
 
   program
