@@ -119,7 +119,7 @@ MatryoshkaClaw
 ## ⚡ Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/NIK-TIGER-BILL/MatryoshkaClaw/main/install.sh | bash
+curl -fsSL matryoshkaclaw.ru/install | bash
 ```
 
 One command. No registration, no SMS, no government approval. The script checks Node.js, installs deps, and adds `matryoshka` to PATH.

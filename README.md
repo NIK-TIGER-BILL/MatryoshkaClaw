@@ -121,7 +121,7 @@ MatryoshkaClaw
 ## ⚡ Установка
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/NIK-TIGER-BILL/MatryoshkaClaw/main/install.sh | bash
+curl -fsSL matryoshkaclaw.ru/install | bash
 ```
 
 Одна команда. Без регистрации, SMS и одобрения Минцифры. Скрипт сам проверит Node.js, установит зависимости и добавит `matryoshka` в PATH.
