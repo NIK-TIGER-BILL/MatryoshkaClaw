@@ -113,6 +113,11 @@ const coreEntries: CoreCliEntry[] = [
         hasSubcommands: false,
       },
       {
+        name: "блины",
+        description: "🥞 Рецепт блинов от бабушки-матрёшки + напоминание поесть. +5 XP",
+        hasSubcommands: false,
+      },
+      {
         name: "doctor",
         description: "Проверка состояния и быстрые исправления для шлюза и каналов",
         hasSubcommands: false,
